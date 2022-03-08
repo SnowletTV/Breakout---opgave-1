@@ -8,6 +8,7 @@ public class BallState {
 	}
 	
 	public Vector getVelocity() {
+		
 		return null;
 	}
 }

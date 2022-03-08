@@ -15,7 +15,7 @@ public class BreakoutState {
 		return null;
 	}
 
-	public PaddleState getPaddle() {
+	public PaddleState[] getPaddle() {
 		return null;
 	}
 

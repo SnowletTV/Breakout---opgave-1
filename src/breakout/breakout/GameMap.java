@@ -2,6 +2,9 @@ package breakout;
 
 import java.util.ArrayList;
 
+import breakout.BlockState;
+import breakout.BreakoutState;
+
 public class GameMap {
 	
 	private static final int INIT_BALL_DIAMETER = 700;
