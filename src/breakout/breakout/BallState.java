@@ -6,17 +6,17 @@ public class BallState {
 	int diameter;
 	Vector velocity;
 	
+	public BallState(Point center, Vector velocity, int diameter) {
+		this.center = center; 
+		this.velocity = velocity;
+		this.diameter = diameter;
+	}
+	
 	public Point getCenter() {		
 		return center;
 	}
 	
 	public Vector getVelocity() {
 		return velocity;
-	}
-	
-	public BallState(Point center, Vector velocity, int diameter) {
-		this.center = center; 
-		this.velocity = velocity;
-		this.diameter = diameter;
 	}
 }
