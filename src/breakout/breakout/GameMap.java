@@ -35,7 +35,8 @@ public class GameMap {
 		Point center = topLeft.plus(centerD);
 		int diameter = INIT_BALL_DIAMETER;
 		// TODO: return a ball with given `center`, `diameter` and initial velocity `INIT_BALL_VELOCITY` 
-		BallState ball = new BallState(center, centerD, diameter);
+		Vector velocity = INIT_BALL_VELOCITY;
+		BallState ball = new BallState(center, velocity, diameter);
 		return ball;
 	}
 		
