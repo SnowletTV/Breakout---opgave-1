@@ -5,7 +5,7 @@ public class PaddleState {
     Point center;
     Vector size;
 
-    public PaddleState(Point center, Vector velocity) {
+    public PaddleState(Point center, Vector size) {
         this.center = center;
         this.size = size;
     }
