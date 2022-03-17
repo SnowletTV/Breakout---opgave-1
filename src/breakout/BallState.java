@@ -2,9 +2,9 @@ package breakout;
 
 public class BallState {
 	// TODO: implement
-	Point center;
-	int diameter;
-	Vector velocity;
+	public Point center;
+	public int diameter;
+	public Vector velocity;
 
 	public BallState(Point center, Vector velocity, int diameter) {
 		this.center = center;

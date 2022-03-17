@@ -2,8 +2,8 @@ package breakout;
 
 public class BlockState {
     // TODO: implement
-    Point blockTL;
-    Point blockBR;
+	public Point blockTL;
+	public Point blockBR;
 
     public BlockState(Point blockTL, Point blockBR) {
         this.blockTL = blockTL;
