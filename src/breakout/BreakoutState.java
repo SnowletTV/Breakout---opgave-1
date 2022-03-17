@@ -34,9 +34,9 @@ public class BreakoutState {
 		for(int i = 0; i < balls.length; i++) {
 			Vector velocity = balls[i].getVelocity();
 			balls[i].center.plus(velocity);
-			int bottomedge = balls[i].center.getY() - balls[i].diameter/2;
+			int bottomedge = balls[i].center.getY() + balls[i].diameter/2;
 			int leftedge = balls[i].center.getX() - balls[i].diameter/2;
-			int topedge = balls[i].center.getY() + balls[i].diameter/2;
+			int topedge = balls[i].center.getY() - balls[i].diameter/2;
 			int rightedge = balls[i].center.getX() + balls[i].diameter/2;
 			if(leftedge <= 0) {
 				Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
@@ -46,11 +46,11 @@ public class BreakoutState {
 				Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
 				balls[i].velocity = newvelocity;
 			}
-			if(leftedge >= 30000) {
+			if(topedge <= 0) {
 				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
 				balls[i].velocity = newvelocity;
 			}
-			if(bottomedge <= 0) {
+			if(bottomedge >= 30000) {
 				BallState[] ballsnew = new BallState[balls.length-1];
 				for(int j = 0; j < balls.length; j++) {
 					if(j > i) {
