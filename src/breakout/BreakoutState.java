@@ -1,7 +1,5 @@
 package breakout;
 
-import javax.swing.JOptionPane;
-
 // TODO: implement, document
 public class BreakoutState {
 	BallState[] balls;
@@ -61,7 +59,7 @@ public class BreakoutState {
 				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
 				balls[i].velocity = newvelocity;
 			}
-			if(bottomedge >= toppaddle && balls[i].center.getX() <= paddleright && balls[i].center.getX()>= paddleleft) {
+			if(bottomedge >= toppaddle && topedge <= toppaddle && balls[i].center.getX() <= paddleright && balls[i].center.getX()>= paddleleft) {
 				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
 				balls[i].velocity = newvelocity;
 			}
@@ -139,14 +137,14 @@ public class BreakoutState {
 	}
 
 	public void movePaddleRight() {
-		int x = 100;
+		int x = 10;
 		int y = 0;
 		Vector vector = new Vector(x,y);
 		paddle.center = paddle.center.plus(vector);
 	}
 
 	public void movePaddleLeft() {
-		int x = -100;
+		int x = -10;
 		int y = 0;
 		Vector vector = new Vector(x,y);
 		paddle.center = paddle.center.plus(vector);
