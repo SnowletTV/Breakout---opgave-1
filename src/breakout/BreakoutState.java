@@ -1,5 +1,7 @@
 package breakout;
 
+import javax.swing.JOptionPane;
+
 // TODO: implement, document
 public class BreakoutState {
 	BallState[] balls;
@@ -137,24 +139,30 @@ public class BreakoutState {
 	}
 
 	public void movePaddleRight() {
-		int x = 10;
+		int x = 100;
 		int y = 0;
 		Vector vector = new Vector(x,y);
 		paddle.center = paddle.center.plus(vector);
 	}
 
 	public void movePaddleLeft() {
-		int x = -10;
+		int x = -100;
 		int y = 0;
 		Vector vector = new Vector(x,y);
 		paddle.center = paddle.center.plus(vector);
 	}
 
 	public boolean isWon() {
+		if(blocks.length == 0) {
+			return true;
+		}
 		return false;
 	}
 
 	public boolean isDead() {
+		if(balls.length == 0) {
+			return true;
+		}
 		return false;
 	}
 }
