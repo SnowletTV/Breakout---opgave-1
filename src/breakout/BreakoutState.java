@@ -61,10 +61,10 @@ public class BreakoutState {
 			}
 			if(bottomedge >= toppaddle && topedge <= toppaddle && balls[i].center.getX() <= paddleright && balls[i].center.getX()>= paddleleft) {
 				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY()-2);
-				if(paddleDir < 0) {
+				if(velocity.getX()<0) {
 					newvelocity = new Vector(velocity.getX()-2, -velocity.getY()-2);
 				}
-				if(paddleDir > 0) {
+				if(velocity.getX()>0) {
 					newvelocity = new Vector(velocity.getX()+2, -velocity.getY()-2);
 				}			
 				balls[i].velocity = newvelocity;
