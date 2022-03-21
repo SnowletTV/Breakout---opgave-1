@@ -63,13 +63,72 @@ public class BreakoutState {
 				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
 				balls[i].velocity = newvelocity;
 			}
+			for(int j = 0; j < blocks.length; j++) {
+				int bottomblockedge = blocks[j].blockBR.getY();
+				int leftblockedge = blocks[j].blockTL.getX();
+				int topblockedge = blocks[j].blockTL.getY();
+				int rightblockedge = blocks[j].blockBR.getX();
+				if(topedge <= bottomblockedge && bottomedge >= bottomblockedge && balls[i].center.getX() <= rightblockedge && balls[i].center.getX()>= leftblockedge) {
+					Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
+					balls[i].velocity = newvelocity;
+					BlockState[] blocksnew = new BlockState[blocks.length-1];
+					for(int k = 0; k < blocksnew.length; k++) {
+						if(k >= j) {
+							blocksnew[k] = blocks[k+1];
+						}if(k < j) {
+							blocksnew[k] = blocks[k];
+						}
+					}
+					blocks = blocksnew;
+				}
+				if(rightedge <= leftblockedge && leftedge >= leftblockedge && balls[i].center.getY() >= topblockedge && balls[i].center.getY()<= bottomblockedge) {
+					Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
+					balls[i].velocity = newvelocity;
+					BlockState[] blocksnew = new BlockState[blocks.length-1];
+					for(int k = 0; k < blocksnew.length; k++) {
+						if(k >= j) {
+							blocksnew[k] = blocks[k+1];
+						}if(k < j) {
+							blocksnew[k] = blocks[k];
+						}
+					}
+					blocks = blocksnew;
+				}
+				if(bottomedge >= topblockedge && topedge <= topblockedge && balls[i].center.getX() <= rightblockedge && balls[i].center.getX()>= leftblockedge) {
+					Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
+					balls[i].velocity = newvelocity;
+					BlockState[] blocksnew = new BlockState[blocks.length-1];
+					for(int k = 0; k < blocksnew.length; k++) {
+						if(k >= j) {
+							blocksnew[k] = blocks[k+1];
+						}if(k < j) {
+							blocksnew[k] = blocks[k];
+						}
+					}
+					blocks = blocksnew;
+				}
+				if(leftedge <= rightblockedge && rightedge >= rightblockedge && balls[i].center.getY() <= topblockedge && balls[i].center.getY()>= bottomblockedge) {
+					Vector newvelocity = new Vector(-velocity.getX(), -velocity.getY());
+					balls[i].velocity = newvelocity;
+					BlockState[] blocksnew = new BlockState[blocks.length-1];
+					for(int k = 0; k < blocksnew.length; k++) {
+						if(k >= j) {
+							blocksnew[k] = blocks[k+1];
+						}if(k < j) {
+							blocksnew[k] = blocks[k];
+						}
+					}
+					blocks = blocksnew;
+				}
+				
+			}
 			if(bottomedge >= 30000) {
 				BallState[] ballsnew = new BallState[balls.length-1];
-				for(int j = 0; j < balls.length; j++) {
+				for(int j = 0; j < ballsnew.length; j++) {
 					if(j > i) {
-						ballsnew[j-1] = balls[i];
+						ballsnew[j] = balls[j+1];
 					}if(j < i) {
-						ballsnew[j] = balls[i];
+						ballsnew[j] = balls[j];
 					}
 				}
 				balls = ballsnew;
