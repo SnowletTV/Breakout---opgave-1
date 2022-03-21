@@ -31,9 +31,20 @@ public class BreakoutState {
 	}
 
 	public void tick(int paddleDir) {
+		if(paddleDir < 0) {
+			Vector movement = new Vector(-10, 0);
+			paddle.center = paddle.center.plus(movement);
+		}
+		if(paddleDir > 0) {
+			Vector movement = new Vector(10, 0);
+			paddle.center = paddle.center.plus(movement);
+		}
+		int toppaddle = paddle.center.getY() - paddle.size.getY()/2;
+		int paddleleft = paddle.center.getX() - paddle.size.getX()/2;
+		int paddleright = paddle.center.getX() + paddle.size.getX()/2;
 		for(int i = 0; i < balls.length; i++) {
 			Vector velocity = balls[i].getVelocity();
-			balls[i].center.plus(velocity);
+			balls[i].center = balls[i].center.plus(velocity);
 			int bottomedge = balls[i].center.getY() + balls[i].diameter/2;
 			int leftedge = balls[i].center.getX() - balls[i].diameter/2;
 			int topedge = balls[i].center.getY() - balls[i].diameter/2;
@@ -47,6 +58,10 @@ public class BreakoutState {
 				balls[i].velocity = newvelocity;
 			}
 			if(topedge <= 0) {
+				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
+				balls[i].velocity = newvelocity;
+			}
+			if(bottomedge >= toppaddle && balls[i].center.getX() <= paddleright && balls[i].center.getX()>= paddleleft) {
 				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
 				balls[i].velocity = newvelocity;
 			}
