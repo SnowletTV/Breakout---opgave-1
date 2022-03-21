@@ -32,12 +32,10 @@ public class BreakoutState {
 
 	public void tick(int paddleDir) {
 		if(paddleDir < 0) {
-			Vector movement = new Vector(-10, 0);
-			paddle.center = paddle.center.plus(movement);
+			movePaddleLeft();
 		}
 		if(paddleDir > 0) {
-			Vector movement = new Vector(10, 0);
-			paddle.center = paddle.center.plus(movement);
+			movePaddleRight();
 		}
 		int toppaddle = paddle.center.getY() - paddle.size.getY()/2;
 		int paddleleft = paddle.center.getX() - paddle.size.getX()/2;
@@ -83,14 +81,14 @@ public class BreakoutState {
 		int x = 10;
 		int y = 0;
 		Vector vector = new Vector(x,y);
-		paddle.center.plus(vector);
+		paddle.center = paddle.center.plus(vector);
 	}
 
 	public void movePaddleLeft() {
 		int x = -10;
 		int y = 0;
 		Vector vector = new Vector(x,y);
-		paddle.center.plus(vector);
+		paddle.center = paddle.center.plus(vector);
 	}
 
 	public boolean isWon() {
