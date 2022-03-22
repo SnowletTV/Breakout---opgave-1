@@ -62,10 +62,12 @@ public class BreakoutState {
 			if(bottomedge >= toppaddle && bottomedge < toppaddle + velocity.getY() && topedge <= toppaddle && balls[i].center.getX() <= paddleright && balls[i].center.getX()>= paddleleft) {
                 Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
                 if(paddleDir < 0) {
-                    newvelocity = new Vector((int) (velocity.getX() - (2*Math.cos(Math.atan(velocity.getY()/ velocity.getX())))), (int) -(velocity.getY()+ (2*Math.sin(Math.atan2(velocity.getY(), velocity.getX())))));
+                	//Blijkbaar moesten we niet versnellen... newvelocity = new Vector((int) (velocity.getX() - (2*Math.cos(Math.atan(velocity.getY()/ velocity.getX())))), (int) -(velocity.getY()+ (2*Math.sin(Math.atan2(velocity.getY(), velocity.getX())))));
+                	newvelocity = new Vector(velocity.getX()-2, -velocity.getY()-2);
                 }
                 if(paddleDir > 0) {
-                    newvelocity = new Vector((int) (velocity.getX() + (2*Math.cos(Math.atan(velocity.getY()/ velocity.getX())))), (int) -(velocity.getY()+ (2*Math.sin(Math.atan2(velocity.getY(), velocity.getX())))));
+                	//Blijkbaar moesten we niet versnellen... newvelocity = new Vector((int) (velocity.getX() + (2*Math.cos(Math.atan(velocity.getY()/ velocity.getX())))), (int) -(velocity.getY()+ (2*Math.sin(Math.atan2(velocity.getY(), velocity.getX())))));
+                	newvelocity = new Vector(velocity.getX()+2, -velocity.getY()-2);
                 }            
                 balls[i].velocity = newvelocity;
             }
