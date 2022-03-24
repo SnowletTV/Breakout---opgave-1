@@ -5,7 +5,7 @@ package breakout;
  *
  * @immutable
  */
-public class BallState {
+public final class BallState {
 	// TODO: implement
 	private final Point center;
 	private final Vector velocity;

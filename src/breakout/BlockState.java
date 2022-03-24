@@ -5,7 +5,7 @@ package breakout;
  *
  * @immutable
  */
-public class BlockState {
+public final class BlockState {
     // TODO: implement
 	private final Point blockTL;
 	private final Point blockBR;

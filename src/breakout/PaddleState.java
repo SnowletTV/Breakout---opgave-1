@@ -5,7 +5,7 @@ package breakout;
  *
  * @immutable
  */
-public class PaddleState {
+public final class PaddleState {
     // TODO: implement
 	private final Point center;
 	private final Vector size;
