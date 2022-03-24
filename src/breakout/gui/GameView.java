@@ -161,8 +161,8 @@ public class GameView extends JPanel {
 		g.setColor(Color.blue);
 		for (BlockState block : breakoutState.getBlocks()) {
 			// TODO: figure out top-left and bottom right Point of block
-			Point tl = block.getblockTL();
-			Point br = block.getblockBR();
+			Point tl = block.getBlockTL();
+			Point br = block.getBlockBR();
 			paintBlock(g, tl, br);
 		}
 	}

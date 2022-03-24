@@ -1,9 +1,14 @@
 package breakout;
 
+/**
+ * Represents a paddle. 
+ *
+ * @immutable
+ */
 public class PaddleState {
     // TODO: implement
-	Point center;
-	Vector size;
+	private final Point center;
+	private final Vector size;
 
 	/**
 	*  Initializes this object with the given center and size.
@@ -28,6 +33,7 @@ public class PaddleState {
     public Point getCenter() {
 		return center;
 	}
+    
     
     /**
 	* Returns this object's size.

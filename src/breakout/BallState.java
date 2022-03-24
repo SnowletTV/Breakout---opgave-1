@@ -1,10 +1,15 @@
 package breakout;
 
+/**
+ * Represents a ball and its velocity. 
+ *
+ * @immutable
+ */
 public class BallState {
 	// TODO: implement
-	Point center;
-	int diameter;
-	Vector velocity;
+	private final Point center;
+	private final Vector velocity;
+	private final int diameter;
 	
 	/**
 	* Initializes this object with the given center, velocity and diameter.
