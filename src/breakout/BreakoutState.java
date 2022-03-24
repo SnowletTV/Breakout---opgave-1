@@ -82,11 +82,11 @@ public class BreakoutState {
                 Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
                 if(paddleDir < 0) {
                 	//Blijkbaar moesten we niet versnellen... newvelocity = new Vector((int) (velocity.getX() - (2*Math.cos(Math.atan(velocity.getY()/ velocity.getX())))), (int) -(velocity.getY()+ (2*Math.sin(Math.atan2(velocity.getY(), velocity.getX())))));
-                	newvelocity = new Vector(velocity.getX()-2, -velocity.getY()-2);
+                	newvelocity = new Vector(velocity.getX()-2, -velocity.getY());
                 }
                 if(paddleDir > 0) {
                 	//Blijkbaar moesten we niet versnellen... newvelocity = new Vector((int) (velocity.getX() + (2*Math.cos(Math.atan(velocity.getY()/ velocity.getX())))), (int) -(velocity.getY()+ (2*Math.sin(Math.atan2(velocity.getY(), velocity.getX())))));
-                	newvelocity = new Vector(velocity.getX()+2, -velocity.getY()-2);
+                	newvelocity = new Vector(velocity.getX()+2, -velocity.getY());
                 }            
                 balls[i].velocity = newvelocity;
             }
@@ -135,7 +135,7 @@ public class BreakoutState {
 					blocks = blocksnew;
 				}
 				if(leftedge <= rightblockedge && rightedge >= rightblockedge && balls[i].center.getY() <= topblockedge && balls[i].center.getY()>= bottomblockedge) {
-					Vector newvelocity = new Vector(-velocity.getX(), -velocity.getY());
+					Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
 					balls[i].velocity = newvelocity;
 					BlockState[] blocksnew = new BlockState[blocks.length-1];
 					for(int k = 0; k < blocksnew.length; k++) {
