@@ -6,11 +6,30 @@ public class BreakoutState {
 	BlockState[] blocks;
     PaddleState paddle;
     Point bottomRight;
-
+    
+    /**
+    * Initializes this BreakoutState with the given balls, blocks, bottomright and paddle.
+    * @throws IllegalArgumentException if balls array is null
+    * | balls == null
+    * @throws IllegalArgumentException if blocks array is null
+    * | blocks == null
+    * @throws IllegalArgumentException if paddle is null
+    * | paddle == null
+    * @throws IllegalArgumentException if bottomRight is null
+    * | bottomRight == null
+    */
 	public BreakoutState(BallState[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
+		if (balls == null)
+			throw new IllegalArgumentException("balls is null");
 		this.balls = balls;
+		if (blocks == null)
+			throw new IllegalArgumentException("blocks is null");
         this.blocks = blocks;
+        if (paddle == null)
+			throw new IllegalArgumentException("paddle is null");
         this.paddle = paddle;
+        if (bottomRight == null)
+			throw new IllegalArgumentException("bottomRight is null");
         this.bottomRight = bottomRight;
 	}
 
