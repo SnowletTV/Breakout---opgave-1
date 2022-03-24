@@ -25,10 +25,10 @@ class BlockStateTest {
 
 	@Test
 	void testBlock() {
-		//assertEquals(p4050, bl1.getblockTL());
-		//assertEquals(p140150, bl1.getblockBR());
-		//assertEquals(p2030, bl2.getblockTL());
-		//assertEquals(p200300, bl2.getblockBR());
+		assertEquals(p4050, bl1.getBlockTL());
+		assertEquals(p140150, bl1.getBlockBR());
+		assertEquals(p2030, bl2.getBlockTL());
+		assertEquals(p200300, bl2.getBlockBR());
 	}
 	
 	@Test
