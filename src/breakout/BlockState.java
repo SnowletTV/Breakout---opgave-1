@@ -2,8 +2,8 @@ package breakout;
 
 public class BlockState {
     // TODO: implement
-	public Point blockTL;
-	public Point blockBR;
+	Point blockTL;
+	Point blockBR;
 	
 	/**
 	* Initializes this object with the given topLeft and topRight.
@@ -24,9 +24,6 @@ public class BlockState {
     
     /**
 	* Returns this object's topLeft.
-	*
-	* @post This object's topLeft equal the returned topLeft.
-	* | result == blockTL
 	*/
     public Point getblockTL() {
 		return blockTL;
@@ -34,9 +31,6 @@ public class BlockState {
     
     /**
 	* Returns this object's topRight.
-	*
-	* @post This object's topRight equal the returned topRight.
-	* | result == blockBR
 	*/
     public Point getblockBR() {
 		return blockBR;

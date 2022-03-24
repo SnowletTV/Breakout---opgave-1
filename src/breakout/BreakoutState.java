@@ -170,21 +170,32 @@ public class BreakoutState {
 			}
 		}
 	}
-
+	
+	/**
+	* Moves the paddle right by 10
+    * @post X coordinate of the center of the paddle must have been increased by 10
+	* | getPaddle().getCenter().getX() == old(paddle.center.getX())+10
+	*/
 	public void movePaddleRight() {
-		int x = 10;
-		int y = 0;
-		Vector vector = new Vector(x,y);
+		Vector vector = new Vector(10,0);
 		paddle.center = paddle.center.plus(vector);
 	}
 
+	/**
+	* Moves the paddle left by 10
+    * @post X coordinate of the center of the paddle must have been decreased by 10
+	* | getPaddle().getCenter().getX() == old(paddle.center.getX())-10
+	*/
 	public void movePaddleLeft() {
-		int x = -10;
-		int y = 0;
-		Vector vector = new Vector(x,y);
+		Vector vector = new Vector(-10,0);
 		paddle.center = paddle.center.plus(vector);
 	}
-
+	
+	/**
+	* Returns if the game is Won by having a ball and no more blocks.
+    * @post This object's balls array equal the given balls array.
+	*
+	*/
 	public boolean isWon() {
 		if(blocks.length == 0 && balls.length > 0) {
 			return true;
@@ -192,6 +203,10 @@ public class BreakoutState {
 		return false;
 	}
 
+	/**
+	* Returns if the player is dead by having no more balls.
+    * @post This object's balls array equal the given balls array.
+	*/
 	public boolean isDead() {
 		if(balls.length == 0) {
 			return true;

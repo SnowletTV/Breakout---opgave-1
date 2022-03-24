@@ -2,9 +2,9 @@ package breakout;
 
 public class BallState {
 	// TODO: implement
-	public Point center;
-	public int diameter;
-	public Vector velocity;
+	Point center;
+	int diameter;
+	Vector velocity;
 	
 	/**
 	* Initializes this object with the given center, velocity and diameter.
@@ -30,9 +30,6 @@ public class BallState {
 	
 	/**
 	* Returns this object's center.
-	*
-	* @post This object's size equal the returned size.
-	* | result == center
 	*/
 	public Point getCenter() {
 		return center;
@@ -40,9 +37,6 @@ public class BallState {
 	
 	/**
 	* Returns this object's velocity.
-	*
-	* @post This object's velocity equal the returned velocity.
-	* | result == velocity
 	*/
 	public Vector getVelocity() {
 		return velocity;
@@ -50,9 +44,6 @@ public class BallState {
 	
 	/**
 	* Returns this object's diameter.
-	*
-	* @post This object's diameter equal the returned diameter.
-	* | result == diameter
 	*/
 	public int getDiameter() {
 		return diameter;

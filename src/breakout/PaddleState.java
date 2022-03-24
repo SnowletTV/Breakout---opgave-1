@@ -2,8 +2,8 @@ package breakout;
 
 public class PaddleState {
     // TODO: implement
-	public Point center;
-	public Vector size;
+	Point center;
+	Vector size;
 
 	/**
 	*  Initializes this object with the given center and size.
@@ -24,9 +24,6 @@ public class PaddleState {
     
     /**
 	* Returns this object's center.
-	*
-	* @post This object's center equal the returned center.
-	* | result == center
 	*/
     public Point getCenter() {
 		return center;
@@ -34,9 +31,6 @@ public class PaddleState {
     
     /**
 	* Returns this object's size.
-	*
-	* @post This object's size equal the returned size.
-	* | result == size
 	*/
     public Vector getSize() {
 		return size;
