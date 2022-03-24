@@ -1,8 +1,23 @@
 package breakout;
 
+import java.util.Arrays;
+
 // TODO: implement, document
 public class BreakoutState {
-	
+	/**
+	* @invar Balls cannot be left of the field
+	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getX()-u.getDiameter()/2 >= 0)
+	* @invar Balls cannot be right of the field
+	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getX()+u.getDiameter()/2 <= bottomRight.getX())
+	* @invar Balls cannot be ontop of the field
+	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getY()-u.getDiameter()/2 >= 0)
+	* @invar Balls cannot be below of the field
+	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getY()-u.getDiameter()/2 <= bottomRight.getY())
+	* @invar Paddle cannot be left of the field
+	* | paddle.getCenter().getX() - paddle.getSize().getX()/2 >= 0
+	* @invar Paddle cannot be right of the field
+	* | paddle.getCenter().getX() + paddle.getSize().getX()/2 <= 50000
+	*/
 	private BallState[] balls;
 	private BlockState[] blocks;
 	private PaddleState paddle;
@@ -264,7 +279,7 @@ public class BreakoutState {
 	* | getPaddle() != null
 	* @post Center is not {@code null}.
 	* | getPaddle().getCenter() != null
-	* @post the paddle must not be across the right wall
+	* @post the paddle cannot be right  of the field
 	* | getPaddle().getCenter().getX() + getPaddle().getSize().getX()/2 <= getBottomRight().getX()
 	*/
 	public void movePaddleRight() {
@@ -276,9 +291,15 @@ public class BreakoutState {
 
 	/**
 	* Moves the paddle left by 10 when allowed by wall.
+	* @pre Paddle is not {@code null}.
+	* | getPaddle().getCenter() != null
+	* @pre Center is not {@code null}.
+	* | getPaddle().getCenter() != null
+	* @post Paddle is not {@code null}.
+	* | getPaddle() != null
 	* @post Center is not {@code null}.
 	* | getPaddle().getCenter() != null
-	* @post the paddle must not be across the left wall
+	* @post the paddle cannot be left of the field
 	* | getPaddle().getCenter().getX() - getPaddle().getSize().getX()/2 >= 0
 	*/
 	public void movePaddleLeft() {
