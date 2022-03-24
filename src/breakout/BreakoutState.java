@@ -9,14 +9,22 @@ public class BreakoutState {
     
     /**
     * Initializes this BreakoutState with the given balls, blocks, bottomright and paddle.
-    * @throws IllegalArgumentException if balls array is null
+    * @throws IllegalArgumentException if balls array is null.
     * | balls == null
-    * @throws IllegalArgumentException if blocks array is null
+    * @throws IllegalArgumentException if blocks array is null.
     * | blocks == null
-    * @throws IllegalArgumentException if paddle is null
+    * @throws IllegalArgumentException if paddle is null.
     * | paddle == null
-    * @throws IllegalArgumentException if bottomRight is null
+    * @throws IllegalArgumentException if bottomRight is null.
     * | bottomRight == null
+    * @post This object's balls array equal the given balls array.
+	* | getBalls() == balls
+	* @post This object's blocks array equal the given blocks array.
+	* | getBlocks() == blocks
+	* @post This object's bottomRight equal the given bottomRight.
+	* | getBottomRight() == bottomRight
+	* @post This object's paddle equal the given paddle.
+	* | getPaddle() == paddle
     */
 	public BreakoutState(BallState[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
 		if (balls == null)

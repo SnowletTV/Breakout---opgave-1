@@ -15,11 +15,11 @@ public class BallState {
 	* | velocity != null
 	* @pre Argument {@code diameter} is not {@code 0}.
 	* | diameter != 0
-	* @post This object's center equal the given center
+	* @post This object's center equal the given center.
 	* | getCenter() == center
-	* @post This object's velocity equal the given velocity
+	* @post This object's velocity equal the given velocity.
 	* | getVelocity() == velocity
-	* @post This object's diameter equal the given diameter
+	* @post This object's diameter equal the given diameter.
 	* | getDiameter() == diameter
 	*/
 	public BallState(Point center, Vector velocity, int diameter) {

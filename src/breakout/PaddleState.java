@@ -12,9 +12,9 @@ public class PaddleState {
 	* | center != null
 	* @pre Argument {@code size} is not {@code null}.
 	* | size != null
-	* @post This object's center equal the given center
+	* @post This object's center equal the given center.
 	* | getCenter() == center
-	* @post This object's size equal the given size
+	* @post This object's size equal the given size.
 	* | getSize() == size
 	*/
     public PaddleState(Point center, Vector size) {

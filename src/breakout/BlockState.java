@@ -12,9 +12,9 @@ public class BlockState {
 	* | blockTL != null
 	* @pre Argument {@code blockBR} is not {@code null}.
 	* | blockBR != null
-	* @post This object's topLeft equal the given topLeft
+	* @post This object's topLeft equal the given topLeft.
 	* | getblockTL() == blockTL
-	* @post This object's topRight equal the given topRight
+	* @post This object's topRight equal the given topRight.
 	* | getblockBR() == blockBR
 	*/
     public BlockState(Point blockTL, Point blockBR) {
