@@ -2,7 +2,7 @@ package breakout;
 
 // TODO: implement, document
 public class BreakoutState {
-
+	
 	private BallState[] balls;
 	private BlockState[] blocks;
 	private PaddleState paddle;
@@ -255,7 +255,13 @@ public class BreakoutState {
 	}
 	
 	/**
-	* Moves the paddle right by 10 when allowed by wall.
+	* Moves the paddle right by 10 when allowed by wall
+	* @pre Paddle is not {@code null}.
+	* | getPaddle().getCenter() != null
+	* @pre Center is not {@code null}.
+	* | getPaddle().getCenter() != null
+	* @post Paddle is not {@code null}.
+	* | getPaddle() != null
 	* @post Center is not {@code null}.
 	* | getPaddle().getCenter() != null
 	* @post the paddle must not be across the right wall
