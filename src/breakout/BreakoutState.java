@@ -8,14 +8,6 @@ public class BreakoutState {
     Point bottomRight;
 
 	public BreakoutState(BallState[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
-		assert balls != null;
-		assert blocks != null;
-		assert paddle != null;
-		assert bottomRight != null;
-		assert balls instanceof BallState[];
-		assert blocks instanceof BlockState[];
-		assert bottomRight instanceof Point;
-		assert paddle instanceof PaddleState;
 		this.balls = balls;
         this.blocks = blocks;
         this.paddle = paddle;
