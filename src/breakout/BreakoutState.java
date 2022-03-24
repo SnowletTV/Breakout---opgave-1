@@ -186,7 +186,7 @@ public class BreakoutState {
 	}
 
 	public boolean isWon() {
-		if(blocks.length == 0) {
+		if(blocks.length == 0 && balls.length > 0) {
 			return true;
 		}
 		return false;
