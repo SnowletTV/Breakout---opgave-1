@@ -9,13 +9,13 @@ public class BreakoutState {
     
     /**
     * Initializes this BreakoutState with the given balls, blocks, bottomright and paddle.
-    * @throws IllegalArgumentException if balls array is null.
+    * @throws IllegalArgumentException if balls array is {@code null}.
     * | balls == null
-    * @throws IllegalArgumentException if blocks array is null.
+    * @throws IllegalArgumentException if blocks array is {@code null}.
     * | blocks == null
-    * @throws IllegalArgumentException if paddle is null.
+    * @throws IllegalArgumentException if paddle is {@code null}.
     * | paddle == null
-    * @throws IllegalArgumentException if bottomRight is null.
+    * @throws IllegalArgumentException if bottomRight is {@code null}.
     * | bottomRight == null
     * @post This object's balls array equal the given balls array.
 	* | getBalls() == balls
@@ -173,28 +173,40 @@ public class BreakoutState {
 	
 	/**
 	* Moves the paddle right by 10
+	* @post Center is not {@code null}.
+	* | getPaddle().getCenter() != null
     * @post X coordinate of the center of the paddle must have been increased by 10
-	* | getPaddle().getCenter().getX() == old(paddle.center.getX())+10
+	* | getPaddle().getCenter().getX() == old(getPaddle().getCenter().getX())+10
+	* @post the paddle must not be across the right wall
+	* | getPaddle().getCenter().getX() + getPaddle().getSize().getX()/2 <= getBottomRight().getX()
 	*/
 	public void movePaddleRight() {
-		Vector vector = new Vector(10,0);
-		paddle.center = paddle.center.plus(vector);
+		if(paddle.getCenter().getX() + getPaddle().getSize().getX()/2 + 10 <= getBottomRight().getX()) {
+			Vector vector = new Vector(10,0);
+			paddle.center = paddle.getCenter().plus(vector);
+		}
 	}
 
 	/**
 	* Moves the paddle left by 10
+	* @post Center is not {@code null}.
+	* | getPaddle().getCenter() != null
     * @post X coordinate of the center of the paddle must have been decreased by 10
 	* | getPaddle().getCenter().getX() == old(paddle.center.getX())-10
+	* @post the paddle must not be across the left wall
+	* | getPaddle().getCenter().getX() - getPaddle().getSize().getX()/2 >= 0
 	*/
 	public void movePaddleLeft() {
-		Vector vector = new Vector(-10,0);
-		paddle.center = paddle.center.plus(vector);
+		if(getPaddle().getCenter().getX() - getPaddle().getSize().getX()/2 - 10 >= 0) {
+			Vector vector = new Vector(-10,0);
+			paddle.center = getPaddle().getCenter().plus(vector);
+		}	
 	}
 	
 	/**
 	* Returns if the game is Won by having a ball and no more blocks.
-    * @post This object's balls array equal the given balls array.
-	*
+    * @post You either have Won or have Not Won.
+	* | result == true || result == false
 	*/
 	public boolean isWon() {
 		if(blocks.length == 0 && balls.length > 0) {
@@ -205,7 +217,8 @@ public class BreakoutState {
 
 	/**
 	* Returns if the player is dead by having no more balls.
-    * @post This object's balls array equal the given balls array.
+    * @post You either are Dead or are Not Dead.
+    * | result == true || result == false
 	*/
 	public boolean isDead() {
 		if(balls.length == 0) {
