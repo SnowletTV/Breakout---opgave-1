@@ -255,11 +255,9 @@ public class BreakoutState {
 	}
 	
 	/**
-	* Moves the paddle right by 10
+	* Moves the paddle right by 10 when allowed by wall.
 	* @post Center is not {@code null}.
 	* | getPaddle().getCenter() != null
-    * @post X coordinate of the center of the paddle must have been increased by 10
-	* | getPaddle().getCenter().getX() == old(getPaddle().getCenter().getX())+10
 	* @post the paddle must not be across the right wall
 	* | getPaddle().getCenter().getX() + getPaddle().getSize().getX()/2 <= getBottomRight().getX()
 	*/
@@ -271,11 +269,9 @@ public class BreakoutState {
 	}
 
 	/**
-	* Moves the paddle left by 10
+	* Moves the paddle left by 10 when allowed by wall.
 	* @post Center is not {@code null}.
 	* | getPaddle().getCenter() != null
-    * @post X coordinate of the center of the paddle must have been decreased by 10
-	* | getPaddle().getCenter().getX() == old(getPaddle().getCenter().getX())-10
 	* @post the paddle must not be across the left wall
 	* | getPaddle().getCenter().getX() - getPaddle().getSize().getX()/2 >= 0
 	*/
