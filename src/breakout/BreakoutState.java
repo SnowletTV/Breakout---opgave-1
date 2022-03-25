@@ -208,6 +208,7 @@ public class BreakoutState {
 						}
 					}
 					balls = ballsnew;
+					velocity = balls[i].getVelocity();
 				}
 				//Hits the right or left
 				if(collision == 2 || collision == 3 || collision == 7 || collision == 8) {
@@ -221,6 +222,7 @@ public class BreakoutState {
 						}
 					}
 					balls = ballsnew;
+					velocity = balls[i].getVelocity();
 				}
 			}
 			//Hits bottomRight, bottom or bottomLeft
@@ -260,6 +262,7 @@ public class BreakoutState {
 						}
 					}
 					balls = ballsnew;
+					velocity = balls[i].getVelocity();
 					//Hits the bottom or top
 					if(collision == 1 || collision == 2 || collision == 4 || collision == 5 || collision == 6 || collision == 8) {
 						newvelocity = new Vector(velocity.getX(), -velocity.getY());
@@ -272,6 +275,7 @@ public class BreakoutState {
 							}
 						}
 						balls = ballsnew;
+						velocity = balls[i].getVelocity();
 					}
 					//Hits the right or left
 					if(collision == 2 || collision == 3 || collision == 4 || collision == 6 || collision == 7 || collision == 8) {
@@ -285,6 +289,7 @@ public class BreakoutState {
 							}
 						}
 						balls = ballsnew;
+						velocity = balls[i].getVelocity();
 					}
 				}
 				//Loop over every block
@@ -306,6 +311,7 @@ public class BreakoutState {
 								}
 							}
 							balls = ballsnew;
+							velocity = balls[i].getVelocity();
 						}
 						//Hits the right or left
 						if(collision == 2 || collision == 3 || collision == 4 || collision == 6 || collision == 7 || collision == 8) {
@@ -319,6 +325,7 @@ public class BreakoutState {
 								}
 							}
 							balls = ballsnew;
+							velocity = balls[i].getVelocity();
 						}
 						//Delete the block after collision
 						BlockState[] blocksnew = new BlockState[blocks.length-1];
