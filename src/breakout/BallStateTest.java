@@ -7,40 +7,40 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class BallStateTest {
-	Point p45;
-	Point pm28;
+	Point p4050;
+	Point p2080;
 	Vector v34;
 	Vector vm18;
-	BallState b453420;
-	BallState bm281830;
+	BallState b1;
+	BallState b2;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		p45 = new Point(4,5);
-		pm28 = new Point(-2,8);
+		p4050 = new Point(40,50);
+		p2080 = new Point(20,80);
 		v34 = new Vector(3,4);
 		vm18 = new Vector(-1,8);
-		b453420 = new BallState(p45,v34,20);
-		bm281830 = new BallState(pm28,vm18,-30);
+		b1 = new BallState(p4050,v34,20);
+		b2 = new BallState(p2080,vm18,10);
 		
 	}
 
 	@Test
 	void testBall() {
-		assertEquals(p45, b453420.getCenter());
-		assertEquals(v34, b453420.getVelocity());
-		assertEquals(20, b453420.getDiameter());
-		assertEquals(pm28, bm281830.getCenter());
-	    assertEquals(vm18, bm281830.getVelocity());
-		assertEquals(-30, bm281830.getDiameter());
+		assertEquals(p4050, b1.getCenter());
+		assertEquals(v34, b1.getVelocity());
+		assertEquals(20, b1.getDiameter());
+		assertEquals(p2080, b2.getCenter());
+	    assertEquals(vm18, b2.getVelocity());
+		assertEquals(10, b2.getDiameter());
 	}
 	
 	@Test
 	void testEqualsObject() {
 		//assertEquals(b453420 ,new BallState(p45,v34,20));
-		assertNotEquals(b453420, bm281830);
-		assertEquals(b453420,b453420);
-		assertNotEquals(bm281830, null);
+		assertNotEquals(b1, b2);
+		assertEquals(b2,b2);
+		assertNotEquals(b1, null);
 	}
 
 }
