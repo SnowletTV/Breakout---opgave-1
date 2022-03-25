@@ -21,13 +21,13 @@ public final class BallState {
 	* @pre Argument {@code diameter} is not 0.
 	* | diameter != 0
 	* @pre ball is not left of the field.
-	* | center.getX() >= 0
+	* | center.getX()-diameter/2 >= 0
 	* @pre ball  is not right of the field.
-	* | center.getX() <= 50000
+	* | center.getX()+diameter/2  <= 50000
 	* @pre ball  is not ontop of the field.
-	* | center.getY() >= 0
+	* | center.getY()-diameter/2 >= 0
 	* @pre ball is not below of the field.
-	* | center.getY() <= 30000
+	* | center.getY()+diameter/2  <= 30000
 	* @post This object's center equal the given center.
 	* | getCenter() == center
 	* @post This object's velocity equal the given velocity.
@@ -35,13 +35,13 @@ public final class BallState {
 	* @post This object's diameter equal the given diameter.
 	* | getDiameter() == diameter
 	* @post ball is not left of the field.
-	* | getCenter().getX() >= 0
+	* | getCenter().getX()-getDiameter()/2 >= 0
 	* @post ball  is not right of the field.
-	* | getCenter().getX() <= 50000
+	* | getCenter().getX()+getDiameter()/2 <= 50000
 	* @post ball  is not ontop of the field.
-	* | getCenter().getY() >= 0
+	* | getCenter().getY()-getDiameter()/2 >= 0
 	* @post ball is not below of the field.
-	* | getCenter().getY() <= 30000
+	* | getCenter().getY()+getDiameter()/2 <= 30000
 	*/
 	public BallState(Point center, Vector velocity, int diameter) {
 		this.center = center;
