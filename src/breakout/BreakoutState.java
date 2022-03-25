@@ -3,6 +3,9 @@ package breakout;
 import java.util.Arrays;
 
 // TODO: implement, document
+/**
+ * This class represents the game board.
+ */
 public class BreakoutState {
 	/**
 	* @invar Balls cannot be left of the field
@@ -13,12 +16,24 @@ public class BreakoutState {
 	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getY()-u.getDiameter()/2 >= 0)
 	* @invar Balls cannot be below of the field
 	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getY()-u.getDiameter()/2 <= bottomRight.getY())
+	* @invar Blocks cannot be left of the field
+	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getX() >= 0)
+	* @invar Blocks cannot be right of the field
+	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getX() <= bottomRight.getX())
+	* @invar Blocks cannot be ontop of the field
+	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getY() >= 0)
+	* @invar Blocks cannot be below of the field
+	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getY() <= bottomRight.getY())
 	* @invar Paddle cannot be left of the field
 	* | paddle.getCenter().getX() - paddle.getSize().getX()/2 >= 0
 	* @invar Paddle cannot be right of the field
 	* | paddle.getCenter().getX() + paddle.getSize().getX()/2 <= 50000
+	* @representationObject
 	*/
 	private BallState[] balls;
+	/**
+	* @representationObject
+	*/
 	private BlockState[] blocks;
 	private PaddleState paddle;
 	private Point bottomRight;
@@ -85,6 +100,20 @@ public class BreakoutState {
 		return bottomRight;
 	}
 	
+	/**
+	* Returns where two objects, represented by their bottomLeft and topRight coordinates, are colliding
+	* @pre Valid points arguments
+	* | topLeft1 != null && bottomRight1 != null && topLeft2 != null && bottomRight2 != null
+	* @pre Dimensions cannot be 0
+	* | topLeft1.getX() != bottomRight1.getX() && topLeft1.getY() != bottomRight1.getY() && topLeft2.getX() != bottomRight2.getX() && topLeft2.getY() != bottomRight2.getY()
+	* @inspects | topLeft1
+	* @inspects | bottomRight1
+	* @inspects | topLeft2
+	* @inspects | bottomRight2
+	* @creates | result
+	* @post Valid collision result
+	* | result >= 0 && result <= 8
+	*/
 	private int checkCollision(Point topLeft1, Point bottomRight1, Point topLeft2, Point bottomRight2 ) {
 		//Is hitting the top?
 		if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= topLeft2.getY()) {
@@ -122,11 +151,19 @@ public class BreakoutState {
 	}
 	
 	/**
-	* Orders the paddle to move left or right.
-	* Moves the ball forward by its own velocity
-	* Checks for collissions with paddle
+	* Orders the paddle based upon argument paddleDir to move left or right.
+	* For every ball in the balls array it:
+	*	Moves the ball forward by its own velocity
+	* 	Checks for collissions with the field.
+	* 		And changes vectors accordingly should they collide to simulate bouncing.
+	* 		Deletes the ball and creates a new balls array without the ball if it hits the bottom.
+	* 	Checks for collisions with the Paddle and Blocks.
+	* 		And changes vectors accordingly should they collide to simulate bouncing.
+	* 		Increases the velocity in the X-component of the ball should the Paddle be hit
+	* 		Deletes the block and creates a new blocks array without the block if it hits the block.
 	*/
 	public void tick(int paddleDir) {
+		//Move the paddle either right/left or not at all
 		if(paddleDir < 0) {
 			movePaddleLeft();
 		}
@@ -204,7 +241,7 @@ public class BreakoutState {
 				collision = 0;
 				//check collision with paddle
 				collision = checkCollision(topLeftBall, bottomRightBall, topLeftPaddle, bottomRightPaddle);
-				//First check if there was any collision at all and no bottom(not corners) since that is impossible with the Paddle
+				//First check if there was any collision at all
 				if(collision != 0) {
 					//apply speed
 					Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
