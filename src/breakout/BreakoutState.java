@@ -180,7 +180,22 @@ public class BreakoutState {
 				if(k!= i) {
 					ballsmoved[k] = balls[k];
 				}if(k == i) {
-					ballsmoved[k] = new BallState(balls[i].getCenter().plus(velocity), balls[i].getVelocity(), balls[i].getDiameter() );
+					//Enforcing the invariant
+					Point center = balls[i].getCenter().plus(velocity);
+					if(center.getX()-balls[i].getDiameter()/2 < 0) {
+						center = new Point(0, center.getY());
+					}
+					if(center.getX()+balls[i].getDiameter()/2 > bottomRight.getX()) {
+						center = new Point(bottomRight.getX(), center.getY());
+					}
+					if(center.getY()-balls[i].getDiameter()/2 < 0) {
+						center = new Point(center.getX(), 0);
+					}
+					if(center.getY()+balls[i].getDiameter()/2 > bottomRight.getY()) {
+						center = new Point(center.getX(), bottomRight.getY());
+					}
+					//Creating a new moved ball
+					ballsmoved[k] = new BallState(center, balls[i].getVelocity(), balls[i].getDiameter());
 				}
 			}
 			balls = ballsmoved;
@@ -246,12 +261,12 @@ public class BreakoutState {
 				//First check if there was any collision at all
 				if(collision != 0) {
 					//apply speed
-					Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
+					Vector newvelocity = new Vector(velocity.getX(), velocity.getY());
 	                if(paddleDir < 0) {
-	                	newvelocity = new Vector(velocity.getX()-2, -velocity.getY());
+	                	newvelocity = new Vector(velocity.getX()-2, velocity.getY());
 	                }
 	                if(paddleDir > 0) {
-	                	newvelocity = new Vector(velocity.getX()+2, -velocity.getY());
+	                	newvelocity = new Vector(velocity.getX()+2, velocity.getY());
 	                }            
 	                BallState[] ballsnew = new BallState[balls.length];
 					for(int k = 0; k < ballsnew.length; k++) {
@@ -264,7 +279,7 @@ public class BreakoutState {
 					balls = ballsnew;
 					velocity = balls[i].getVelocity();
 					//Hits the bottom or top
-					if(collision == 1 || collision == 2 || collision == 4 || collision == 5 || collision == 6 || collision == 8) {
+					if((collision == 1 || collision == 2  || collision == 8) && velocity.getY() > 0 || (collision == 4 || collision == 5 || collision == 6)  && velocity.getY() < 0) {
 						newvelocity = new Vector(velocity.getX(), -velocity.getY());
 		                ballsnew = new BallState[balls.length];
 						for(int k = 0; k < ballsnew.length; k++) {
@@ -278,7 +293,7 @@ public class BreakoutState {
 						velocity = balls[i].getVelocity();
 					}
 					//Hits the right or left
-					if(collision == 2 || collision == 3 || collision == 4 || collision == 6 || collision == 7 || collision == 8) {
+					if((collision == 2 || collision == 3 || collision == 4) && velocity.getX() < 0 || (collision == 6 || collision == 7 || collision == 8)  && velocity.getX() > 0) {
 						newvelocity = new Vector(-velocity.getX(), velocity.getY());
 		                ballsnew = new BallState[balls.length];
 						for(int k = 0; k < ballsnew.length; k++) {
@@ -389,7 +404,7 @@ public class BreakoutState {
 	* Returns if the game is Won by having a ball and no more blocks.
 	* @inspects | getBlocks(), getBalls()
     * @post You either have Won or have Not Won.
-	* | result == true || result == false
+	* | !(getBlocks().length == 0 && getBalls().length > 0) || result == true
 	*/
 	public boolean isWon() {
 		if(getBlocks().length == 0 && getBalls().length > 0) {
@@ -402,7 +417,7 @@ public class BreakoutState {
 	* Returns if the player is dead by having no more balls.
 	* @inspects | getBalls()
     * @post You either are Dead or are Not Dead.
-    * | result == true || result == false
+    * | !(getBalls().length == 0) || result == true
 	*/
 	public boolean isDead() {
 		if(getBalls().length == 0) {
