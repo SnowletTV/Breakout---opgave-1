@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 // TODO: implement, document
 /**
- * This class represents the game board.
+ * This class represents the state of the game
  */
 public class BreakoutState {
 	/**
