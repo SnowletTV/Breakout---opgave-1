@@ -342,6 +342,7 @@ public class BreakoutState {
 	* | getPaddle().getCenter() != null
 	* @pre Center is not {@code null}.
 	* | getPaddle().getCenter() != null
+	* @mutates | getPaddle()
 	* @post Paddle is not {@code null}.
 	* | getPaddle() != null
 	* @post Center is not {@code null}.
@@ -362,6 +363,7 @@ public class BreakoutState {
 	* | getPaddle().getCenter() != null
 	* @pre Center is not {@code null}.
 	* | getPaddle().getCenter() != null
+	* @mutates | getPaddle()
 	* @post Paddle is not {@code null}.
 	* | getPaddle() != null
 	* @post Center is not {@code null}.
@@ -378,11 +380,12 @@ public class BreakoutState {
 	
 	/**
 	* Returns if the game is Won by having a ball and no more blocks.
+	* @inspects | getBlocks(), getBalls()
     * @post You either have Won or have Not Won.
 	* | result == true || result == false
 	*/
 	public boolean isWon() {
-		if(getBlocks().length == 0 && balls.length > 0) {
+		if(getBlocks().length == 0 && getBalls().length > 0) {
 			return true;
 		}
 		return false;
@@ -390,6 +393,7 @@ public class BreakoutState {
 
 	/**
 	* Returns if the player is dead by having no more balls.
+	* @inspects | getBalls()
     * @post You either are Dead or are Not Dead.
     * | result == true || result == false
 	*/
