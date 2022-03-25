@@ -84,7 +84,48 @@ public class BreakoutState {
 	public Point getBottomRight() {
 		return bottomRight;
 	}
-
+	
+	private int checkCollision(Point topLeft1, Point bottomRight1, Point topLeft2, Point bottomRight2 ) {
+		//Is hitting the top?
+		if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= topLeft2.getY()) {
+			//Is hitting top-right?
+			if((bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY()) && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getX() >= bottomRight2.getX()) {
+				return 2;
+			}
+			return 1;
+		}
+		//Is hitting on the right?
+		if((bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY()) && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getX() >= bottomRight2.getX()) {
+			//Is hitting bottom-right?
+			if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= topLeft2.getY()) {
+				return 4;
+			}
+			return 3;
+		}
+		//Is hitting the bottom?
+		if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && topLeft1.getY() <= bottomRight2.getY() && bottomRight1.getY() >= bottomRight2.getY()) {
+			//Is hitting on the bottom-left?
+			if(bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY() && bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= topLeft2.getX()) {
+				return 6;
+			}
+			return 5;
+		}
+		//Is hitting on the left?
+		if(bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY() && bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= topLeft2.getX()) {
+			//Is hitting on the top-left?
+			if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getY() <= topLeft2.getY() && topLeft1.getY() >= topLeft2.getY()) {
+				return 8;
+			}
+			return 7;
+		}
+		return 0;
+	}
+	
+	/**
+	* Orders the paddle to move left or right.
+	* Moves the ball forward by its own velocity
+	* Checks for collissions with paddle
+	*/
 	public void tick(int paddleDir) {
 		if(paddleDir < 0) {
 			movePaddleLeft();
@@ -92,9 +133,9 @@ public class BreakoutState {
 		if(paddleDir > 0) {
 			movePaddleRight();
 		}
-		int toppaddle = paddle.getCenter().getY() - paddle.getSize().getY()/2;
-		int paddleleft = paddle.getCenter().getX() - paddle.getSize().getX()/2;
-		int paddleright = paddle.getCenter().getX() + paddle.getSize().getX()/2;
+		//Defining the paddles corners
+		Point topLeftPaddle = new Point(paddle.getCenter().getX() - (paddle.getSize().getX()/2), paddle.getCenter().getY() - (paddle.getSize().getY()/2));
+		Point bottomRightPaddle = new Point(paddle.getCenter().getX() + (paddle.getSize().getX()/2), paddle.getCenter().getY() + (paddle.getSize().getY()/2));
 		for(int i = 0; i < balls.length; i++) {
 			Vector velocity = balls[i].getVelocity();
 			BallState[] ballsmoved = new BallState[balls.length];
@@ -106,72 +147,22 @@ public class BreakoutState {
 				}
 			}
 			balls = ballsmoved;
-			int bottomedge = balls[i].getCenter().getY() + balls[i].getDiameter()/2;
-			int leftedge = balls[i].getCenter().getX() - balls[i].getDiameter()/2;
-			int topedge = balls[i].getCenter().getY() - balls[i].getDiameter()/2;
-			int rightedge = balls[i].getCenter().getX() + balls[i].getDiameter()/2;
-			if(leftedge <= 0) {
+			//Defining the balls corners
+			Point topLeftBall = new Point(balls[i].getCenter().getX() - (balls[i].getDiameter()/2), balls[i].getCenter().getY() - (balls[i].getDiameter()/2));
+			Point bottomRightBall = new Point(balls[i].getCenter().getX() + (balls[i].getDiameter()/2), balls[i].getCenter().getY() + (balls[i].getDiameter()/2));
+			//Defining the fields corners
+			Point topLeftField = new Point(0,0);
+			//bottomRight already exists
+			//Checks against the field borders;
+			int collision = checkCollision(topLeftBall, bottomRightBall, topLeftField, bottomRight);
+			//First check if there was any collision at all and whether it wasn't the bottom
+			if(collision != 0 && collision != 4 && collision != 5 && collision != 6) {
 				Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
 				BallState[] ballsnew = new BallState[balls.length];
-				for(int k = 0; k < ballsnew.length; k++) {
-					if(k!= i) {
-						ballsnew[k] = balls[k];
-					}if(k == i) {
-						ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-					}
-				}
-				balls = ballsnew;
-			}
-			if(rightedge >= bottomRight.getX()) {
-				Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
-				BallState[] ballsnew = new BallState[balls.length];
-				for(int k = 0; k < ballsnew.length; k++) {
-					if(k!= i) {
-						ballsnew[k] = balls[k];
-					}if(k == i) {
-						ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-					}
-				}
-				balls = ballsnew;
-			}
-			if(topedge <= 0) {
-				Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
-				BallState[] ballsnew = new BallState[balls.length];
-				for(int k = 0; k < ballsnew.length; k++) {
-					if(k!= i) {
-						ballsnew[k] = balls[k];
-					}if(k == i) {
-						ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-					}
-				}
-				balls = ballsnew;
-			}
-			if(bottomedge >= toppaddle && bottomedge < toppaddle + velocity.getY() && topedge <= toppaddle && balls[i].getCenter().getX() <= paddleright && balls[i].getCenter().getX()>= paddleleft) {
-                Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
-                if(paddleDir < 0) {
-                	newvelocity = new Vector(velocity.getX()-2, -velocity.getY());
-                }
-                if(paddleDir > 0) {
-                	newvelocity = new Vector(velocity.getX()+2, -velocity.getY());
-                }            
-                BallState[] ballsnew = new BallState[balls.length];
-				for(int k = 0; k < ballsnew.length; k++) {
-					if(k!= i) {
-						ballsnew[k] = balls[k];
-					}if(k == i) {
-						ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-					}
-				}
-				balls = ballsnew;
-            }
-			for(int j = 0; j < blocks.length; j++) {
-				int bottomblockedge = blocks[j].getBlockBR().getY();
-				int leftblockedge = blocks[j].getBlockTL().getX();
-				int topblockedge = blocks[j].getBlockTL().getY();
-				int rightblockedge = blocks[j].getBlockBR().getX();
-				if(topedge <= bottomblockedge && bottomedge >= bottomblockedge && balls[i].getCenter().getX() <= rightblockedge && balls[i].getCenter().getX()>= leftblockedge) {
-					Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
-	                BallState[] ballsnew = new BallState[balls.length];
+				//Hits the bottom or top
+				if(collision == 1 || collision == 2|| collision == 8) {
+					newvelocity = new Vector(velocity.getX(), -velocity.getY());
+					ballsnew = new BallState[balls.length];
 					for(int k = 0; k < ballsnew.length; k++) {
 						if(k!= i) {
 							ballsnew[k] = balls[k];
@@ -180,19 +171,11 @@ public class BreakoutState {
 						}
 					}
 					balls = ballsnew;
-					BlockState[] blocksnew = new BlockState[blocks.length-1];
-					for(int k = 0; k < blocksnew.length; k++) {
-						if(k >= j) {
-							blocksnew[k] = blocks[k+1];
-						}if(k < j) {
-							blocksnew[k] = blocks[k];
-						}
-					}
-					blocks = blocksnew;
 				}
-				if(rightedge >= leftblockedge && leftedge <= leftblockedge && balls[i].getCenter().getY() >= topblockedge && balls[i].getCenter().getY()<= bottomblockedge) {
-					Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
-	                BallState[] ballsnew = new BallState[balls.length];
+				//Hits the right or left
+				if(collision == 2 || collision == 3 || collision == 7 || collision == 8) {
+					newvelocity = new Vector(-velocity.getX(), velocity.getY());
+					ballsnew = new BallState[balls.length];
 					for(int k = 0; k < ballsnew.length; k++) {
 						if(k!= i) {
 							ballsnew[k] = balls[k];
@@ -201,61 +184,11 @@ public class BreakoutState {
 						}
 					}
 					balls = ballsnew;
-					BlockState[] blocksnew = new BlockState[blocks.length-1];
-					for(int k = 0; k < blocksnew.length; k++) {
-						if(k >= j) {
-							blocksnew[k] = blocks[k+1];
-						}if(k < j) {
-							blocksnew[k] = blocks[k];
-						}
-					}
-					blocks = blocksnew;
 				}
-				if(bottomedge >= topblockedge && topedge <= topblockedge && balls[i].getCenter().getX() <= rightblockedge && balls[i].getCenter().getX()>= leftblockedge) {
-					Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
-	                BallState[] ballsnew = new BallState[balls.length];
-					for(int k = 0; k < ballsnew.length; k++) {
-						if(k!= i) {
-							ballsnew[k] = balls[k];
-						}if(k == i) {
-							ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-						}
-					}
-					balls = ballsnew;
-					BlockState[] blocksnew = new BlockState[blocks.length-1];
-					for(int k = 0; k < blocksnew.length; k++) {
-						if(k >= j) {
-							blocksnew[k] = blocks[k+1];
-						}if(k < j) {
-							blocksnew[k] = blocks[k];
-						}
-					}
-					blocks = blocksnew;
-				}
-				if(leftedge <= rightblockedge && rightedge >= rightblockedge && balls[i].getCenter().getY() <= topblockedge && balls[i].getCenter().getY()>= bottomblockedge) {
-					Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
-	                BallState[] ballsnew = new BallState[balls.length];
-					for(int k = 0; k < ballsnew.length; k++) {
-						if(k!= i) {
-							ballsnew[k] = balls[k];
-						}if(k == i) {
-							ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-						}
-					}
-					balls = ballsnew;
-					BlockState[] blocksnew = new BlockState[blocks.length-1];
-					for(int k = 0; k < blocksnew.length; k++) {
-						if(k >= j) {
-							blocksnew[k] = blocks[k+1];
-						}if(k < j) {
-							blocksnew[k] = blocks[k];
-						}
-					}
-					blocks = blocksnew;
-				}
-				
 			}
-			if(bottomedge >= bottomRight.getY()) {
+			//Hits bottomRight, bottom or bottomLeft
+			if(collision == 4 || collision == 5 || collision == 6) {
+				//Delete ball from array
 				BallState[] ballsnew = new BallState[balls.length-1];
 				for(int j = 0; j < ballsnew.length; j++) {
 					if(j > i) {
@@ -265,6 +198,103 @@ public class BreakoutState {
 					}
 				}
 				balls = ballsnew;
+			}
+			if(collision != 4 || collision != 5 || collision != 6) {
+				//reset collision
+				collision = 0;
+				//check collision with paddle
+				collision = checkCollision(topLeftBall, bottomRightBall, topLeftPaddle, bottomRightPaddle);
+				//First check if there was any collision at all and no bottom(not corners) since that is impossible with the Paddle
+				if(collision != 0) {
+					//apply speed
+					Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
+	                if(paddleDir < 0) {
+	                	newvelocity = new Vector(velocity.getX()-2, -velocity.getY());
+	                }
+	                if(paddleDir > 0) {
+	                	newvelocity = new Vector(velocity.getX()+2, -velocity.getY());
+	                }            
+	                BallState[] ballsnew = new BallState[balls.length];
+					for(int k = 0; k < ballsnew.length; k++) {
+						if(k!= i) {
+							ballsnew[k] = balls[k];
+						}if(k == i) {
+							ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
+						}
+					}
+					balls = ballsnew;
+					//Hits the bottom or top
+					if(collision == 1 || collision == 2 || collision == 4 || collision == 5 || collision == 6 || collision == 8) {
+						newvelocity = new Vector(velocity.getX(), -velocity.getY());
+		                ballsnew = new BallState[balls.length];
+						for(int k = 0; k < ballsnew.length; k++) {
+							if(k!= i) {
+								ballsnew[k] = balls[k];
+							}if(k == i) {
+								ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
+							}
+						}
+						balls = ballsnew;
+					}
+					//Hits the right or left
+					if(collision == 2 || collision == 3 || collision == 4 || collision == 6 || collision == 7 || collision == 8) {
+						newvelocity = new Vector(-velocity.getX(), velocity.getY());
+		                ballsnew = new BallState[balls.length];
+						for(int k = 0; k < ballsnew.length; k++) {
+							if(k!= i) {
+								ballsnew[k] = balls[k];
+							}if(k == i) {
+								ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
+							}
+						}
+						balls = ballsnew;
+					}
+				}
+				//Loop over every block
+				for(int j = 0; j < blocks.length; j++) {
+					//reset collision
+					collision = 0;
+					//check collision with blocks
+					collision = checkCollision(topLeftBall, bottomRightBall, blocks[j].getBlockTL(), blocks[j].getBlockBR());
+					if(collision != 0) {
+						//Hits the bottom or top
+						if(collision == 1 || collision == 2 || collision == 4 || collision == 5 || collision == 6 || collision == 8) {
+							Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
+			                BallState[] ballsnew = new BallState[balls.length];
+							for(int k = 0; k < ballsnew.length; k++) {
+								if(k!= i) {
+									ballsnew[k] = balls[k];
+								}if(k == i) {
+									ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
+								}
+							}
+							balls = ballsnew;
+						}
+						//Hits the right or left
+						if(collision == 2 || collision == 3 || collision == 4 || collision == 6 || collision == 7 || collision == 8) {
+							Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
+			                BallState[] ballsnew = new BallState[balls.length];
+							for(int k = 0; k < ballsnew.length; k++) {
+								if(k!= i) {
+									ballsnew[k] = balls[k];
+								}if(k == i) {
+									ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
+								}
+							}
+							balls = ballsnew;
+						}
+						//Delete the block after collision
+						BlockState[] blocksnew = new BlockState[blocks.length-1];
+						for(int k = 0; k < blocksnew.length; k++) {
+							if(k >= j) {
+								blocksnew[k] = blocks[k+1];
+							}if(k < j) {
+								blocksnew[k] = blocks[k];
+							}
+						}
+						blocks = blocksnew;
+					}
+				}
 			}
 		}
 	}
