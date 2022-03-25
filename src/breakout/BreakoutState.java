@@ -315,7 +315,7 @@ public class BreakoutState {
 					collision = checkCollision(topLeftBall, bottomRightBall, blocks[j].getBlockTL(), blocks[j].getBlockBR());
 					if(collision != 0) {
 						//Hits the bottom or top
-						if(collision == 1 || collision == 2 || collision == 4 || collision == 5 || collision == 6 || collision == 8) {
+						if((collision == 1 || collision == 2  || collision == 8) && velocity.getY() > 0 || (collision == 4 || collision == 5 || collision == 6)  && velocity.getY() < 0) {
 							Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
 			                BallState[] ballsnew = new BallState[balls.length];
 							for(int k = 0; k < ballsnew.length; k++) {
@@ -329,7 +329,7 @@ public class BreakoutState {
 							velocity = balls[i].getVelocity();
 						}
 						//Hits the right or left
-						if(collision == 2 || collision == 3 || collision == 4 || collision == 6 || collision == 7 || collision == 8) {
+						if((collision == 2 || collision == 3 || collision == 4) && velocity.getX() < 0 || (collision == 6 || collision == 7 || collision == 8)  && velocity.getX() > 0) {
 							Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
 			                BallState[] ballsnew = new BallState[balls.length];
 							for(int k = 0; k < ballsnew.length; k++) {
