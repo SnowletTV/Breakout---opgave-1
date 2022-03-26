@@ -8,7 +8,7 @@ package breakout;
 public final class BallState {
 	// TODO: implement
 	private final Point center;
-	private final Vector velocity;
+	Vector velocity;
 	private final int diameter;
 	
 	/**
