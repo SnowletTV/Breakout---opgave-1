@@ -176,23 +176,23 @@ public class BreakoutState {
 		for(int i = 0; i < balls.length; i++) {
 			Vector velocity = balls[i].getVelocity();
 			BallState[] ballsmoved = new BallState[balls.length];
-			for(int k = 0; k < ballsmoved.length; k++) {
+			for(int k = 0; k < balls.length; k++) {
 				if(k!= i) {
 					ballsmoved[k] = balls[k];
 				}if(k == i) {
 					//Enforcing the invariant
 					Point center = balls[i].getCenter().plus(velocity);
 					if(center.getX()-balls[i].getDiameter()/2 < 0) {
-						center = new Point(0, center.getY());
+						center = new Point(0+balls[i].getDiameter()/2, center.getY());
 					}
 					if(center.getX()+balls[i].getDiameter()/2 > bottomRight.getX()) {
-						center = new Point(bottomRight.getX(), center.getY());
+						center = new Point(bottomRight.getX()-balls[i].getDiameter()/2, center.getY());
 					}
 					if(center.getY()-balls[i].getDiameter()/2 < 0) {
-						center = new Point(center.getX(), 0);
+						center = new Point(center.getX(), 0+balls[i].getDiameter()/2);
 					}
 					if(center.getY()+balls[i].getDiameter()/2 > bottomRight.getY()) {
-						center = new Point(center.getX(), bottomRight.getY());
+						center = new Point(center.getX(), bottomRight.getY()-balls[i].getDiameter()/2);
 					}
 					//Creating a new moved ball
 					ballsmoved[k] = new BallState(center, balls[i].getVelocity(), balls[i].getDiameter());
