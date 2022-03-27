@@ -250,8 +250,8 @@ o
   ########
 
 
- o    =
- 
+     =
+ o
 """;
 	
 	public static final String initMapBeforeBounceWallTop = """
@@ -339,21 +339,14 @@ o
 		velocityPaddleBlockRight = BallPaddleBlockRight1.getVelocity();
 		velocityPaddleBlockRight = new Vector(-5,7);
 		BallPaddleBlockRight[0] = new BallState(BallPaddleBlockRight[0].getCenter(), velocityPaddleBlockRight, BallPaddleBlockRight[0].getDiameter());
-		//stateBeforeBouncePaddleBlockBottom = GameMap.createStateFromDescription(initMapBeforeBouncePaddleBlockBottom);
-		//BallPaddleBlockBottom = stateBeforeBouncePaddleBlockBottom.getBalls();
-		//BallPaddleBlockBottom1 = BallPaddleBlockBottom[0];
-		//velocityPaddleBlockBottom = BallPaddleBlockBottom1.getVelocity();
-		//velocityPaddleBlockBottom = new Vector(-5,-7);
-		//BallPaddleBlockBottom[0].velocity = velocityPaddleBlockBottom;
+		stateBeforeBouncePaddleBlockBottom = GameMap.createStateFromDescription(initMapBeforeBouncePaddleBlockBottom);
+		BallPaddleBlockBottom = stateBeforeBouncePaddleBlockBottom.getBalls();
+		BallPaddleBlockBottom1 = BallPaddleBlockBottom[0];
+		velocityPaddleBlockBottom = BallPaddleBlockBottom1.getVelocity();
+		velocityPaddleBlockBottom = new Vector(-5,-7);
+		BallPaddleBlockBottom[0] = new BallState(BallPaddleBlockBottom[0].getCenter(), velocityPaddleBlockBottom, BallPaddleBlockBottom[0].getDiameter());
 		
-        //BallRight = stateBeforeBounceBlockRight.getBalls();
-        //BallRight1 = BallRight[0];
-        //topLeftBallRight = new Point(BallRight1.getCenter().getX() - (BallRight1.getDiameter()/2), BallRight1.getCenter().getY() - (BallRight1.getDiameter()/2));
-        //bottomRightBallRight = new Point(BallRight1.getCenter().getX() + (BallRight1.getDiameter()/2), BallRight1.getCenter().getY() + (BallRight1.getDiameter()/2));
-        //topLeftField = new Point(0,0);
-        //bottomRightRight = stateBeforeBounceBlockRight.getBottomRight();
-        //stateBeforeBounceBlockLeft = GameMap.createStateFromDescription(initMapBeforeBounceLeft);
-        //collision = stateBeforeBounceBlockRight.checkCollision(topLeftBallRight, bottomRightBallRight, topLeftField, bottomRight);
+        
 
 	}
 
@@ -460,7 +453,7 @@ o
 		}
 		assertEquals(1,stateBeforeBouncePaddleBlockBottom.getBalls().length);
 		assertEquals(37,stateBeforeBouncePaddleBlockBottom.getBlocks().length);
-		assertEquals(new Vector(19,7),stateBeforeBouncePaddleBlockBottom.getBalls()[0].getVelocity());
+		assertEquals(new Vector(19,-7),stateBeforeBouncePaddleBlockBottom.getBalls()[0].getVelocity());
 	}
 	
 	@Test
@@ -472,11 +465,11 @@ o
 		assertEquals(2,stateBeforeBounceBlockBottom.getBlocks().length);
 		assertEquals(new Vector(5,7),stateBeforeBounceBlockBottom.getBalls()[0].getVelocity());
 	}
+	
 	@Test
 	void testTickBounceBlockright() {
 		for(int i = 0; i < 600; ++i) {
 			stateBeforeBounceBlockRight.tick(1);
-			//stateBeforeBounceBlockRight.checkCollision(topLeftBallRight, bottomRightBallRight, topLeftField, bottomRight);
 		}
 		assertEquals(1,stateBeforeBounceBlockRight.getBalls().length);
 		assertEquals(3,stateBeforeBounceBlockRight.getBlocks().length);
@@ -513,14 +506,14 @@ o
 		assertEquals(new Vector(5,-7),stateBeforeBounceWallLeft.getBalls()[0].getVelocity());
 	}
 	
-	//@Test
-	//void testTickBounceWallBottom() {
-		//for(int i = 0; i < 2000; ++i) {
-			//stateBeforeBounceWallBottom.tick(1);
-		//}
-		//assertEquals(0,stateBeforeBounceWallBottom.getBalls().length);
-		//assertEquals(37,stateBeforeBounceWallBottom.getBlocks().length);
-	//}
+	@Test
+	void testTickBounceWallBottom() {
+		for(int i = 0; i < 2000; ++i) {
+			stateBeforeBounceWallBottom.tick(1);
+		}
+		assertEquals(0,stateBeforeBounceWallBottom.getBalls().length);
+		assertEquals(37,stateBeforeBounceWallBottom.getBlocks().length);
+	}
 	
 	@Test
 	void testTickBounceWallTop() {
@@ -547,3 +540,4 @@ o
 	}
 
 }
+
