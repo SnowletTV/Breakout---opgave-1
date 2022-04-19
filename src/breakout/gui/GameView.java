@@ -13,13 +13,21 @@ import javax.swing.Timer;
 import breakout.BallState;
 import breakout.BlockState;
 import breakout.BreakoutState;
+import breakout.Circle;
 import breakout.Point;
 import breakout.PaddleState;
+import breakout.Rect;
 import breakout.Vector;
 
 @SuppressWarnings("serial")
 public class GameView extends JPanel {
 	
+	private static final Color PADDLE_COLOR = new Color(0x99,0xff,0xff);
+
+	private static final Color BALL_COLOR = Color.yellow;
+
+	private static final Color BLOCK_COLOR = new Color(0x80,0x00,0xff);
+
 	private static final int ballMoveDelayMillis = 1;
 	
 	public BreakoutState breakoutState;
@@ -119,11 +127,11 @@ public class GameView extends JPanel {
 
 	private void paintPaddle(Graphics g) {
 		//paddle
-		g.setColor(Color.green);
+		g.setColor(PADDLE_COLOR);
 		PaddleState paddle = breakoutState.getPaddle();
-		// TODO: figure out top-left and bottom right Point of paddle
-		Point tl = new Point(paddle.getCenter().getX() - paddle.getSize().getX()/2, paddle.getCenter().getY() - paddle.getSize().getY()/2);
-		Point br = new Point(paddle.getCenter().getX() + paddle.getSize().getX()/2, paddle.getCenter().getY() + paddle.getSize().getY()/2);;
+		Rect loc = paddle.getLocation();
+		Point tl = loc.getTopLeft();
+		Point br = loc.getBottomRight();
 		paintPaddle(g, tl, br);
 	}
 
@@ -135,11 +143,11 @@ public class GameView extends JPanel {
 
 	private void paintBalls(Graphics g) {
 		//ball
-		g.setColor(Color.red);
+		g.setColor(BALL_COLOR);
 		for (BallState ball : breakoutState.getBalls()) {
-			// TODO: figure out top-left and bottom right Point of surrounding rectangle of ball
-			Point tl = new Point(ball.getCenter().getX() - ball.getDiameter()/2, ball.getCenter().getY() - ball.getDiameter()/2);
-			Point br = new Point(ball.getCenter().getX() + ball.getDiameter()/2, ball.getCenter().getY() + ball.getDiameter()/2);
+			Circle c = ball.getLocation();
+			Point tl = c.getTopLeftPoint();
+			Point br = c.getBottomRightPoint(); 
 			paintBall(g, tl, br);
 		}
 	}
@@ -158,11 +166,11 @@ public class GameView extends JPanel {
 
 	private void paintBlocks(Graphics g) {
 		// blocks
-		g.setColor(Color.blue);
+		g.setColor(BLOCK_COLOR);
 		for (BlockState block : breakoutState.getBlocks()) {
-			// TODO: figure out top-left and bottom right Point of block
-			Point tl = block.getBlockTL();
-			Point br = block.getBlockBR();
+			Rect loc = block.getLocation();
+			Point tl = loc.getTopLeft();
+			Point br = loc.getBottomRight();
 			paintBlock(g, tl, br);
 		}
 	}

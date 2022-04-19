@@ -8,36 +8,32 @@ public class GameMap {
 	private static final int INIT_BALL_DIAMETER = 700;
 	private static final int HEIGHT = 30000;
 	private static final int WIDTH = 50000;
-	private static int BLOCK_LINES = 9;
+	private static int BLOCK_LINES = 8;
 	private static int BLOCK_COLUMNS = 10;
 	private static final Vector INIT_BALL_VELOCITY = new Vector(5,7);
+
+	private GameMap() { throw new AssertionError("This class is not intended to be instantiated"); }
 
 	private static BlockState createBlock(Point bottomLeft) {
 		Vector marginBL = new Vector(20,20);
 		Vector size = new Vector(WIDTH/BLOCK_COLUMNS-70,HEIGHT/BLOCK_LINES-70);
 		Point blockTL = bottomLeft.plus(marginBL);
 		Point blockBR = blockTL.plus(size);
-		// TODO: return a block with given top left (`blockTL`) and bottom right (`blockBR`) Point  
-		BlockState block = new BlockState(blockTL, blockBR);
-		return block;
+		Rect loc = new Rect(blockTL,blockBR);
+		return new BlockState(loc);
 	}
 	private static PaddleState createPaddle(Point bottomLeft) {
 		Vector size = new Vector(WIDTH/BLOCK_COLUMNS/2,HEIGHT/BLOCK_LINES/2);
 		Point center = bottomLeft.plus(size);
-		// TODO: return a paddle with given center 
-		PaddleState paddle = new PaddleState(center, size);
-		return paddle;
+		return new PaddleState(center);
 	}
 	private static BallState createBall(Point bottomLeft) {
 		Vector centerD = new Vector(WIDTH/BLOCK_COLUMNS/2,HEIGHT/BLOCK_LINES/2);
 		Point center = bottomLeft.plus(centerD);
 		int diameter = INIT_BALL_DIAMETER;
-		// TODO: return a ball with given `center`, `diameter` and initial speed `initSpeed` 
-		Vector velocity = INIT_BALL_VELOCITY;
-		BallState ball = new BallState(center, velocity, diameter);
-		return ball;
+		return new BallState(new Circle(center,diameter),INIT_BALL_VELOCITY);
 	}
-		
+	
 	/**
 	 * Return the initial breakout state represented by string `description`.
 	 * @pre | description != null

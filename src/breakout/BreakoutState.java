@@ -1,428 +1,286 @@
 package breakout;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
-// TODO: implement, document
 /**
- * This class represents the state of the game
+ * Represents the current state of a breakout game.
+ *  
+ * @invar | getBalls() != null
+ * @invar | getBlocks() != null
+ * @invar | getPaddle() != null
+ * @invar | getBottomRight() != null
+ * @invar | Point.ORIGIN.isUpAndLeftFrom(getBottomRight())
+ * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getLocation()))
+ * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
+ * @invar | getField().contains(getPaddle().getLocation())
  */
 public class BreakoutState {
+
+	private static final Vector PADDLE_VEL = new Vector(10,0);
 	/**
-	* @invar Balls cannot be left of the field
-	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getX()-u.getDiameter()/2 >= 0)
-	* @invar Balls cannot be right of the field
-	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getX()+u.getDiameter()/2 <= bottomRight.getX())
-	* @invar Balls cannot be ontop of the field
-	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getY()-u.getDiameter()/2 >= 0)
-	* @invar Balls cannot be below of the field
-	* | Arrays.stream(balls).allMatch(u -> u.getCenter().getY()-u.getDiameter()/2 <= bottomRight.getY())
-	* @invar Blocks cannot be left of the field
-	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getX() >= 0)
-	* @invar Blocks cannot be right of the field
-	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getX() <= bottomRight.getX())
-	* @invar Blocks cannot be ontop of the field
-	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getY() >= 0)
-	* @invar Blocks cannot be below of the field
-	* | Arrays.stream(blocks).allMatch(u -> u.getBlockTL().getY() <= bottomRight.getY())
-	* @invar Paddle cannot be left of the field
-	* | paddle.getCenter().getX() - paddle.getSize().getX()/2 >= 0
-	* @invar Paddle cannot be right of the field
-	* | paddle.getCenter().getX() + paddle.getSize().getX()/2 <= 50000
-	* @representationObject
-	*/
-	private BallState[] balls;
+	 * @invar | bottomRight != null
+	 * @invar | Point.ORIGIN.isUpAndLeftFrom(bottomRight)
+	 */
+	private final Point bottomRight;
 	/**
-	* @representationObject
-	*/
+	 * @invar | balls != null
+	 * @invar | Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))
+	 * @representationObject
+	 */
+	private BallState[] balls;	
+	/**
+	 * @invar | blocks != null
+	 * @invar | Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))
+	 * @representationObject
+	 */
 	private BlockState[] blocks;
+	/**
+	 * @invar | paddle != null
+	 * @invar | getFieldInternal().contains(paddle.getLocation())
+	 */
 	private PaddleState paddle;
-	private Point bottomRight;
-    
-    /**
-    * Initializes this BreakoutState with the given balls, blocks, bottomright and paddle.
-    * @throws IllegalArgumentException if balls array is {@code null}.
-    * | balls == null
-    * @throws IllegalArgumentException if blocks array is {@code null}.
-    * | blocks == null
-    * @throws IllegalArgumentException if paddle is {@code null}.
-    * | paddle == null
-    * @throws IllegalArgumentException if bottomRight is {@code null}.
-    * | bottomRight == null
-    * @post This object's balls array equal the given balls array.
-	* | getBalls() == balls
-	* @post This object's blocks array equal the given blocks array.
-	* | getBlocks() == blocks
-	* @post This object's bottomRight equal the given bottomRight.
-	* | getBottomRight() == bottomRight
-	* @post This object's paddle equal the given paddle.
-	* | getPaddle() == paddle
-    */
+
+	private final Rect topWall;
+	private final Rect rightWall;
+	private final Rect leftWall;
+	private final Rect[] walls;
+
+	/**
+	 * Construct a new BreakoutState with the given balls, blocks, paddle.
+	 * 
+	 * @throws IllegalArgumentException | balls == null
+	 * @throws IllegalArgumentException | blocks == null
+	 * @throws IllegalArgumentException | bottomRight == null
+	 * @throws IllegalArgumentException | paddle == null
+	 * @throws IllegalArgumentException | !Point.ORIGIN.isUpAndLeftFrom(bottomRight)
+	 * @throws IllegalArgumentException | !(new Rect(Point.ORIGIN,bottomRight)).contains(paddle.getLocation())
+	 * @throws IllegalArgumentException | !Arrays.stream(blocks).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
+	 * @throws IllegalArgumentException | !Arrays.stream(balls).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
+	 * @post | Arrays.equals(getBalls(),balls)
+	 * @post | Arrays.equals(getBlocks(),blocks)
+	 * @post | getBottomRight().equals(bottomRight)
+	 * @post | getPaddle().equals(paddle)
+	 */
 	public BreakoutState(BallState[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
-		if (balls == null)
-			throw new IllegalArgumentException("balls is null");
-		this.balls = balls;
-		if (blocks == null)
-			throw new IllegalArgumentException("blocks is null");
-        this.blocks = blocks;
-        if (paddle == null)
-			throw new IllegalArgumentException("paddle is null");
-        this.paddle = paddle;
-        if (bottomRight == null)
-			throw new IllegalArgumentException("bottomRight is null");
-        this.bottomRight = bottomRight;
+		if( balls == null) throw new IllegalArgumentException();
+		if( blocks == null) throw new IllegalArgumentException();
+		if( bottomRight == null) throw new IllegalArgumentException();
+		if( paddle == null) throw new IllegalArgumentException();
+
+		if(!Point.ORIGIN.isUpAndLeftFrom(bottomRight)) throw new IllegalArgumentException();
+		this.bottomRight = bottomRight;
+		if(!getFieldInternal().contains(paddle.getLocation())) throw new IllegalArgumentException();
+		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
+		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
+	
+		this.balls = balls.clone();
+		this.blocks = blocks.clone();
+		this.paddle = paddle;
+
+		this.topWall = new Rect( new Point(0,-1000), new Point(bottomRight.getX(),0));
+		this.rightWall = new Rect( new Point(bottomRight.getX(),0), new Point(bottomRight.getX()+1000,bottomRight.getY()));
+		this.leftWall = new Rect( new Point(-1000,0), new Point(0,bottomRight.getY()));
+		this.walls = new Rect[] {topWall,rightWall, leftWall };
 	}
 
 	/**
-	* Returns this object's balls array.
-	*/
+	 * Return the balls of this BreakoutState.
+	 * 
+	 * @creates result
+	 */
 	public BallState[] getBalls() {
-		return balls;
+		return balls.clone();
 	}
 
 	/**
-	* Returns this object's blocks array.
-	*/
+	 * Return the blocks of this BreakoutState. 
+	 *
+	 * @creates result
+	 */
 	public BlockState[] getBlocks() {
-		return blocks;
+		return blocks.clone();
 	}
 
 	/**
-	* Returns this object's paddle
-	*/
+	 * Return the paddle of this BreakoutState. 
+	 */
 	public PaddleState getPaddle() {
 		return paddle;
 	}
 
 	/**
-	* Returns this object's bottomRight
-	*/
+	 * Return the point representing the bottom right corner of this BreakoutState.
+	 * The top-left corner is always at Coordinate(0,0). 
+	 */
 	public Point getBottomRight() {
 		return bottomRight;
 	}
-	
-	/**
-	* Returns where two objects, represented by their bottomLeft and topRight coordinates, are colliding
-	* @pre Valid points arguments
-	* | topLeft1 != null && bottomRight1 != null && topLeft2 != null && bottomRight2 != null
-	* @pre Dimensions cannot be 0
-	* | topLeft1.getX() != bottomRight1.getX() && topLeft1.getY() != bottomRight1.getY() && topLeft2.getX() != bottomRight2.getX() && topLeft2.getY() != bottomRight2.getY()
-	* @inspects | topLeft1
-	* @inspects | bottomRight1
-	* @inspects | topLeft2
-	* @inspects | bottomRight2
-	* @creates | result
-	* @post Valid collision result
-	* | result >= 0 && result <= 8
-	*/
-	private int checkCollision(Point topLeft1, Point bottomRight1, Point topLeft2, Point bottomRight2 ) {
-		//Is hitting the top?
-		if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= topLeft2.getY()) {
-			//Is hitting top-right?
-			if((bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY()) && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getX() >= bottomRight2.getX()) {
-				return 2;
-			}
-			return 1;
-		}
-		//Is hitting on the right?
-		if((bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY()) && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getX() >= bottomRight2.getX()) {
-			//Is hitting bottom-right?
-			if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= topLeft2.getY()) {
-				return 4;
-			}
-			return 3;
-		}
-		//Is hitting the bottom?
-		if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && topLeft1.getY() <= bottomRight2.getY() && bottomRight1.getY() >= bottomRight2.getY()) {
-			//Is hitting on the bottom-left?
-			if(bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY() && bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= topLeft2.getX()) {
-				return 6;
-			}
-			return 5;
-		}
-		//Is hitting on the left?
-		if(bottomRight1.getY() >= topLeft2.getY() && topLeft1.getY() <= bottomRight2.getY() && bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= topLeft2.getX()) {
-			//Is hitting on the top-left?
-			if(bottomRight1.getX() >= topLeft2.getX() && topLeft1.getX() <= bottomRight2.getX() && bottomRight1.getY() <= topLeft2.getY() && topLeft1.getY() >= topLeft2.getY()) {
-				return 8;
-			}
-			return 7;
-		}
-		return 0;
+
+	// internal version of getField which can be invoked in partially inconsistent states
+	private Rect getFieldInternal() {
+		return new Rect(Point.ORIGIN, bottomRight);
 	}
 	
 	/**
-	* Orders the paddle based upon argument paddleDir to move left or right.
-	* For every ball in the balls array it:
-	*	Moves the ball forward by its own velocity
-	* 	Checks for collissions with the field.
-	* 		And changes vectors accordingly should they collide to simulate bouncing.
-	* 		Deletes the ball and creates a new balls array without the ball if it hits the bottom.
-	* 	Checks for collisions with the Paddle and Blocks.
-	* 		And changes vectors accordingly should they collide to simulate bouncing.
-	* 		Increases the velocity in the X-component of the ball should the Paddle be hit
-	* 		Deletes the block and creates a new blocks array without the block if it hits the block.
-	*/
+	 * Return a rectangle representing the game field.
+	 * @post | result != null
+	 * @post | result.getTopLeft().equals(Point.ORIGIN)
+	 * @post | result.getBottomRight().equals(getBottomRight())
+	 */
+	public Rect getField() {
+		return getFieldInternal();
+	}
+
+	private BallState bounceWalls(BallState ball) {
+		Circle loc = ball.getLocation();
+		for( Rect wall : walls) {
+			Vector nspeed = ball.bounceOn(wall);
+			if( nspeed != null ) {
+				return new BallState(loc,nspeed);
+			}
+		}
+		return ball;
+	}
+
+	private BallState removeDead(BallState ball) {
+		if( ball.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { return null; }
+		else { return ball; }
+	}
+
+	private BallState clampBall(BallState b) {
+		Circle loc = getFieldInternal().constrain(b.getLocation());
+		return new BallState(loc,b.getVelocity());
+	}
+	
+	private BallState collideBallBlocks(BallState ball) {
+		for(BlockState block : blocks) {
+			Vector nspeed = ball.bounceOn(block.getLocation());
+			if(nspeed != null) {
+				removeBlock(block);
+				return new BallState(ball.getLocation(), nspeed);
+			}
+		}
+		return ball;
+	}
+
+	private BallState collideBallPaddle(BallState ball, Vector paddleVel) {
+		Vector nspeed = ball.bounceOn(paddle.getLocation());
+		if(nspeed != null) {
+			Point ncenter = ball.getLocation().getCenter().plus(nspeed);
+			nspeed = nspeed.plus(paddleVel.scaledDiv(5));
+			return new BallState(ball.getLocation().withCenter(ncenter), nspeed);
+		}
+		return ball;
+	}
+
+	private void removeBlock(BlockState block) {
+		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
+		for( BlockState b : blocks ) {
+			if(b != block) {
+				nblocks.add(b);
+			}
+		}
+		blocks = nblocks.toArray(new BlockState[] {});
+	}
+
+	/**
+	 * Move all moving objects one step forward.
+	 * 
+	 * @mutates this
+	 */
 	public void tick(int paddleDir) {
-		//Move the paddle either right/left or not at all
-		if(paddleDir < 0) {
-			movePaddleLeft();
+		stepBalls();
+		bounceBallsOnWalls();
+		removeDeadBalls();
+		bounceBallsOnBlocks();
+		bounceBallsOnPaddle(paddleDir);
+		clampBalls();
+		balls = Arrays.stream(balls).filter(x -> x != null).toArray(BallState[]::new);
+	}
+
+	private void clampBalls() {
+		for(int i = 0; i < balls.length; ++i) {
+			if(balls[i] != null) {
+				balls[i] = clampBall(balls[i]);
+			}		
 		}
-		if(paddleDir > 0) {
-			movePaddleRight();
-		}
-		//Defining the paddles corners
-		Point topLeftPaddle = new Point(paddle.getCenter().getX() - (paddle.getSize().getX()/2), paddle.getCenter().getY() - (paddle.getSize().getY()/2));
-		Point bottomRightPaddle = new Point(paddle.getCenter().getX() + (paddle.getSize().getX()/2), paddle.getCenter().getY() + (paddle.getSize().getY()/2));
-		for(int i = 0; i < balls.length; i++) {
-			Vector velocity = balls[i].getVelocity();
-			BallState[] ballsmoved = new BallState[balls.length];
-			for(int k = 0; k < balls.length; k++) {
-				if(k!= i) {
-					ballsmoved[k] = balls[k];
-				}if(k == i) {
-					//Enforcing the invariant
-					Point center = balls[i].getCenter().plus(velocity);
-					if(center.getX()-balls[i].getDiameter()/2 < 0) {
-						center = new Point(0+balls[i].getDiameter()/2, center.getY());
-					}
-					if(center.getX()+balls[i].getDiameter()/2 > bottomRight.getX()) {
-						center = new Point(bottomRight.getX()-balls[i].getDiameter()/2, center.getY());
-					}
-					if(center.getY()-balls[i].getDiameter()/2 < 0) {
-						center = new Point(center.getX(), 0+balls[i].getDiameter()/2);
-					}
-					if(center.getY()+balls[i].getDiameter()/2 > bottomRight.getY()) {
-						center = new Point(center.getX(), bottomRight.getY()-balls[i].getDiameter()/2);
-					}
-					//Creating a new moved ball
-					ballsmoved[k] = new BallState(center, balls[i].getVelocity(), balls[i].getDiameter());
-				}
-			}
-			balls = ballsmoved;
-			//Defining the balls corners
-			Point topLeftBall = new Point(balls[i].getCenter().getX() - (balls[i].getDiameter()/2), balls[i].getCenter().getY() - (balls[i].getDiameter()/2));
-			Point bottomRightBall = new Point(balls[i].getCenter().getX() + (balls[i].getDiameter()/2), balls[i].getCenter().getY() + (balls[i].getDiameter()/2));
-			//Defining the fields corners
-			Point topLeftField = new Point(0,0);
-			//bottomRight already exists
-			//Checks against the field borders;
-			int collision = checkCollision(topLeftBall, bottomRightBall, topLeftField, bottomRight);
-			//First check if there was any collision at all and whether it wasn't the bottom
-			if(collision != 0 && collision != 4 && collision != 5 && collision != 6) {
-				Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
-				BallState[] ballsnew = new BallState[balls.length];
-				//Hits the bottom or top
-				if(collision == 1 || collision == 2|| collision == 8) {
-					newvelocity = new Vector(velocity.getX(), -velocity.getY());
-					ballsnew = new BallState[balls.length];
-					for(int k = 0; k < ballsnew.length; k++) {
-						if(k!= i) {
-							ballsnew[k] = balls[k];
-						}if(k == i) {
-							ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-						}
-					}
-					balls = ballsnew;
-					velocity = balls[i].getVelocity();
-				}
-				//Hits the right or left
-				if(collision == 2 || collision == 3 || collision == 7 || collision == 8) {
-					newvelocity = new Vector(-velocity.getX(), velocity.getY());
-					ballsnew = new BallState[balls.length];
-					for(int k = 0; k < ballsnew.length; k++) {
-						if(k!= i) {
-							ballsnew[k] = balls[k];
-						}if(k == i) {
-							ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-						}
-					}
-					balls = ballsnew;
-					velocity = balls[i].getVelocity();
-				}
-			}
-			//Hits bottomRight, bottom or bottomLeft
-			if(collision == 4 || collision == 5 || collision == 6) {
-				//Delete ball from array
-				BallState[] ballsnew = new BallState[balls.length-1];
-				for(int j = 0; j < ballsnew.length; j++) {
-					if(j > i) {
-						ballsnew[j] = balls[j+1];
-					}if(j < i) {
-						ballsnew[j] = balls[j];
-					}
-				}
-				balls = ballsnew;
-			}
-			if(collision != 4 || collision != 5 || collision != 6) {
-				//reset collision
-				collision = 0;
-				//check collision with paddle
-				collision = checkCollision(topLeftBall, bottomRightBall, topLeftPaddle, bottomRightPaddle);
-				//First check if there was any collision at all
-				if(collision != 0) {
-					//apply speed
-					Vector newvelocity = new Vector(velocity.getX(), velocity.getY());
-	                if(paddleDir < 0) {
-	                	newvelocity = new Vector(velocity.getX()-2, velocity.getY());
-	                }
-	                if(paddleDir > 0) {
-	                	newvelocity = new Vector(velocity.getX()+2, velocity.getY());
-	                }            
-	                BallState[] ballsnew = new BallState[balls.length];
-					for(int k = 0; k < ballsnew.length; k++) {
-						if(k!= i) {
-							ballsnew[k] = balls[k];
-						}if(k == i) {
-							ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-						}
-					}
-					balls = ballsnew;
-					velocity = balls[i].getVelocity();
-					//Hits the bottom or top
-					if((collision == 1 || collision == 2  || collision == 8) && velocity.getY() > 0 || (collision == 4 || collision == 5 || collision == 6)  && velocity.getY() < 0) {
-						newvelocity = new Vector(velocity.getX(), -velocity.getY());
-		                ballsnew = new BallState[balls.length];
-						for(int k = 0; k < ballsnew.length; k++) {
-							if(k!= i) {
-								ballsnew[k] = balls[k];
-							}if(k == i) {
-								ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-							}
-						}
-						balls = ballsnew;
-						velocity = balls[i].getVelocity();
-					}
-					//Hits the right or left
-					if((collision == 2 || collision == 3 || collision == 4) && velocity.getX() < 0 || (collision == 6 || collision == 7 || collision == 8)  && velocity.getX() > 0) {
-						newvelocity = new Vector(-velocity.getX(), velocity.getY());
-		                ballsnew = new BallState[balls.length];
-						for(int k = 0; k < ballsnew.length; k++) {
-							if(k!= i) {
-								ballsnew[k] = balls[k];
-							}if(k == i) {
-								ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-							}
-						}
-						balls = ballsnew;
-						velocity = balls[i].getVelocity();
-					}
-				}
-				//Loop over every block
-				for(int j = 0; j < blocks.length; j++) {
-					//reset collision
-					collision = 0;
-					//check collision with blocks
-					collision = checkCollision(topLeftBall, bottomRightBall, blocks[j].getBlockTL(), blocks[j].getBlockBR());
-					if(collision != 0) {
-						//Hits the bottom or top
-						if((collision == 1 || collision == 2  || collision == 8) && velocity.getY() > 0 || (collision == 4 || collision == 5 || collision == 6)  && velocity.getY() < 0) {
-							Vector newvelocity = new Vector(velocity.getX(), -velocity.getY());
-			                BallState[] ballsnew = new BallState[balls.length];
-							for(int k = 0; k < ballsnew.length; k++) {
-								if(k!= i) {
-									ballsnew[k] = balls[k];
-								}if(k == i) {
-									ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-								}
-							}
-							balls = ballsnew;
-							velocity = balls[i].getVelocity();
-						}
-						//Hits the right or left
-						if((collision == 2 || collision == 3 || collision == 4) && velocity.getX() < 0 || (collision == 6 || collision == 7 || collision == 8)  && velocity.getX() > 0) {
-							Vector newvelocity = new Vector(-velocity.getX(), velocity.getY());
-			                BallState[] ballsnew = new BallState[balls.length];
-							for(int k = 0; k < ballsnew.length; k++) {
-								if(k!= i) {
-									ballsnew[k] = balls[k];
-								}if(k == i) {
-									ballsnew[k] = new BallState(balls[i].getCenter(), newvelocity, balls[i].getDiameter() );
-								}
-							}
-							balls = ballsnew;
-							velocity = balls[i].getVelocity();
-						}
-						//Delete the block after collision
-						BlockState[] blocksnew = new BlockState[blocks.length-1];
-						for(int k = 0; k < blocksnew.length; k++) {
-							if(k >= j) {
-								blocksnew[k] = blocks[k+1];
-							}if(k < j) {
-								blocksnew[k] = blocks[k];
-							}
-						}
-						blocks = blocksnew;
-					}
-				}
+	}
+
+	private void bounceBallsOnPaddle(int paddleDir) {
+		Vector paddleVel = PADDLE_VEL.scaled(paddleDir);
+		for(int i = 0; i < balls.length; ++i) {
+			if(balls[i] != null) {
+				balls[i] = collideBallPaddle(balls[i], paddleVel);
 			}
 		}
 	}
-	
+
+	private void bounceBallsOnBlocks() {
+		for(int i = 0; i < balls.length; ++i) {
+			if(balls[i] != null) {
+				balls[i] = collideBallBlocks(balls[i]);
+			}
+		}
+	}
+
+	private void removeDeadBalls() {
+		for(int i = 0; i < balls.length; ++i) {
+			balls[i] = removeDead(balls[i]);
+		}
+	}
+
+	private void bounceBallsOnWalls() {
+		for(int i = 0; i < balls.length; ++i) {
+			balls[i] = bounceWalls(balls[i]);
+		}
+	}
+
+	private void stepBalls() {
+		for(int i = 0; i < balls.length; ++i) {
+			Point newcenter = balls[i].getLocation().getCenter().plus(balls[i].getVelocity());
+			balls[i] = new BallState(balls[i].getLocation().withCenter(newcenter),balls[i].getVelocity());
+		}
+	}
+
 	/**
-	* Moves the paddle right by 10 when allowed by wall
-	* @pre Paddle is not {@code null}.
-	* | getPaddle().getCenter() != null
-	* @pre Center is not {@code null}.
-	* | getPaddle().getCenter() != null
-	* @mutates | getPaddle()
-	* @post Paddle is not {@code null}.
-	* | getPaddle() != null
-	* @post Center is not {@code null}.
-	* | getPaddle().getCenter() != null
-	* @post the paddle cannot be right  of the field
-	* | getPaddle().getCenter().getX() + getPaddle().getSize().getX()/2 <= getBottomRight().getX()
-	*/
+	 * Move the paddle right.
+	 * 
+	 * @mutates this
+	 */
 	public void movePaddleRight() {
-		if(getPaddle().getCenter().getX() + getPaddle().getSize().getX()/2 + 10 <= getBottomRight().getX()) {
-			Vector vector = new Vector(10,0);
-			paddle = new PaddleState(getPaddle().getCenter().plus(vector), paddle.getSize());
-		}
+		Point ncenter = paddle.getCenter().plus(PADDLE_VEL);
+		paddle = new PaddleState(getField().minusMargin(PaddleState.WIDTH/2,0).constrain(ncenter));
 	}
 
 	/**
-	* Moves the paddle left by 10 when allowed by wall.
-	* @pre Paddle is not {@code null}.
-	* | getPaddle().getCenter() != null
-	* @pre Center is not {@code null}.
-	* | getPaddle().getCenter() != null
-	* @mutates | getPaddle()
-	* @post Paddle is not {@code null}.
-	* | getPaddle() != null
-	* @post Center is not {@code null}.
-	* | getPaddle().getCenter() != null
-	* @post the paddle cannot be left of the field
-	* | getPaddle().getCenter().getX() - getPaddle().getSize().getX()/2 >= 0
-	*/
+	 * Move the paddle left.
+	 * 
+	 * @mutates this
+	 */
 	public void movePaddleLeft() {
-		if(getPaddle().getCenter().getX() - getPaddle().getSize().getX()/2 - 10 >= 0) {
-			Vector vector = new Vector(-10,0);
-			paddle = new PaddleState(getPaddle().getCenter().plus(vector), paddle.getSize());
-		}	
-	}
-	
-	/**
-	* Returns if the game is Won by having a ball and no more blocks.
-	* @inspects | getBlocks(), getBalls()
-    * @post You either have Won or have Not Won.
-	* | !(getBlocks().length == 0 && getBalls().length > 0) || result == true
-	*/
-	public boolean isWon() {
-		if(getBlocks().length == 0 && getBalls().length > 0) {
-			return true;
-		}
-		return false;
+		Point ncenter = paddle.getCenter().plus(PADDLE_VEL.scaled(-1));
+		paddle = new PaddleState(getField().minusMargin(PaddleState.WIDTH/2,0).constrain(ncenter));
 	}
 
 	/**
-	* Returns if the player is dead by having no more balls.
-	* @inspects | getBalls()
-    * @post You either are Dead or are Not Dead.
-    * | !(getBalls().length == 0) || result == true
-	*/
+	 * Return whether this BreakoutState represents a game where the player has won.
+	 * 
+	 * @post | result == (getBlocks().length == 0 && !isDead())
+	 * @inspects this
+	 */
+	public boolean isWon() {
+		return getBlocks().length == 0 && !isDead();
+	}
+
+	/**
+	 * Return whether this BreakoutState represents a game where the player is dead.
+	 * 
+	 * @post | result == (getBalls().length == 0)
+	 * @inspects this
+	 */
 	public boolean isDead() {
-		if(getBalls().length == 0) {
-			return true;
-		}
-		return false;
+		return getBalls().length == 0;
 	}
 }
