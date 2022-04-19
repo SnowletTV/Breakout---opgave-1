@@ -22,23 +22,19 @@ public class BreakoutFacade {
 	}
 
 	public BlockState createNormalBlockState(Point topLeft, Point bottomRight) {
-		// TODO
-		return null;
+		return new NormalBlockState(new Rect(topLeft, bottomRight));
 	}
 
 	public BlockState createSturdyBlockState(Point topLeft, Point bottomRight, int i) {
-		// TODO
-		return null;
+		return new SturdyBlockState(new Rect(topLeft, bottomRight), i);
 	}
 
 	public BlockState createReplicatorBlockState(Point topLeft, Point bottomRight) {
-		// TODO
-		return null;
+		return new ReplicatorBlockState(new Rect(topLeft, bottomRight));
 	}
 
 	public BlockState createPowerupBallBlockState(Point topLeft, Point bottomRight) {
-		// TODO
-		return null;
+		return new PowerupBallBlockState(new Rect(topLeft, bottomRight));
 	}
 
 	public Color getColor(PaddleState paddle) {
@@ -52,23 +48,19 @@ public class BreakoutFacade {
 	}
 
 	public Rect getLocation(PaddleState paddle) {
-		// TODO
-		return null;
+		return paddle.getLocation();
 	}
 
 	public Point getCenter(Ball ball) {
-		// TODO
-		return null;
+		return ball.getCenter();
 	}
 
 	public int getDiameter(Ball ball) {
-		// TODO
-		return -1;
+		return ball.getLocation().getDiameter();
 	}
 
 	public Ball[] getBalls(BreakoutState breakoutState) {
-		// TODO
-		return null;
+		return breakoutState.getBalls();
 	}
 
 	public Color getColor(BlockState block) {
@@ -77,7 +69,6 @@ public class BreakoutFacade {
 	}
 
 	public Rect getLocation(BlockState block) {
-		// TODO
-		return null;
+		return block.getLocation();
 	}
 }

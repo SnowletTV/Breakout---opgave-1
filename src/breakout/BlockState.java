@@ -30,3 +30,51 @@ public class BlockState {
 	}
 	
 }
+
+class NormalBlockState extends BlockState {
+
+	public NormalBlockState(Rect location) {
+		super(location);
+	}
+	
+}
+
+class SturdyBlockState extends BlockState {
+	private int health;
+	
+	public SturdyBlockState(Rect location, int health) {
+		super(location);
+		this.setHealth(health);
+	}
+
+	/**
+	 * Return this blocks health.
+	 */
+	public int getHealth() {
+		return health;
+	}
+
+	/**
+	 * Sets this blocks health.
+	 */
+	public void setHealth(int health) {
+		this.health = health;
+	}
+		
+}
+
+class ReplicatorBlockState extends BlockState {
+
+	public ReplicatorBlockState(Rect location) {
+		super(location);
+	}
+	
+}
+
+class PowerupBallBlockState extends BlockState {
+
+	public PowerupBallBlockState(Rect location) {
+		super(location);
+	}
+	
+}
