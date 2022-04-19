@@ -3,14 +3,14 @@ package breakout;
 /**
  * Represents the state of a ball in the breakout game.
  * 
- * @immutable
+ * @mutable
  * @invar | getLocation() != null
  * @invar | getVelocity() != null
  */
-public class BallState {
+public class Ball {
 	
-	private final Circle location;
-	private final Vector velocity;
+	private Circle location;
+	private Vector velocity;
 	
 	/**
 	 * Construct a new ball at a given `location`, with a given `velocity`.
@@ -20,7 +20,7 @@ public class BallState {
 	 * @post | getLocation() == location
 	 * @post | getVelocity().equals(velocity) 
 	 */
-	public BallState(Circle location, Vector velocity) {
+	public Ball(Circle location, Vector velocity) {
 		this.location = location;
 		this.velocity = velocity;
 	}
@@ -31,12 +31,26 @@ public class BallState {
 	public Circle getLocation() {
 		return location;
 	}
+	
+	/**
+	 * Sets this ball's location.
+	 */
+	public void setLocation(Circle location) {
+		this.location = location;
+	}
 
 	/**
 	 * Return this ball's velocity.
 	 */
 	public Vector getVelocity() {
 		return velocity;
+	}
+	
+	/**
+	 * Sets this ball's velocity.
+	 */
+	public void setVelocity(Vector velocity) {
+		this.velocity = velocity;
 	}
 
 	/**
@@ -57,11 +71,44 @@ public class BallState {
 	}
 
 	/**
-	 * Return this point's center.
+	 * Return this ball's center.
 	 * 
 	 * @post | getLocation().getCenter().equals(result)
 	 */
 	public Point getCenter() {
 		return getLocation().getCenter();
 	}
+	
+	/**
+	 * Sets this point's center.
+	 */
+	public void setCenter(Point center) {
+		Circle newLocation = new Circle(location.getCenter(), location.getDiameter());
+		this.location = newLocation;
+	}
+	
+	/**
+	 * Return this ball's Diameter.
+	 * 
+	 * @post | getLocation().getDiameter() == result
+	 */
+	public int getDiameter() {
+		return getLocation().getDiameter();
+	}
+}
+
+class normalball extends Ball {
+
+	public normalball(Circle location, Vector velocity) {
+		super(location, velocity);
+	}
+	
+}
+
+class chargedball extends Ball {
+
+	public chargedball(Circle location, Vector velocity) {
+		super(location, velocity);
+	}
+	
 }

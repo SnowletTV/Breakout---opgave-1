@@ -30,6 +30,14 @@ public class PaddleState {
 	public Point getCenter() {
 		return center;
 	}
+	
+	/**
+	* Returns this object's size.
+	* @post | result != null
+	*/
+	public Vector getSize() {
+	   return new Vector(WIDTH, HEIGHT);
+	}
 
 	/**
 	 * Return the rectangle occupied by this paddle in the field.

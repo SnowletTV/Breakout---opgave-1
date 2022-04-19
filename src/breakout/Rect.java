@@ -60,16 +60,16 @@ public class Rect {
 		return getTopLeft().isUpAndLeftFrom(loc) && loc.isUpAndLeftFrom(getBottomRight());
 	}
 
-	// /**
-	//  * Return whether this rectangle contains a given circle.
-	//  * 
-	//  * @post | result == (getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
-	//  * 		 |				minusMargin(loc.getRadius()).contains(loc.getCenter()))
-	//  */
-	// public boolean contains(Circle loc) {
-	// 	return getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
-	// 			minusMargin(loc.getRadius()).contains(loc.getCenter());
-	// }
+	/**
+	* Return whether this rectangle contains a given circle.
+	* 
+	* @post | result == (getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
+	* 		 |				minusMargin(loc.getRadius()).contains(loc.getCenter()))
+	*/
+	public boolean contains(Circle loc) {
+	 	return getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
+	 			minusMargin(loc.getRadius()).contains(loc.getCenter());
+	}
 
 	/**
 	 * Return whether this rectangle contains a given other rectangle.
@@ -82,22 +82,22 @@ public class Rect {
 				other.getBottomRight().isUpAndLeftFrom(getBottomRight());
 	}
 
-	// /**
-	//  * Check whether this rectangle intersects with the given ball and if so, return the direction from the ball to the rectangle.
-	//  * This direction may be an approximation for simplicity.
-	//  * 
-	//  * @pre | ball != null
-	//  * @post | result == null || (result.getSquareLength() == 1 && this.contains(ball.getOutermostPoint(result)))
-	//  */
-	// public Vector collideWith(Circle ball) {
-	// 	for (Vector coldir : COLLISSION_DIRS) {
-	// 		Point c = ball.getOutermostPoint(coldir);
-	// 		if(contains(c)) {
-	// 			return coldir;
-	// 		}
-	// 	}
-	// 	return null;
-	// }
+	/**
+	* Check whether this rectangle intersects with the given ball and if so, return the direction from the ball to the rectangle.
+	* This direction may be an approximation for simplicity.
+	* 
+	* @pre | ball != null
+	* @post | result == null || (result.getSquareLength() == 1 && this.contains(ball.getOutermostPoint(result)))
+	*/
+	public Vector collideWith(Circle ball) {
+		for (Vector coldir : COLLISSION_DIRS) {
+	 		Point c = ball.getOutermostPoint(coldir);
+	 		if(contains(c)) {
+	 			return coldir;
+	 		}
+		}
+		return null;
+	}
 
 	/**
 	 * Return the rectangle obtained by subtracting an inner margin from all sides of this rectangle.
