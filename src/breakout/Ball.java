@@ -80,7 +80,7 @@ public class Ball {
 	}
 	
 	/**
-	 * Sets this point's center.
+	 * Sets this ball's center.
 	 */
 	public void setCenter(Point center) {
 		Circle newLocation = new Circle(location.getCenter(), location.getDiameter());
@@ -97,18 +97,34 @@ public class Ball {
 	}
 }
 
-class normalball extends Ball {
+class NormalBall extends Ball {
 
-	public normalball(Circle location, Vector velocity) {
+	public NormalBall(Circle location, Vector velocity) {
 		super(location, velocity);
 	}
 	
 }
 
-class chargedball extends Ball {
+class SuperchargedBall extends Ball {
+	private int lifetime;
 
-	public chargedball(Circle location, Vector velocity) {
+	public SuperchargedBall(Circle location, Vector velocity, int lifetime) {
 		super(location, velocity);
+		this.setLifetime(lifetime);
+	}
+
+	/**
+	 * Return this ball's lifetime.
+	 */
+	public int getLifetime() {
+		return lifetime;
+	}
+
+	/**
+	 * Sets this ball's velocity.
+	 */
+	public void setLifetime(int lifetime) {
+		this.lifetime = lifetime;
 	}
 	
 }
