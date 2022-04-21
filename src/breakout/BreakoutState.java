@@ -190,13 +190,15 @@ public class BreakoutState {
 	 * @mutates this
 	 */
 	public void tick(int paddleDir, int elapsedTime) {
-		stepBalls();
-		bounceBallsOnWalls();
-		removeDeadBalls();
-		bounceBallsOnBlocks();
-		bounceBallsOnPaddle(paddleDir);
-		clampBalls();
-		balls = Arrays.stream(balls).filter(x -> x != null).toArray(Ball[]::new);
+		for(int i = elapsedTime; i >= 0; --i) {
+			stepBalls();
+			bounceBallsOnWalls();
+			removeDeadBalls();
+			bounceBallsOnBlocks();
+			bounceBallsOnPaddle(paddleDir);
+			clampBalls();
+			balls = Arrays.stream(balls).filter(x -> x != null).toArray(Ball[]::new);		
+		}	
 	}
 
 	private void clampBalls() {
