@@ -118,6 +118,10 @@ class NormalBall extends Ball {
 		super(location, velocity);
 	}
 	
+	public Vector hitBlock(Rect rect, boolean destroyed) {
+		return null;
+	}
+	
 }
 
 class SuperchargedBall extends Ball {
@@ -126,6 +130,10 @@ class SuperchargedBall extends Ball {
 	public SuperchargedBall(Circle location, Vector velocity, int lifetime) {
 		super(location, velocity);
 		this.setLifetime(lifetime);
+	}
+	
+	public Vector hitBlock(Rect rect, boolean destroyed) {
+		return null;
 	}
 
 	/**

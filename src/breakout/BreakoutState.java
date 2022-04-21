@@ -12,7 +12,6 @@ import java.util.Objects;
  * @invar | getPaddle() != null
  * @invar | getBottomRight() != null
  * @invar | Point.ORIGIN.isUpAndLeftFrom(getBottomRight())
- * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getLocation()))
  * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
  * @invar | getField().contains(getPaddle().getLocation())
  */
