@@ -111,8 +111,8 @@ public class Ball {
 		return getLocation().getDiameter();
 	}
 	
-	public Ball changeBall() {
-		return new SuperchargedBall(this.location, this.velocity, 10);
+	public SuperchargedBall changeBall() {		
+		return new SuperchargedBall(this.getLocation(), this.getVelocity(), 10);
 	}
 }
 
@@ -141,7 +141,7 @@ class SuperchargedBall extends Ball {
 		super(location, velocity);
 		this.setLifetime(lifetime);
 	}
-	
+
 	public Color getColor() {
 		return color;
 	}
@@ -166,10 +166,6 @@ class SuperchargedBall extends Ball {
 	 */
 	public void setLifetime(int lifetime) {
 		this.lifetime = lifetime;
-	}
-	
-	public Ball changeBall() {
-		return new NormalBall(this.getLocation(), this.getVelocity());
 	}
 	
 }
