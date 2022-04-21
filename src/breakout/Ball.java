@@ -130,13 +130,22 @@ class NormalBall extends Ball {
 
 class SuperchargedBall extends Ball {
 	private int lifetime;
+	private final Color color = new Color(180,200,180);
 
 	public SuperchargedBall(Circle location, Vector velocity, int lifetime) {
 		super(location, velocity);
 		this.setLifetime(lifetime);
 	}
 	
+	public Color getColor() {
+		return color;
+	}
+	
 	public Vector hitBlock(Rect rect, boolean destroyed) {
+		Vector coldir = rect.collideWith(getLocation());
+		if(coldir != null && getVelocity().product(coldir) > 0 && !destroyed) {
+			return getVelocity().mirrorOver(coldir);
+		}
 		return null;
 	}
 
