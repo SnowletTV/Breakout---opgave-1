@@ -110,6 +110,10 @@ public class Ball {
 	public int getDiameter() {
 		return getLocation().getDiameter();
 	}
+	
+	public Ball changeBall() {
+		return new SuperchargedBall(this.location, this.velocity, 10);
+	}
 }
 
 class NormalBall extends Ball {
@@ -125,6 +129,7 @@ class NormalBall extends Ball {
 		}
 		return null;
 	}
+	
 	
 }
 
@@ -161,6 +166,10 @@ class SuperchargedBall extends Ball {
 	 */
 	public void setLifetime(int lifetime) {
 		this.lifetime = lifetime;
+	}
+	
+	public Ball changeBall() {
+		return new NormalBall(this.getLocation(), this.getVelocity());
 	}
 	
 }

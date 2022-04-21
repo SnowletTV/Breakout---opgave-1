@@ -156,7 +156,7 @@ public class BreakoutState {
 		for(BlockState block : blocks) {
 			Vector nspeed = ball.hitBlock(block.getLocation(), true);
 			if(nspeed != null) {
-				blocks = block.removeBlock(blocks);
+				blocks = block.removeBlock(blocks, ball);
 				ball.setVelocity(nspeed);
 			}
 		}

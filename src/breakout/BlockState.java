@@ -38,7 +38,7 @@ public class BlockState {
 		return color;
 	}
 	
-	public BlockState[] removeBlock(BlockState[] blocks) {
+	public BlockState[] removeBlock(BlockState[] blocks, Ball ball) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
 			if(b != this) {
@@ -103,7 +103,7 @@ class SturdyBlockState extends BlockState {
 		return new Color(0,0,255);
 	}
 	
-	public BlockState[] removeBlock(BlockState[] blocks) {
+	public BlockState[] removeBlock(BlockState[] blocks, Ball ball) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
 			if(b != this) {
@@ -142,6 +142,17 @@ class PowerupBallBlockState extends BlockState {
 	
 	public Color getColor() {
 		return color;
+	}
+	
+	public BlockState[] removeBlock(BlockState[] blocks, Ball ball) {
+		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
+		for( BlockState b : blocks ) {
+			if(b != this) {
+				nblocks.add(b);
+			}
+		}
+		ball = ball.changeBall();
+		return nblocks.toArray(new BlockState[] {});
 	}
 	
 }
