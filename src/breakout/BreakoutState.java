@@ -168,6 +168,7 @@ public class BreakoutState {
 			Point ncenter = ball.getLocation().getCenter().plus(nspeed);
 			nspeed = nspeed.plus(paddleVel.scaledDiv(5));
 			ball.setLocation(ball.getLocation().withCenter(ncenter));
+			ball.setVelocity(nspeed);
 		}
 	}
 

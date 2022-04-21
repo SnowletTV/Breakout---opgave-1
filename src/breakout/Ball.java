@@ -118,6 +118,14 @@ class NormalBall extends Ball {
 		super(location, velocity);
 	}
 	
+	public Vector hitBlock(Rect rect, boolean destroyed) {
+		Vector coldir = rect.collideWith(getLocation());
+		if(coldir != null && getVelocity().product(coldir) > 0) {
+			return getVelocity().mirrorOver(coldir);
+		}
+		return null;
+	}
+	
 }
 
 class SuperchargedBall extends Ball {
