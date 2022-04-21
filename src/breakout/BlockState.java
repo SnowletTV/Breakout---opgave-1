@@ -88,10 +88,13 @@ class SturdyBlockState extends BlockState {
 	public BlockState[] removeBlock(BlockState[] blocks) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
-			if(b != this & health == 1) {
+			this.setHealth(health-1);
+			if(b != this) {
 				nblocks.add(b);
 			}else {
-				this.setHealth(health-1);
+				if( health != 1) {
+					nblocks.add(b);
+				}		
 			}
 		}
 		return nblocks.toArray(new BlockState[] {});
