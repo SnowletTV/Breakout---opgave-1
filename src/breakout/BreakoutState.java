@@ -250,7 +250,7 @@ public class BreakoutState {
 	 */
 	public void movePaddleRight(int elapsedTime) {
 		for(int i = elapsedTime; i > 0; i -= 1) {
-			Point ncenter = paddle.getCenter().plus(PADDLE_VEL.scaled(-1));
+			Point ncenter = paddle.getCenter().plus(PADDLE_VEL.scaled(1));
 			paddle = new PaddleState(getField().minusMargin(PaddleState.WIDTH/2,0).constrain(ncenter));
 		}
 	}
