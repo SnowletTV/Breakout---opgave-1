@@ -118,10 +118,6 @@ class NormalBall extends Ball {
 		super(location, velocity);
 	}
 	
-	public Vector hitBlock(Rect rect, boolean destroyed) {
-		return null;
-	}
-	
 }
 
 class SuperchargedBall extends Ball {

@@ -131,15 +131,15 @@ public class BreakoutState {
 		return getFieldInternal();
 	}
 
-	private Ball bounceWalls(Ball ball) {
+	private void bounceWalls(Ball ball) {
 		Circle loc = ball.getLocation();
 		for( Rect wall : walls) {
 			Vector nspeed = ball.bounceOn(wall);
 			if( nspeed != null ) {
-				return new Ball(loc,nspeed);
+				ball.setLocation(loc);
+				ball.setVelocity(nspeed);
 			}
 		}
-		return ball;
 	}
 
 	private Ball removeDead(Ball ball) {
@@ -147,20 +147,19 @@ public class BreakoutState {
 		else { return ball; }
 	}
 
-	private Ball clampBall(Ball b) {
+	private void clampBall(Ball b) {
 		Circle loc = new Circle(getFieldInternal().constrain(b.getCenter()), b.getDiameter());
-		return new Ball(loc,b.getVelocity());
+		b.setLocation(loc);
 	}
 	
-	private Ball collideBallBlocks(Ball ball) {
+	private void collideBallBlocks(Ball ball) {
 		for(BlockState block : blocks) {
 			Vector nspeed = ball.hitBlock(block.getLocation(), true);
 			if(nspeed != null) {
 				removeBlock(block);
-				return new Ball(ball.getLocation(), nspeed);
+				ball.setVelocity(nspeed);
 			}
 		}
-		return ball;
 	}
 
 	private Ball collideBallPaddle(Ball ball, Vector paddleVel) {
@@ -203,7 +202,7 @@ public class BreakoutState {
 	private void clampBalls() {
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
-				balls[i] = clampBall(balls[i]);
+				clampBall(balls[i]);
 			}		
 		}
 	}
@@ -220,7 +219,7 @@ public class BreakoutState {
 	private void bounceBallsOnBlocks() {
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
-				balls[i] = collideBallBlocks(balls[i]);
+				collideBallBlocks(balls[i]);
 			}
 		}
 	}
@@ -233,7 +232,7 @@ public class BreakoutState {
 
 	private void bounceBallsOnWalls() {
 		for(int i = 0; i < balls.length; ++i) {
-			balls[i] = bounceWalls(balls[i]);
+			bounceWalls(balls[i]);
 		}
 	}
 
