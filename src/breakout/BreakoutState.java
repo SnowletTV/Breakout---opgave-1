@@ -189,7 +189,8 @@ public class BreakoutState {
 			removeDeadBalls();
 			bounceBallsOnBlocks();
 			bounceBallsOnPaddle(paddleDir);
-			clampBalls();	
+			clampBalls();
+			balls = Arrays.stream(balls).filter(x -> x != null).toArray(Ball[]::new);
 		}	
 	}
 
