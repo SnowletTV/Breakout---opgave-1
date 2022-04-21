@@ -145,7 +145,7 @@ class NormalBall extends Ball {
 
 class SuperchargedBall extends Ball {
 	private int lifetime;
-	private final Color color = new Color(180,200,180);
+	private final Color color = new Color(100,200,180);
 
 	public SuperchargedBall(Circle location, Vector velocity, int lifetime) {
 		super(location, velocity);
