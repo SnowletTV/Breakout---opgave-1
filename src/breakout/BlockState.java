@@ -1,6 +1,7 @@
 package breakout;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Represents the state of a block in the breakout game.
@@ -35,6 +36,16 @@ public class BlockState {
 	
 	public Color getColor() {
 		return color;
+	}
+	
+	public void removeBlock(BlockState[] blocks) {
+		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
+		for( BlockState b : blocks ) {
+			if(b != this) {
+				nblocks.add(b);
+			}
+		}
+		blocks = nblocks.toArray(new BlockState[] {});
 	}
 	
 }
@@ -72,6 +83,18 @@ class SturdyBlockState extends BlockState {
 	
 	public Color getColor() {
 		return color;
+	}
+	
+	public void removeBlock(BlockState[] blocks) {
+		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
+		for( BlockState b : blocks ) {
+			if(b != this & health == 1) {
+				nblocks.add(b);
+			}else {
+				this.setHealth(health-1);
+			}
+		}
+		blocks = nblocks.toArray(new BlockState[] {});
 	}
 		
 }

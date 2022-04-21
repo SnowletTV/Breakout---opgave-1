@@ -156,7 +156,7 @@ public class BreakoutState {
 		for(BlockState block : blocks) {
 			Vector nspeed = ball.hitBlock(block.getLocation(), true);
 			if(nspeed != null) {
-				removeBlock(block);
+				block.removeBlock(blocks);
 				ball.setVelocity(nspeed);
 			}
 		}
@@ -170,16 +170,6 @@ public class BreakoutState {
 			ball.setLocation(ball.getLocation().withCenter(ncenter));
 			ball.setVelocity(nspeed);
 		}
-	}
-
-	private void removeBlock(BlockState block) {
-		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
-		for( BlockState b : blocks ) {
-			if(b != block) {
-				nblocks.add(b);
-			}
-		}
-		blocks = nblocks.toArray(new BlockState[] {});
 	}
 
 	/**
@@ -239,7 +229,7 @@ public class BreakoutState {
 	private void stepBalls() {
 		for(int i = 0; i < balls.length; ++i) {
 			Point newcenter = balls[i].getLocation().getCenter().plus(balls[i].getVelocity());
-			balls[i] = new Ball(balls[i].getLocation().withCenter(newcenter),balls[i].getVelocity());
+			balls[i].setLocation(balls[i].getLocation().withCenter(newcenter));
 		}
 	}
 
