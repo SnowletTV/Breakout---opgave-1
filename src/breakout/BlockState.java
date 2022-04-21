@@ -38,14 +38,14 @@ public class BlockState {
 		return color;
 	}
 	
-	public void removeBlock(BlockState[] blocks) {
+	public BlockState[] removeBlock(BlockState[] blocks) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
 			if(b != this) {
 				nblocks.add(b);
 			}
 		}
-		blocks = nblocks.toArray(new BlockState[] {});
+		return nblocks.toArray(new BlockState[] {});
 	}
 	
 }
@@ -85,7 +85,7 @@ class SturdyBlockState extends BlockState {
 		return color;
 	}
 	
-	public void removeBlock(BlockState[] blocks) {
+	public BlockState[] removeBlock(BlockState[] blocks) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
 			if(b != this & health == 1) {
@@ -94,7 +94,7 @@ class SturdyBlockState extends BlockState {
 				this.setHealth(health-1);
 			}
 		}
-		blocks = nblocks.toArray(new BlockState[] {});
+		return nblocks.toArray(new BlockState[] {});
 	}
 		
 }
