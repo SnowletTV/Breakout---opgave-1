@@ -60,7 +60,8 @@ public class Ball {
 		this.velocity = velocity;
 	}
 	
-	public void checkLife() {
+	public Ball checkLife() {
+		return this;
 	}
 
 	/**
@@ -125,9 +126,6 @@ class NormalBall extends Ball {
 		super(location, velocity);
 	}
 	
-	public void checkLife(int paddledir) {
-	}
-	
 	public Vector hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());
 		if(coldir != null && getVelocity().product(coldir) > 0) {
@@ -152,8 +150,9 @@ class SuperchargedBall extends Ball {
 		this.setLifetime(lifetime);
 	}
 	
-	public void checkLife() {
+	public Ball checkLife() {
 		setLifetime(lifetime - 1);
+		return changeBall();
 	}
 
 	public Color getColor() {

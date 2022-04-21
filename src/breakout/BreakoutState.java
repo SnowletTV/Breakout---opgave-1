@@ -235,7 +235,7 @@ public class BreakoutState {
 		for(int i = 0; i < balls.length; ++i) {
 			Point newcenter = balls[i].getLocation().getCenter().plus(balls[i].getVelocity());
 			balls[i].setLocation(balls[i].getLocation().withCenter(newcenter));
-			balls[i].checkLife();
+			balls[i] = balls[i].checkLife();
 		}
 	}
 
