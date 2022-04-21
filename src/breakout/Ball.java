@@ -136,7 +136,7 @@ class NormalBall extends Ball {
 		return null;
 	}
 	
-	public SuperchargedBall changeBall() {		
+	public Ball changeBall() {		
 		return new SuperchargedBall(this.getLocation(), this.getVelocity(), 10000);
 	}
 	
