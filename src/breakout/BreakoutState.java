@@ -162,14 +162,13 @@ public class BreakoutState {
 		}
 	}
 
-	private Ball collideBallPaddle(Ball ball, Vector paddleVel) {
+	private void collideBallPaddle(Ball ball, Vector paddleVel) {
 		Vector nspeed = ball.bounceOn(paddle.getLocation());
 		if(nspeed != null) {
 			Point ncenter = ball.getLocation().getCenter().plus(nspeed);
 			nspeed = nspeed.plus(paddleVel.scaledDiv(5));
-			return new Ball(ball.getLocation().withCenter(ncenter), nspeed);
+			ball.setLocation(ball.getLocation().withCenter(ncenter));
 		}
-		return ball;
 	}
 
 	private void removeBlock(BlockState block) {
@@ -211,7 +210,7 @@ public class BreakoutState {
 		Vector paddleVel = PADDLE_VEL.scaled(paddleDir);
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
-				balls[i] = collideBallPaddle(balls[i], paddleVel);
+				collideBallPaddle(balls[i], paddleVel);
 			}
 		}
 	}
