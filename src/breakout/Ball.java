@@ -156,7 +156,7 @@ class SuperchargedBall extends Ball {
 		if(coldir != null && getVelocity().product(coldir) > 0 && destroyed == false) {
 			return getVelocity().mirrorOver(coldir);
 		}
-		if(destroyed == true) {
+		if(coldir != null && destroyed == true) {
 			return getVelocity();
 		}
 		return null;
