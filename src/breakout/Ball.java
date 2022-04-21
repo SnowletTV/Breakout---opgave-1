@@ -162,7 +162,7 @@ class SuperchargedBall extends Ball {
 	
 	public Vector hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());
-		if(coldir != null && getVelocity().product(coldir) > 0 && destroyed) {
+		if(coldir != null && getVelocity().product(coldir) > 0 && destroyed == false) {
 			return getVelocity().mirrorOver(coldir);
 		}
 		return null;
