@@ -47,6 +47,10 @@ public class BlockState {
 		}
 		return nblocks.toArray(new BlockState[] {});
 	}
+
+	public int getHealth() {
+		return 1;
+	}
 	
 }
 
@@ -60,7 +64,7 @@ class NormalBlockState extends BlockState {
 
 class SturdyBlockState extends BlockState {
 	private int health;
-	private final Color color = new Color(0,0,153);
+	private Color color;
 	
 	public SturdyBlockState(Rect location, int health) {
 		super(location);
@@ -82,17 +86,31 @@ class SturdyBlockState extends BlockState {
 	}
 	
 	public Color getColor() {
-		return color;
+		return setDynamicColor(this);
+	}
+	
+	private void setColor(Color color) {
+		this.color = color;
+	}
+	
+	private Color setDynamicColor(SturdyBlockState block) {
+		if(block.getHealth() == 3) {
+			return new Color(0,0,153);
+		}
+		if(block.getHealth() == 2) {
+			return new Color(0,0,204);
+		}
+		return new Color(0,0,255);
 	}
 	
 	public BlockState[] removeBlock(BlockState[] blocks) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
-			this.setHealth(health-1);
 			if(b != this) {
 				nblocks.add(b);
 			}else {
 				if( health != 1) {
+					b = new SturdyBlockState(b.getLocation(), b.getHealth()-1);
 					nblocks.add(b);
 				}		
 			}
