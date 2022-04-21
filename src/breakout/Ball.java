@@ -60,7 +60,7 @@ public class Ball {
 		this.velocity = velocity;
 	}
 	
-	public void checkLife(int paddledir) {
+	public void checkLife() {
 	}
 
 	/**
@@ -152,8 +152,8 @@ class SuperchargedBall extends Ball {
 		this.setLifetime(lifetime);
 	}
 	
-	public void checkLife(int elapsedTime) {
-		setLifetime(lifetime - elapsedTime);
+	public void checkLife() {
+		setLifetime(lifetime - 1);
 	}
 
 	public Color getColor() {

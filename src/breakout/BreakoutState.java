@@ -183,7 +183,7 @@ public class BreakoutState {
 	 */
 	public void tick(int paddleDir, int elapsedTime) {
 		for(int i = elapsedTime; i >= 0; --i) {
-			stepBalls(elapsedTime);
+			stepBalls();
 			bounceBallsOnWalls();
 			removeDeadBalls();
 			bounceBallsOnBlocks();
@@ -230,11 +230,11 @@ public class BreakoutState {
 		}
 	}
 
-	private void stepBalls(int elapsedTime) {
+	private void stepBalls() {
 		for(int i = 0; i < balls.length; ++i) {
 			Point newcenter = balls[i].getLocation().getCenter().plus(balls[i].getVelocity());
 			balls[i].setLocation(balls[i].getLocation().withCenter(newcenter));
-			balls[i].checkLife(elapsedTime);
+			balls[i].checkLife();
 		}
 	}
 
