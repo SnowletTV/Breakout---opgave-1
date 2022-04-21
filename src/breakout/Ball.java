@@ -106,6 +106,9 @@ public class Ball {
 		this.location = newLocation;
 	}
 	
+	public void setLifetime(int lifetime) {
+	}
+	
 	/**
 	 * Return this ball's Diameter.
 	 * 

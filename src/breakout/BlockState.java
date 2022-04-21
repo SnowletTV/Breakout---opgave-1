@@ -163,6 +163,7 @@ class PowerupBallBlockState extends BlockState {
 	}
 	
 	public Ball ballchange(Ball ball) {
+		ball.setLifetime(10000);
 		ball = ball.changeBall();
 		return ball;
 	}
