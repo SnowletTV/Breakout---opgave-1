@@ -76,6 +76,14 @@ public class Ball {
 		}
 		return null;
 	}
+	
+	public Vector hitBlock(Rect rect, boolean destroyed) {
+		Vector coldir = rect.collideWith(location);
+		if(coldir != null && velocity.product(coldir) > 0) {
+			return velocity.mirrorOver(coldir);
+		}
+		return null;
+	}
 
 	/**
 	 * Return this ball's center.

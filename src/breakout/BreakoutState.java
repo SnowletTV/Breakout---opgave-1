@@ -155,7 +155,7 @@ public class BreakoutState {
 	
 	private Ball collideBallBlocks(Ball ball) {
 		for(BlockState block : blocks) {
-			Vector nspeed = ball.bounceOn(block.getLocation());
+			Vector nspeed = ball.hitBlock(block.getLocation(), true);
 			if(nspeed != null) {
 				removeBlock(block);
 				return new Ball(ball.getLocation(), nspeed);
