@@ -155,11 +155,13 @@ public class BreakoutState {
 	private void collideBallBlocks(Ball ball) {
 		for(BlockState block : blocks) {
 			Vector nspeed = ball.hitBlock(block.getLocation(), true);
+			if(blocks == block.removeBlock(blocks)) {
+				nspeed = ball.hitBlock(block.getLocation(), false);
+			}
 			if(nspeed != null) {
 				ball = block.ballchange(ball);
 				blocks = block.removeBlock(blocks);
 				ball.setVelocity(nspeed);
-				
 			}
 		}
 	}
@@ -181,7 +183,7 @@ public class BreakoutState {
 	 */
 	public void tick(int paddleDir, int elapsedTime) {
 		for(int i = elapsedTime; i >= 0; --i) {
-			stepBalls();
+			stepBalls(elapsedTime);
 			bounceBallsOnWalls();
 			removeDeadBalls();
 			bounceBallsOnBlocks();
@@ -228,10 +230,11 @@ public class BreakoutState {
 		}
 	}
 
-	private void stepBalls() {
+	private void stepBalls(int elapsedTime) {
 		for(int i = 0; i < balls.length; ++i) {
 			Point newcenter = balls[i].getLocation().getCenter().plus(balls[i].getVelocity());
 			balls[i].setLocation(balls[i].getLocation().withCenter(newcenter));
+			balls[i].checkLife(elapsedTime);
 		}
 	}
 

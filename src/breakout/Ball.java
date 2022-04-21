@@ -59,6 +59,9 @@ public class Ball {
 	public void setVelocity(Vector velocity) {
 		this.velocity = velocity;
 	}
+	
+	public void checkLife(int paddledir) {
+	}
 
 	/**
 	 * Check whether this ball collides with a given `rect` and if so, return the 
@@ -111,8 +114,8 @@ public class Ball {
 		return getLocation().getDiameter();
 	}
 	
-	public SuperchargedBall changeBall() {		
-		return new SuperchargedBall(this.getLocation(), this.getVelocity(), 10);
+	public Ball changeBall() {		
+		return new SuperchargedBall(this.getLocation(), this.getVelocity(), 10000);
 	}
 }
 
@@ -122,12 +125,19 @@ class NormalBall extends Ball {
 		super(location, velocity);
 	}
 	
+	public void checkLife(int paddledir) {
+	}
+	
 	public Vector hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());
 		if(coldir != null && getVelocity().product(coldir) > 0) {
 			return getVelocity().mirrorOver(coldir);
 		}
 		return null;
+	}
+	
+	public SuperchargedBall changeBall() {		
+		return new SuperchargedBall(this.getLocation(), this.getVelocity(), 10000);
 	}
 	
 	
@@ -140,6 +150,10 @@ class SuperchargedBall extends Ball {
 	public SuperchargedBall(Circle location, Vector velocity, int lifetime) {
 		super(location, velocity);
 		this.setLifetime(lifetime);
+	}
+	
+	public void checkLife(int elapsedTime) {
+		setLifetime(lifetime - elapsedTime);
 	}
 
 	public Color getColor() {
@@ -168,4 +182,10 @@ class SuperchargedBall extends Ball {
 		this.lifetime = lifetime;
 	}
 	
+	public Ball changeBall() {
+		if(lifetime <= 0) {
+			return new NormalBall(this.getLocation(), this.getVelocity());
+		}
+		return this;
+	}	
 }
