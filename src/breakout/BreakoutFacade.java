@@ -64,8 +64,7 @@ public class BreakoutFacade {
 	}
 
 	public Color getColor(BlockState block) {
-		// TODO
-		return null;
+		return block.getColor();
 	}
 
 	public Rect getLocation(BlockState block) {
