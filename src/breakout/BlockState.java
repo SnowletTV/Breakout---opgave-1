@@ -15,7 +15,7 @@ public class BlockState {
 	 */
 	private final Rect location;
 	
-	private final Color color;
+	private final Color color = new Color(0,204,0);
 
 	/**
 	 * Construct a block occupying a given rectangle in the field.
@@ -24,7 +24,6 @@ public class BlockState {
 	 */
 	public BlockState(Rect location) {
 		this.location = location;
-		this.color = new Color(255,102,102);
 	}
 
 	/**
@@ -50,6 +49,7 @@ class NormalBlockState extends BlockState {
 
 class SturdyBlockState extends BlockState {
 	private int health;
+	private final Color color = new Color(0,0,153);
 	
 	public SturdyBlockState(Rect location, int health) {
 		super(location);
@@ -69,21 +69,35 @@ class SturdyBlockState extends BlockState {
 	public void setHealth(int health) {
 		this.health = health;
 	}
+	
+	public Color getColor() {
+		return color;
+	}
 		
 }
 
 class ReplicatorBlockState extends BlockState {
+	private final Color color = new Color(102,255,102);
 
 	public ReplicatorBlockState(Rect location) {
 		super(location);
 	}
 	
+	public Color getColor() {
+		return color;
+	}
+	
 }
 
 class PowerupBallBlockState extends BlockState {
+	private final Color color = new Color(255,0,0);
 
 	public PowerupBallBlockState(Rect location) {
 		super(location);
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 	
 }
