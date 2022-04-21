@@ -38,7 +38,7 @@ public class BlockState {
 		return color;
 	}
 	
-	public BlockState[] removeBlock(BlockState[] blocks, Ball ball) {
+	public BlockState[] removeBlock(BlockState[] blocks) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
 			if(b != this) {
@@ -50,6 +50,10 @@ public class BlockState {
 
 	public int getHealth() {
 		return 1;
+	}
+	
+	public Ball ballchange(Ball ball) {
+		return ball;
 	}
 	
 }
@@ -103,7 +107,7 @@ class SturdyBlockState extends BlockState {
 		return new Color(0,0,255);
 	}
 	
-	public BlockState[] removeBlock(BlockState[] blocks, Ball ball) {
+	public BlockState[] removeBlock(BlockState[] blocks) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
 			if(b != this) {
@@ -131,6 +135,10 @@ class ReplicatorBlockState extends BlockState {
 		return color;
 	}
 	
+	public Ball ballchange(Ball ball) {
+		return ball;
+	}
+	
 }
 
 class PowerupBallBlockState extends BlockState {
@@ -144,15 +152,19 @@ class PowerupBallBlockState extends BlockState {
 		return color;
 	}
 	
-	public BlockState[] removeBlock(BlockState[] blocks, Ball ball) {
+	public BlockState[] removeBlock(BlockState[] blocks) {
 		ArrayList<BlockState> nblocks = new ArrayList<BlockState>();
 		for( BlockState b : blocks ) {
 			if(b != this) {
 				nblocks.add(b);
 			}
 		}
-		ball = ball.changeBall();
 		return nblocks.toArray(new BlockState[] {});
+	}
+	
+	public Ball ballchange(Ball ball) {
+		ball = ball.changeBall();
+		return ball;
 	}
 	
 }
