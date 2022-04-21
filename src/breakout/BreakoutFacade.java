@@ -38,13 +38,11 @@ public class BreakoutFacade {
 	}
 
 	public Color getColor(PaddleState paddle) {
-		// TODO
-		return null;
+		return paddle.getColor();
 	}
 
 	public Color getColor(Ball ball) {
-		// TODO
-		return null;
+		return ball.getColor();
 	}
 
 	public Rect getLocation(PaddleState paddle) {
