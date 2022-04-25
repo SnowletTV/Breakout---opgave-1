@@ -9,43 +9,33 @@ import java.util.ArrayList;
  * @immutable
  * @invar | getCenter() != null
  */
-public class PaddleState {
+public abstract class PaddleState {
 	
 	public static final int HEIGHT = 500;
 	public static final int WIDTH = 3000;
-	/**
-	 * @invar | center != null
-	 */
-	private final Point center;
-	private final Color color = new Color(153,50,50);
-
-	/**
-	 * Construct a paddle located around a given center in the field.
-	 * @pre | center != null
-	 * @post | getCenter().equals(center)
-	 */
-	public PaddleState(Point center) {
-		this.center = center;
-	}
 	
-	public Color getColor() {
-		return color;
-	}
+	/**
+	 * Return the colour of this paddle.
+	 * @post | result != null
+	 */
+	public abstract Color getColor();
 	
 	/**
 	 * Return the center point of this paddle.
+	 * @post | result != null
 	 */
-	public Point getCenter() {
-		return center;
-	}
+	public abstract Point getCenter();
 	
 	/**
 	* Returns this object's size.
 	* @post | result != null
 	*/
-	public Vector getSize() {
-	   return new Vector(WIDTH, HEIGHT);
-	}
+	public abstract Vector getSize();
+	
+	/**
+	 * Returns this object's leftover hits
+	 */
+	public abstract int getHits();
 
 	/**
 	 * Return the rectangle occupied by this paddle in the field.
@@ -54,75 +44,28 @@ public class PaddleState {
 	 * @post | result.getTopLeft().equals(getCenter().plus(new Vector(-WIDTH/2,-HEIGHT/2)))
 	 * @post | result.getBottomRight().equals(getCenter().plus(new Vector(WIDTH/2,HEIGHT/2)))
 	 */
-	public Rect getLocation() {
-		Vector halfDiag = new Vector(-WIDTH/2,-HEIGHT/2);
-		return new Rect(center.plus(halfDiag), center.plus(halfDiag.scaled(-1)));
-	}
+	public abstract Rect getLocation();
 	
-	public PaddleState changePaddle() {		
-		return new ReplicatorPaddleState(this.getCenter(), 3);
-	}
+	/**
+	* Returns this object's size.
+	* @post | result != null
+	*/
+	public abstract PaddleState changePaddle();
 	
-	public PaddleState samePaddle(Point center) {		
-		return new NormalPaddleState(center);
-	}
+	/**
+	* Returns this object's size.
+	* @pre | center != null
+	* @post | result != null
+	*/
+	public abstract PaddleState samePaddle(Point center);
 	
-	public Ball[] ballChange(Ball[] balls, Ball ball) {
-		return balls;
-	}
-
-}
-class NormalPaddleState extends PaddleState	{
-
-	public NormalPaddleState(Point center) {
-		super(center);
-	}
-	
-}
-
-class ReplicatorPaddleState extends PaddleState	{
-	private int hits = 3;
-	private final Color color = new Color(170,70,20);
-	
-	public ReplicatorPaddleState(Point center, int hits) {
-		super(center);
-		this.hits = hits;
-	}
-	
-	public Color getColor() {
-		return color;
-	}
-	
-	public PaddleState changePaddle() {
-		if(hits <= 0) {
-			return new NormalPaddleState(this.getCenter());
-		}
-		return this;
-	}
-	
-	public PaddleState samePaddle(Point center) {		
-		return new ReplicatorPaddleState(center, hits);
-	}
-	
-	public Ball[] ballChange(Ball[] balls, Ball ball) {
-		ArrayList<Ball> nballs = new ArrayList<Ball>();
-		for( Ball b : balls ) {
-			nballs.add(b);
-		}
-		if(hits == 3) {
-			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,-2))));
-			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(-2,2))));
-			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,2))));
-		}
-		if(hits == 2) {
-			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,-2))));
-			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(-2,2))));
-		}
-		if(hits == 1) {
-			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,-2))));
-		}
-		hits = hits-1;
-		return nballs.toArray(new Ball[] {});
-	}
-	
+	/**
+	* Returns this object's size.
+	* @pre | balls != null
+	* @pre | ball != null
+	* @post | result != null
+	* @post | result.length - balls.length <= 3
+	* @post | result.length - balls.length >= 0
+	*/
+	public abstract Ball[] ballChange(Ball[] balls, Ball ball);
 }

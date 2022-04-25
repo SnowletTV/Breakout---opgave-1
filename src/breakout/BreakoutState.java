@@ -27,6 +27,8 @@ public class BreakoutState {
 	private final Point bottomRight;
 	
 	/**
+	 * @invar | balls != null
+	 * @invar | Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))
 	 * @representationObject
 	 */
 	private Ball[] balls;

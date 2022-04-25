@@ -12,7 +12,7 @@ class PaddleTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		p11 = new Point(1,1);
-		p1 = new PaddleState(p11);
+		p1 = new NormalPaddleState(p11);
 	}
 
 	@Test
