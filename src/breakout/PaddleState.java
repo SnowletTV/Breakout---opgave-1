@@ -82,10 +82,15 @@ class NormalPaddleState extends PaddleState	{
 
 class ReplicatorPaddleState extends PaddleState	{
 	private int hits = 3;
+	private final Color color = new Color(170,70,20);
 	
 	public ReplicatorPaddleState(Point center, int hits) {
 		super(center);
 		this.hits = hits;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 	
 	public PaddleState changePaddle() {
