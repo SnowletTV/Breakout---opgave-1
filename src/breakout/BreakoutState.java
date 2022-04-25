@@ -178,7 +178,6 @@ public class BreakoutState {
 					balls[i].setLocation(balls[i].getLocation().withCenter(ncenter));
 					balls[i].setVelocity(nspeed);
 					balls = paddle.ballChange(balls, balls[i]);
-					paddle = paddle.changePaddle();
 				}
 			}
 		}
