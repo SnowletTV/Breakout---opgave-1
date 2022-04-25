@@ -32,10 +32,6 @@ public class SturdyBlockState extends BlockState {
 		return setDynamicColor(this);
 	}
 	
-	private void setColor(Color color) {
-		this.color = color;
-	}
-	
 	private Color setDynamicColor(SturdyBlockState block) {
 		if(block.getHealth() == 3) {
 			return new Color(0,0,153);

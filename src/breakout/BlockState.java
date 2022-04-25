@@ -8,12 +8,12 @@ import java.util.ArrayList;
  *
  * @immutable
  */
-abstract public class BlockState {
+public abstract class BlockState {
 
 	/**
 	 * Return the rectangle occupied by this block in the field.
 	 */
-	abstract Rect getLocation();
+	public abstract Rect getLocation();
 	
 	abstract Color getColor();
 	
