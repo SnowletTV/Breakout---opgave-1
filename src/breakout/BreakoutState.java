@@ -12,13 +12,13 @@ import java.util.Objects;
  * @invar | getPaddle() != null
  * @invar | getBottomRight() != null
  * @invar | Point.ORIGIN.isUpAndLeftFrom(getBottomRight())
- * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
+ *# @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
  * @invar | getField().contains(getPaddle().getLocation())
  */
 public class BreakoutState {
 
 	private static final Vector PADDLE_VEL = new Vector(10,0);
-	public static final int MAX_ELAPSED_TIME = 150;
+	public static final int MAX_ELAPSED_TIME = 50;
 	/**
 	 * @invar | bottomRight != null
 	 * @invar | Point.ORIGIN.isUpAndLeftFrom(bottomRight)
@@ -54,7 +54,7 @@ public class BreakoutState {
 	 * @throws IllegalArgumentException | paddle == null
 	 * @throws IllegalArgumentException | !Point.ORIGIN.isUpAndLeftFrom(bottomRight)
 	 * @throws IllegalArgumentException | !(new Rect(Point.ORIGIN,bottomRight)).contains(paddle.getLocation())
-	 * @throws IllegalArgumentException | !Arrays.stream(blocks).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
+	 *# @throws IllegalArgumentException | !Arrays.stream(blocks).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @throws IllegalArgumentException | !Arrays.stream(balls).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @post | Arrays.equals(getBalls(),balls)
 	 * @post | Arrays.equals(getBlocks(),blocks)
