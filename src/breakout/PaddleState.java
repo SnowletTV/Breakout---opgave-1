@@ -1,6 +1,7 @@
 package breakout;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * Represents the state of a paddle in the breakout game.
@@ -57,5 +58,66 @@ public class PaddleState {
 		Vector halfDiag = new Vector(-WIDTH/2,-HEIGHT/2);
 		return new Rect(center.plus(halfDiag), center.plus(halfDiag.scaled(-1)));
 	}
+	
+	public PaddleState changePaddle() {		
+		return new ReplicatorPaddleState(this.getCenter(), 3);
+	}
+	
+	public PaddleState samePaddle(Point center) {		
+		return new NormalPaddleState(center);
+	}
+	
+	public Ball[] ballChange(Ball[] balls, Ball ball) {
+		return balls;
+	}
 
+}
+class NormalPaddleState extends PaddleState	{
+
+	public NormalPaddleState(Point center) {
+		super(center);
+	}
+	
+}
+
+class ReplicatorPaddleState extends PaddleState	{
+	private int hits = 3;
+	
+	public ReplicatorPaddleState(Point center, int hits) {
+		super(center);
+		this.hits = hits;
+	}
+	
+	public PaddleState changePaddle() {
+		if(hits <= 0) {
+			return new NormalPaddleState(this.getCenter());
+		}
+		return this;
+	}
+	
+	public PaddleState samePaddle(Point center) {		
+		return new ReplicatorPaddleState(center, hits);
+	}
+	
+	public Ball[] ballChange(Ball[] balls, Ball ball) {
+		ArrayList<Ball> nballs = new ArrayList<Ball>();
+		for( Ball b : balls ) {
+			nballs.add(b);
+		}
+		if(hits == 3) {
+			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,-2))));
+			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(-2,2))));
+			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,2))));
+		}
+		if(hits == 2) {
+			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,-2))));
+			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(-2,2))));
+		}
+		if(hits == 1) {
+			nballs.add(new Ball(ball.getLocation(), ball.getVelocity().plus(new Vector(2,-2))));
+		}
+		hits = hits-1;
+		return nballs.toArray(new Ball[] {});
+	}
+	
 }

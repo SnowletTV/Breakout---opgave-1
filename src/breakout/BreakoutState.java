@@ -159,22 +159,30 @@ public class BreakoutState {
 				nspeed = ball.hitBlock(block.getLocation(), false);
 			}
 			if(nspeed != null) {
-				ball = block.ballchange(ball);
+				ball = block.ballChange(ball);
 				blocks = block.removeBlock(blocks);
 				ball.setVelocity(nspeed);
+				paddle = block.paddleChange(paddle);
 			}
 		}
 		return ball;
 	}
 
-	private void collideBallPaddle(Ball ball, Vector paddleVel) {
-		Vector nspeed = ball.bounceOn(paddle.getLocation());
-		if(nspeed != null) {
-			Point ncenter = ball.getLocation().getCenter().plus(nspeed);
-			nspeed = nspeed.plus(paddleVel.scaledDiv(5));
-			ball.setLocation(ball.getLocation().withCenter(ncenter));
-			ball.setVelocity(nspeed);
+	private Ball[] collideBallPaddle(Ball[] balls, Vector paddleVel) {
+		for(int i = 0; i < balls.length; ++i) {
+			if(balls[i] != null) {
+				Vector nspeed = balls[i].bounceOn(paddle.getLocation());
+				if(nspeed != null) {
+					Point ncenter = balls[i].getLocation().getCenter().plus(nspeed);
+					nspeed = nspeed.plus(paddleVel.scaledDiv(5));
+					balls[i].setLocation(balls[i].getLocation().withCenter(ncenter));
+					balls[i].setVelocity(nspeed);
+					balls = paddle.ballChange(balls, balls[i]);
+					paddle = paddle.changePaddle();
+				}
+			}
 		}
+		return balls;
 	}
 
 	/**
@@ -204,11 +212,7 @@ public class BreakoutState {
 
 	private void bounceBallsOnPaddle(int paddleDir) {
 		Vector paddleVel = PADDLE_VEL.scaled(paddleDir);
-		for(int i = 0; i < balls.length; ++i) {
-			if(balls[i] != null) {
-				collideBallPaddle(balls[i], paddleVel);
-			}
-		}
+		balls = collideBallPaddle(balls, paddleVel);
 	}
 
 	private void bounceBallsOnBlocks() {
@@ -247,7 +251,7 @@ public class BreakoutState {
 	public void movePaddleRight(int elapsedTime) {
 		for(int i = elapsedTime; i > 0; i -= 1) {
 			Point ncenter = paddle.getCenter().plus(PADDLE_VEL.scaled(1));
-			paddle = new PaddleState(getField().minusMargin(PaddleState.WIDTH/2,0).constrain(ncenter));
+			paddle = paddle.samePaddle(getField().minusMargin(PaddleState.WIDTH/2,0).constrain(ncenter));
 		}
 	}
 
@@ -259,7 +263,7 @@ public class BreakoutState {
 	public void movePaddleLeft(int elapsedTime) {
 		for(int i = elapsedTime; i > 0; i -= 1) {
 			Point ncenter = paddle.getCenter().plus(PADDLE_VEL.scaled(-1));
-			paddle = new PaddleState(getField().minusMargin(PaddleState.WIDTH/2,0).constrain(ncenter));
+			paddle = paddle.samePaddle(getField().minusMargin(PaddleState.WIDTH/2,0).constrain(ncenter));
 		}
 	}
 

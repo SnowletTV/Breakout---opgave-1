@@ -52,8 +52,12 @@ public class BlockState {
 		return 1;
 	}
 	
-	public Ball ballchange(Ball ball) {
+	public Ball ballChange(Ball ball) {
 		return ball;
+	}
+	
+	public PaddleState paddleChange(PaddleState paddle) {
+		return paddle;
 	}
 	
 }
@@ -135,8 +139,8 @@ class ReplicatorBlockState extends BlockState {
 		return color;
 	}
 	
-	public Ball ballchange(Ball ball) {
-		return ball;
+	public PaddleState paddleChange(PaddleState paddle) {
+		return paddle.changePaddle();
 	}
 	
 }
@@ -162,7 +166,7 @@ class PowerupBallBlockState extends BlockState {
 		return nblocks.toArray(new BlockState[] {});
 	}
 	
-	public Ball ballchange(Ball ball) {
+	public Ball ballChange(Ball ball) {
 		ball.setLifetime(10000);
 		ball = ball.changeBall();
 		return ball;
