@@ -28,7 +28,6 @@ public class BreakoutState {
 	
 	/**
 	 * @invar | balls != null
-	 * @invar | Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))
 	 * @representationObject
 	 */
 	private Ball[] balls;
@@ -184,6 +183,7 @@ public class BreakoutState {
 					balls[i].setLocation(balls[i].getLocation().withCenter(ncenter));
 					balls[i].setVelocity(nspeed);
 					balls = paddle.ballChange(balls, balls[i]);
+					paddle = paddle.samePaddle(paddle.getCenter());
 				}
 			}
 		}
@@ -251,6 +251,7 @@ public class BreakoutState {
 	/**
 	 * Move the paddle right.
 	 * 
+	 * @pre | elapsedTime >= 0
 	 * @mutates this
 	 */
 	public void movePaddleRight(int elapsedTime) {

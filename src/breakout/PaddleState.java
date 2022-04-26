@@ -27,19 +27,20 @@ public abstract class PaddleState {
 	public abstract Point getCenter();
 	
 	/**
-	* Returns this object's size.
+	* Returns this paddle's size.
 	* @post | result != null
 	*/
 	public abstract Vector getSize();
 	
 	/**
-	 * Returns this object's leftover hits
+	 * Returns this paddle's leftover hits
+	 * @post | result >= 0 && result <= 3
 	 */
 	public abstract int getHits();
 
 	/**
 	 * Return the rectangle occupied by this paddle in the field.
-	 * 
+	 * @creates | result
 	 * @post | result != null
 	 * @post | result.getTopLeft().equals(getCenter().plus(new Vector(-WIDTH/2,-HEIGHT/2)))
 	 * @post | result.getBottomRight().equals(getCenter().plus(new Vector(WIDTH/2,HEIGHT/2)))
@@ -47,22 +48,34 @@ public abstract class PaddleState {
 	public abstract Rect getLocation();
 	
 	/**
-	* Returns this object's size.
+	* Returns a paddle of the other subclass if no more hits left. Otherwise resets hits.
+	* @creates | result
+	* @post | this.getCenter().equals(result.getCenter()) 
+	* @post | this.getHits() <= 3
+	* @post | this.getHits() >= 0
+	* @post | result.getHits() == 3 || result.getHits() ==0
 	* @post | result != null
 	*/
 	public abstract PaddleState changePaddle();
 	
 	/**
-	* Returns this object's size.
+	* Returns the paddle with a different center and switches class if needed.
 	* @pre | center != null
+	* @creates | result
 	* @post | result != null
+	* @post | this.getHits() <= 3
+	* @post | this.getHits() >= 0
+	* @post | result.getHits() <= 3
+	* @post | result.getHits() >= 0
+	* @post | center.equals(result.getCenter())
 	*/
 	public abstract PaddleState samePaddle(Point center);
 	
 	/**
-	* Returns this object's size.
+	* Returns the array of balls with the extra balls for replicators added if applicable.
 	* @pre | balls != null
 	* @pre | ball != null
+	* @creates | result
 	* @post | result != null
 	* @post | result.length - balls.length <= 3
 	* @post | result.length - balls.length >= 0
