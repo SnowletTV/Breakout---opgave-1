@@ -7,6 +7,10 @@ public class BreakoutFacade {
 	public PaddleState createNormalPaddleState(Point center) {
 		return new NormalPaddleState(center);
 	}
+	
+	public PaddleState createReplicatorPaddleState(Point center, int hits) {
+		return new ReplicatorPaddleState(center, hits);
+	}
 
 	public Ball createNormalBall(Point center, int diameter, Vector initBallVelocity) {
 		return new NormalBall(new Circle(center, diameter), initBallVelocity);

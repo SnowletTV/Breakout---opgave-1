@@ -18,6 +18,8 @@ class PaddleTest {
 	@Test
 	void testPaddle() {
 		assertEquals(p11, p1.getCenter());
+		assertEquals(new Vector(3000, 500), p1.getSize());
+		assertEquals(0, p1.getHits());
 	}
 
 	@Test
