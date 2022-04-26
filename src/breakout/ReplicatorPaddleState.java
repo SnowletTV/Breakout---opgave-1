@@ -68,7 +68,6 @@ public class ReplicatorPaddleState extends PaddleState {
 
 	/**
 	 * Return the rectangle occupied by this paddle in the field.
-	 * @creates | result
 	 * @post | result != null
 	 * @post | result.getTopLeft().equals(getCenter().plus(new Vector(-WIDTH/2,-HEIGHT/2)))
 	 * @post | result.getBottomRight().equals(getCenter().plus(new Vector(WIDTH/2,HEIGHT/2)))

@@ -27,6 +27,7 @@ public class SuperchargedBall extends Ball {
 	public SuperchargedBall(Circle location, Vector velocity, int lifetime) {
 		this.location = location;
 		this.velocity = velocity;
+		this.lifetime = lifetime;
 	}
 
 	public Color getColor() {
@@ -62,8 +63,8 @@ public class SuperchargedBall extends Ball {
 	}
 	
 	public Ball checkLife() {
-		setLifetime(lifetime - 1);
-		return changeBall();
+		this.setLifetime(lifetime - 1);
+		return this.changeBall();
 	}
 
 	/**
