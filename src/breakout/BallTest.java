@@ -43,7 +43,7 @@ class BallTest {
 
 	@Test
 	void testBounceOn() {
-		assertEquals(new Vector(-10,10),b1.bounceOn(r1138));
+		assertEquals(new Vector(-10,10),b1.hitBlock(r1138, false));
 	}
 
 }

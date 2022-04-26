@@ -7,6 +7,8 @@ import java.awt.Color;
  *
  * @immutable
  * @invar | getCenter() != null
+ * @invar | getHits() <= 3 && getHits() >= 0
+ * @invar | getSize() != null
  */
 public class NormalPaddleState extends PaddleState {
 

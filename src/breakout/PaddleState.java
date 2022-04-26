@@ -8,6 +8,8 @@ import java.util.ArrayList;
  *
  * @immutable
  * @invar | getCenter() != null
+ * @invar | getHits() <= 3 && getHits() >= 0
+ * @invar | getSize() != null
  */
 public abstract class PaddleState {
 	
@@ -52,7 +54,7 @@ public abstract class PaddleState {
 	* @post | this.getCenter().equals(result.getCenter()) 
 	* @post | this.getHits() <= 3
 	* @post | this.getHits() >= 0
-	* @post | result.getHits() == 3 || result.getHits() ==0
+	* @post | result.getHits() == 3 || result.getHits() == 0
 	* @post | result != null
 	*/
 	public abstract PaddleState changePaddle();

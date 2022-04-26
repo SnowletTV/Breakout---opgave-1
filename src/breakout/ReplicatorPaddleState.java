@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * @immutable
  * @invar | getCenter() != null
  * @invar | getHits() <= 3 && getHits() >= 0
+ * @invar | getSize() != null
  */
 public class ReplicatorPaddleState extends PaddleState {
 	

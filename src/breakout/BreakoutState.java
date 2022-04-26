@@ -139,7 +139,7 @@ public class BreakoutState {
 	private void bounceWalls(Ball ball) {
 		Circle loc = ball.getLocation();
 		for( Rect wall : walls) {
-			Vector nspeed = ball.bounceOn(wall);
+			Vector nspeed = ball.hitBlock(wall, false);
 			if( nspeed != null ) {
 				ball.setLocation(loc);
 				ball.setVelocity(nspeed);
@@ -176,7 +176,7 @@ public class BreakoutState {
 	private Ball[] collideBallPaddle(Ball[] balls, Vector paddleVel) {
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
-				Vector nspeed = balls[i].bounceOn(paddle.getLocation());
+				Vector nspeed = balls[i].hitBlock(paddle.getLocation(), false);
 				if(nspeed != null) {
 					Point ncenter = balls[i].getLocation().getCenter().plus(nspeed);
 					nspeed = nspeed.plus(paddleVel.scaledDiv(5));
