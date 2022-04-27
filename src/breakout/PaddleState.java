@@ -55,6 +55,7 @@ public abstract class PaddleState {
 	* @post | this.getHits() <= 3
 	* @post | this.getHits() >= 0
 	* @post | result.getHits() == 3
+	* @post | result instanceof ReplicatorPaddleState
 	* @post | result != null
 	*/
 	public abstract PaddleState changePaddle();

@@ -86,7 +86,8 @@ public class ReplicatorPaddleState extends PaddleState {
 	* @post | this.getHits() >= 0
 	* @post | result.getHits() == 3
 	* @post | this.getCenter().equals(result.getCenter())
-	* @post | this.getHits() <= 0 || result.getHits() == 3
+	* @post | result.getClass().equals(this.getClass())
+	* @post | result instanceof ReplicatorPaddleState
 	* @post | result != null
 	*/
 	public PaddleState changePaddle() {
