@@ -210,6 +210,7 @@ public static final String initMapBeforeBounceWallTop = """
 	void testIsWon() {
 		assertFalse(state1.isWon());
 		assertTrue(stateWon.isWon());
+		assertEquals(0, stateWon.getBlocks().length);
 		assertFalse(stateDead.isWon());
 	}
 

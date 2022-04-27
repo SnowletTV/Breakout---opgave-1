@@ -25,15 +25,20 @@ private BlockState[] replicatoroneBlock;
 private BlockState[] newoneBlock;
 private Point bottomRight;
 private PaddleState paddle;
-private PaddleState replicatorpaddle;
+private PaddleState replicatorpaddleHits3;
+private PaddleState replicatorpaddleHits2;
+private PaddleState replicatorpaddleHits1;
 private BreakoutState stateBeforeBounceBlockNormal;
 private BreakoutState stateBeforeBounceBlockSturdy;
 private BreakoutState stateBeforeBounceBlockSturdy1;
 private BreakoutState stateBeforeBounceBlockPower;
 private BreakoutState stateBeforeBounceBlockReplicator;
+private BreakoutState stateBeforeBounceBlockReplicator2;
 private BreakoutState stateBeforeBounceBlockSturdyPower;
 private BreakoutState stateBeforeBounceBlockNormalPower;
-private BreakoutState stateBeforeBouncePaddleReplicator;
+private BreakoutState stateBeforeBouncePaddleReplicatorHits3;
+private BreakoutState stateBeforeBouncePaddleReplicatorHits2;
+private BreakoutState stateBeforeBouncePaddleReplicatorHits1;
 private Ball ball;
 private Ball powerball;
 private BreakoutFacade facade = new BreakoutFacade();
@@ -42,7 +47,7 @@ private BreakoutFacade facade = new BreakoutFacade();
 void setUp() throws Exception {
 ball = facade.createNormalBall(new Point(1000, 1000), 100, new Vector(0, 5));
 oneBall = new Ball[] { ball };
-powerball = facade.createSuperchargedBall(new Point(1000, 1000), 100, new Vector(0, 5), 10000);
+powerball = facade.createSuperchargedBall(new Point(1000, 1000), 100, new Vector(0, 5), 2);
 onePowerBall = new Ball[] { powerball };
 secondblock = facade.createNormalBlockState(new Point(0, 849), new Point(2000, 949));
 normalblock = facade.createNormalBlockState(new Point(0, 1051), new Point(2000, 1200));
@@ -59,13 +64,18 @@ replicatorblock = facade.createReplicatorBlockState(new Point(0, 1051), new Poin
 replicatoroneBlock = new BlockState[] { replicatorblock, secondblock };
 bottomRight = new Point(10000, 2000);
 paddle = facade.createNormalPaddleState(new Point(2000, 1750));
-replicatorpaddle = facade.createReplicatorPaddleState(new Point(1500, 1301), 3);
+replicatorpaddleHits3 = facade.createReplicatorPaddleState(new Point(1500, 1301), 3);
+replicatorpaddleHits2 = facade.createReplicatorPaddleState(new Point(1500, 1301), 2);
+replicatorpaddleHits1 = facade.createReplicatorPaddleState(new Point(1500, 1301), 1);
 stateBeforeBounceBlockNormal = facade.createBreakoutState(oneBall, normaloneBlock, bottomRight, paddle);
-stateBeforeBouncePaddleReplicator = facade.createBreakoutState(oneBall, newoneBlock, bottomRight, replicatorpaddle);
+stateBeforeBouncePaddleReplicatorHits3 = facade.createBreakoutState(oneBall, newoneBlock, bottomRight, replicatorpaddleHits3);
+stateBeforeBouncePaddleReplicatorHits2 = facade.createBreakoutState(oneBall, newoneBlock, bottomRight, replicatorpaddleHits2);
+stateBeforeBouncePaddleReplicatorHits1 = facade.createBreakoutState(oneBall, newoneBlock, bottomRight, replicatorpaddleHits1);
 stateBeforeBounceBlockSturdy = facade.createBreakoutState(oneBall, sturdyoneBlock, bottomRight, paddle);
 stateBeforeBounceBlockSturdy1 = facade.createBreakoutState(oneBall, sturdyoneBlock1, bottomRight, paddle);
 stateBeforeBounceBlockPower = facade.createBreakoutState(oneBall, poweroneBlock, bottomRight, paddle);
 stateBeforeBounceBlockReplicator = facade.createBreakoutState(oneBall, replicatoroneBlock, bottomRight, paddle);
+stateBeforeBounceBlockReplicator2 = facade.createBreakoutState(oneBall, replicatoroneBlock, bottomRight, replicatorpaddleHits1);
 stateBeforeBounceBlockSturdyPower = facade.createBreakoutState(onePowerBall, sturdyoneBlock, bottomRight, paddle);
 stateBeforeBounceBlockNormalPower = facade.createBreakoutState(onePowerBall, normaloneBlock, bottomRight, paddle);
 }
@@ -81,13 +91,31 @@ assertEquals(new Vector(0, -5), stateBeforeBounceBlockNormal.getBalls()[0].getVe
 }
 
 @Test
-void testTickBouncePaddleReplicator() {
-stateBeforeBouncePaddleReplicator.tick(1, 1);
-stateBeforeBouncePaddleReplicator.tick(1, 1);
-stateBeforeBouncePaddleReplicator.tick(1, 1);
-assertEquals(4, stateBeforeBouncePaddleReplicator.getBalls().length);
-assertEquals(1, stateBeforeBouncePaddleReplicator.getBlocks().length);
-assertEquals(new Vector(2, -5), stateBeforeBouncePaddleReplicator.getBalls()[0].getVelocity());
+void testTickBouncePaddleReplicatorHits3() {
+assertEquals(new Color(170,70,20), stateBeforeBouncePaddleReplicatorHits3.getPaddle().getColor());
+stateBeforeBouncePaddleReplicatorHits3.tick(1, 1);
+assertEquals(4, stateBeforeBouncePaddleReplicatorHits3.getBalls().length);
+assertEquals(1, stateBeforeBouncePaddleReplicatorHits3.getBlocks().length);
+assertEquals(2, stateBeforeBouncePaddleReplicatorHits3.getPaddle().getHits());
+assertEquals(new Vector(2, -5), stateBeforeBouncePaddleReplicatorHits3.getBalls()[0].getVelocity());
+}
+
+@Test
+void testTickBouncePaddleReplicatorHits2() {
+stateBeforeBouncePaddleReplicatorHits2.tick(1, 1);
+assertEquals(3, stateBeforeBouncePaddleReplicatorHits2.getBalls().length);
+assertEquals(1, stateBeforeBouncePaddleReplicatorHits2.getBlocks().length);
+assertEquals(1, stateBeforeBouncePaddleReplicatorHits2.getPaddle().getHits());
+assertEquals(new Vector(2, -5), stateBeforeBouncePaddleReplicatorHits2.getBalls()[0].getVelocity());
+}
+
+@Test
+void testTickBouncePaddleReplicatorHits1() {
+stateBeforeBouncePaddleReplicatorHits1.tick(1, 1);
+assertEquals(2, stateBeforeBouncePaddleReplicatorHits1.getBalls().length);
+assertEquals(1, stateBeforeBouncePaddleReplicatorHits1.getBlocks().length);
+assertEquals(0, stateBeforeBouncePaddleReplicatorHits1.getPaddle().getHits());
+assertEquals(new Vector(2, -5), stateBeforeBouncePaddleReplicatorHits1.getBalls()[0].getVelocity());
 }
 
 @Test
@@ -123,11 +151,23 @@ assertEquals(new Vector(0, -5), stateBeforeBounceBlockPower.getBalls()[0].getVel
 
 @Test
 void testTickBounceBlockReplicator() {
+assertEquals(new Color(102,255,102), stateBeforeBounceBlockReplicator.getBlocks()[0].getColor());
 assertEquals(1, stateBeforeBounceBlockReplicator.getBlocks()[0].getHealth());
 stateBeforeBounceBlockReplicator.tick(1, 1);
 assertEquals(1, stateBeforeBounceBlockReplicator.getBalls().length);
 assertEquals(1, stateBeforeBounceBlockReplicator.getBlocks().length);
 assertEquals(new Vector(0, -5), stateBeforeBounceBlockReplicator.getBalls()[0].getVelocity());
+}
+
+@Test
+void testTickBounceBlockReplicator2() {
+assertEquals(new Color(102,255,102), stateBeforeBounceBlockReplicator2.getBlocks()[0].getColor());
+assertEquals(1, stateBeforeBounceBlockReplicator2.getBlocks()[0].getHealth());
+stateBeforeBounceBlockReplicator2.tick(1, 1);
+assertEquals(1, stateBeforeBounceBlockReplicator2.getBalls().length);
+assertEquals(1, stateBeforeBounceBlockReplicator2.getBlocks().length);
+assertEquals(3, stateBeforeBounceBlockReplicator2.getPaddle().getHits());
+assertEquals(new Vector(0, -5), stateBeforeBounceBlockReplicator2.getBalls()[0].getVelocity());
 }
 
 @Test
@@ -145,6 +185,7 @@ stateBeforeBounceBlockNormalPower.tick(1, 1);
 assertEquals(1, stateBeforeBounceBlockNormalPower.getBalls().length);
 assertEquals(1, stateBeforeBounceBlockNormalPower.getBlocks().length);
 assertEquals(new Vector(0, 5), stateBeforeBounceBlockNormalPower.getBalls()[0].getVelocity());
+stateBeforeBounceBlockNormalPower.tick(1, 1);
 }
 
 @Test

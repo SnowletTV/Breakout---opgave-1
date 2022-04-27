@@ -19,6 +19,7 @@ class BallTest {
 	Circle c052;
 	Circle c389;
 	Ball b1;
+	Ball b2;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -32,6 +33,7 @@ class BallTest {
 		c389 = new Circle(p38,9);
 		v1010 = new Vector(10,10);
 		b1 = new NormalBall(c052, v1010);
+		b2 = new SuperchargedBall(c052, v1010, 10000);
 	}
 
 	@Test
@@ -39,6 +41,9 @@ class BallTest {
 		assertEquals(p05, b1.getLocation().getCenter());
 		assertEquals(2, b1.getLocation().getDiameter());
 		assertEquals(v1010, b1.getVelocity());
+		b1.setCenter(new Point(10, 23));
+		b2.setCenter(new Point(10, 23));
+		
 	}
 
 	@Test
