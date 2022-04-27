@@ -79,20 +79,17 @@ public class ReplicatorPaddleState extends PaddleState {
 	}
 	
 	/**
-	* Returns a paddle of the other subclass if no more hits left. Otherwise resets hits.
+	* Returns a paddle of the other subclass unless a repliccator, then just resets hits.
 	* @inspects | this
 	* @creates | result
 	* @post | this.getHits() <= 3
 	* @post | this.getHits() >= 0
-	* @post | result.getHits() == 3 || result.getHits() == 0
+	* @post | result.getHits() == 3
 	* @post | this.getCenter().equals(result.getCenter())
 	* @post | this.getHits() <= 0 || result.getHits() == 3
 	* @post | result != null
 	*/
 	public PaddleState changePaddle() {
-		if(getHits() <= 0) {
-			return new NormalPaddleState(this.getCenter());
-		}
 		return new ReplicatorPaddleState(center, 3);
 	}
 	

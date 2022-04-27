@@ -71,13 +71,12 @@ public class NormalPaddleState extends PaddleState {
 	}
 	
 	/**
-	* Returns a paddle of the other subclass if no more hits left. Otherwise resets hits.
+	* Returns a paddle of the other subclass unless a repliccator, then just resets hits.
 	* @creates | result
 	* @post | this.getCenter().equals(result.getCenter())
 	* @post | this.getHits() <= 3
 	* @post | this.getHits() >= 0
 	* @post | this.getHits() == 0
-	* @post | result.getHits() == 3 || result.getHits() == 0
 	* @post | result.getHits() == 3
 	* @post | result instanceof ReplicatorPaddleState
 	* @post | result != null
