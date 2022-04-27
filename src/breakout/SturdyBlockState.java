@@ -113,7 +113,6 @@ public class SturdyBlockState extends BlockState {
 	 * @post | paddle.getCenter().equals(result.getCenter())
 	 * @post | result.getHits() <= 3
 	 * @post | result.getHits() >= 0
-	 * @post | result.getHits() == 3 || result.getHits() == 0
 	 */
 	public PaddleState paddleChange(PaddleState paddle) {
 		return paddle;

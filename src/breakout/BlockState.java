@@ -58,7 +58,6 @@ public abstract class BlockState {
 	 * @post | paddle.getCenter().equals(result.getCenter())
 	 * @post | result.getHits() <= 3
 	 * @post | result.getHits() >= 0
-	 * @post | result.getHits() == 3 || result.getHits() == 0
 	 */
 	public abstract PaddleState paddleChange(PaddleState paddle);
 	
