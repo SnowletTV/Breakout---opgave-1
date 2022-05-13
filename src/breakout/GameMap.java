@@ -1,6 +1,11 @@
 package breakout;
 
+
 import java.util.ArrayList;
+
+import radioactivity.Ball;
+import utils.Point;
+import utils.Vector;
 
 public class GameMap {
 
@@ -11,6 +16,17 @@ public class GameMap {
 	private static int BLOCK_COLUMNS = 10;
 	private static final Vector INIT_BALL_VELOCITY = new Vector(4, 5);
 	private static BreakoutFacade facade = new BreakoutFacade();
+	
+	private static final String someMap = """
+##########
+###!######
+##########
+SSS!###!#S
+     o
+
+     =
+
+""";
 
 	private GameMap() {
 		throw new AssertionError("This class is not intended to be instantiated");

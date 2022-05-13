@@ -1,4 +1,4 @@
-package breakout;
+package utils;
 
 import java.util.Objects;
 
@@ -61,14 +61,14 @@ public class Rect {
 	}
 
 	/**
-	* Return whether this rectangle contains a given circle.
-	* 
-	* @post | result == (getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
-	* 		 |				minusMargin(loc.getRadius()).contains(loc.getCenter()))
-	*/
+	 * Return whether this rectangle contains a given circle.
+	 * 
+	 * @post | result == (getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
+	 * 		 |				minusMargin(loc.getRadius()).contains(loc.getCenter()))
+	 */
 	public boolean contains(Circle loc) {
-	 	return getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
-	 			minusMargin(loc.getRadius()).contains(loc.getCenter());
+		return getTopLeft().plus(new Vector(loc.getDiameter(),loc.getDiameter())).isUpAndLeftFrom(getBottomRight()) &&
+				minusMargin(loc.getRadius()).contains(loc.getCenter());
 	}
 
 	/**
@@ -83,18 +83,18 @@ public class Rect {
 	}
 
 	/**
-	* Check whether this rectangle intersects with the given ball and if so, return the direction from the ball to the rectangle.
-	* This direction may be an approximation for simplicity.
-	* 
-	* @pre | ball != null
-	* @post | result == null || (result.getSquareLength() == 1 && this.contains(ball.getOutermostPoint(result)))
-	*/
+	 * Check whether this rectangle intersects with the given ball and if so, return the direction from the ball to the rectangle.
+	 * This direction may be an approximation for simplicity.
+	 * 
+	 * @pre | ball != null
+	 * @post | result == null || (result.getSquareLength() == 1 && this.contains(ball.getOutermostPoint(result)))
+	 */
 	public Vector collideWith(Circle ball) {
 		for (Vector coldir : COLLISSION_DIRS) {
-	 		Point c = ball.getOutermostPoint(coldir);
-	 		if(contains(c)) {
-	 			return coldir;
-	 		}
+			Point c = ball.getOutermostPoint(coldir);
+			if(contains(c)) {
+				return coldir;
+			}
 		}
 		return null;
 	}
@@ -175,16 +175,16 @@ public class Rect {
 		return Objects.equals(bottomRight, other.bottomRight) && Objects.equals(topLeft, other.topLeft);
 	}
 
-	// /**
-	//  * Move the argument circle by the least amount so that it falls entirely within this rect.
-	//  *
-	//  * @pre | c.getDiameter() < getWidth()
-	//  * @post | contains(result)
-	//  * @post | result.getCenter().equals(this.minusMargin(c.getRadius()).constrain(c.getCenter()))
-	//  */
-	// public Circle constrain(Circle c) {
-	// 	Rect r = this.minusMargin(c.getRadius());
-	// 	Point nc = r.constrain(c.getCenter());
-	// 	return new Circle(nc,c.getDiameter());
-	// }
+	/**
+	 * Move the argument circle by the least amount so that it falls entirely within this rect.
+	 * 
+	 * @pre | c.getDiameter() < getWidth()
+	 * @post | contains(result)
+	 * @post | result.getCenter().equals(this.minusMargin(c.getRadius()).constrain(c.getCenter()))
+	 */
+	public Circle constrain(Circle c) {
+		Rect r = this.minusMargin(c.getRadius());
+		Point nc = r.constrain(c.getCenter());
+		return new Circle(nc,c.getDiameter());
+	}
 }

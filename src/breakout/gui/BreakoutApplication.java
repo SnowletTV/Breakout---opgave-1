@@ -3,8 +3,8 @@ package breakout.gui;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
+import breakout.BreakoutFacade;
 import breakout.BreakoutState;
-import breakout.GameMap;
 
 public class BreakoutApplication {
 
@@ -12,7 +12,18 @@ public class BreakoutApplication {
 ##########
 ###!######
 ##########
-SSS!SSS!#S
+SSS!###!#S
+     o
+
+     =
+
+""";
+
+	public static final String initMap2 = """
+#!##R#####
+###!##SS##
+##########
+RSSRR###RR
      o
 
      =
@@ -20,7 +31,9 @@ SSS!SSS!#S
 """;
 	
 	public static void main(String[] args) {
-		BreakoutState state = GameMap.createStateFromDescription(initMap);
+		BreakoutFacade facade = new BreakoutFacade();
+		BreakoutState state = facade.createStateFromDescription(initMap2);
+//		BreakoutState state = GameMap.someAlphas();
 		EventQueue.invokeLater(() -> {
 			GameView mazeView = new GameView(state);
 			JFrame frame = new JFrame("Breakout");

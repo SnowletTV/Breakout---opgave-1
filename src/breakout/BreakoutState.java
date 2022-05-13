@@ -1,12 +1,26 @@
 package breakout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
+import utils.Vector;
+
+public class BreakoutState {
+	
+	private static final Vector PADDLE_VEL = new Vector(20, 0);
+	public static final int MAX_BALL_REPLICATE = 5;
+	private static final Vector[] BALL_VEL_VARIATIONS = new Vector[] { new Vector(0, 0), new Vector(2, -2),
+			new Vector(-2, 2), new Vector(2, 2), new Vector(-2, -2) };
+	public static int MAX_ELAPSED_TIME = 50;
+
+}
+
+package breakout;
+
+		import java.util.ArrayList;
+		import java.util.Arrays;
+		import java.util.Objects;
 
 /**
  * Represents the current state of a breakout game.
- *  
+ *
  * @invar | getBalls() != null
  * @invar | getBlocks() != null
  * @invar | getPaddle() != null
@@ -17,28 +31,31 @@ import java.util.Objects;
  */
 public class BreakoutState {
 
-	private static final Vector PADDLE_VEL = new Vector(10,0);
-	public static final int MAX_ELAPSED_TIME = 50;
-	
+	private static final Vector PADDLE_VEL = new Vector(20, 0);
+	public static final int MAX_BALL_REPLICATE = 5;
+	private static final Vector[] BALL_VEL_VARIATIONS = new Vector[] { new Vector(0, 0), new Vector(2, -2),
+			new Vector(-2, 2), new Vector(2, 2), new Vector(-2, -2) };
+	public static int MAX_ELAPSED_TIME = 50;
+
 	/**
 	 * @invar | bottomRight != null
 	 * @invar | Point.ORIGIN.isUpAndLeftFrom(bottomRight)
 	 */
 	private final Point bottomRight;
-	
+
 	/**
 	 * @invar | balls != null
 	 * @representationObject
 	 */
 	private Ball[] balls;
-	
+
 	/**
 	 * @invar | blocks != null
 	 * @invar | Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))
 	 * @representationObject
 	 */
 	private BlockState[] blocks;
-	
+
 	/**
 	 * @invar | paddle != null
 	 * @invar | getFieldInternal().contains(paddle.getLocation())
@@ -52,7 +69,7 @@ public class BreakoutState {
 
 	/**
 	 * Construct a new BreakoutState with the given balls, blocks, paddle.
-	 * 
+	 *
 	 * @throws IllegalArgumentException | balls == null
 	 * @throws IllegalArgumentException | blocks == null
 	 * @throws IllegalArgumentException | bottomRight == null
@@ -77,7 +94,7 @@ public class BreakoutState {
 		if(!getFieldInternal().contains(paddle.getLocation())) throw new IllegalArgumentException();
 		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
-	
+
 		this.balls = balls.clone();
 		this.blocks = blocks.clone();
 		this.paddle = paddle;
@@ -90,7 +107,7 @@ public class BreakoutState {
 
 	/**
 	 * Return the balls of this BreakoutState.
-	 * 
+	 *
 	 * @creates result
 	 */
 	public Ball[] getBalls() {
@@ -98,7 +115,7 @@ public class BreakoutState {
 	}
 
 	/**
-	 * Return the blocks of this BreakoutState. 
+	 * Return the blocks of this BreakoutState.
 	 *
 	 * @creates result
 	 */
@@ -107,7 +124,7 @@ public class BreakoutState {
 	}
 
 	/**
-	 * Return the paddle of this BreakoutState. 
+	 * Return the paddle of this BreakoutState.
 	 */
 	public PaddleState getPaddle() {
 		return paddle;
@@ -115,7 +132,7 @@ public class BreakoutState {
 
 	/**
 	 * Return the point representing the bottom right corner of this BreakoutState.
-	 * The top-left corner is always at Coordinate(0,0). 
+	 * The top-left corner is always at Coordinate(0,0).
 	 */
 	public Point getBottomRight() {
 		return bottomRight;
@@ -125,7 +142,7 @@ public class BreakoutState {
 	private Rect getFieldInternal() {
 		return new Rect(Point.ORIGIN, bottomRight);
 	}
-	
+
 	/**
 	 * Return a rectangle representing the game field.
 	 * @post | result != null
@@ -156,7 +173,7 @@ public class BreakoutState {
 		Circle loc = new Circle(getFieldInternal().constrain(b.getCenter()), b.getDiameter());
 		b.setLocation(loc);
 	}
-	
+
 	private Ball collideBallBlocks(Ball ball) {
 		for(BlockState block : blocks) {
 			Vector nspeed = ball.hitBlock(block.getLocation(), true);
@@ -192,7 +209,7 @@ public class BreakoutState {
 
 	/**
 	 * Move all moving objects one step forward.
-	 * 
+	 *
 	 * @mutates this
 	 */
 	public void tick(int paddleDir, int elapsedTime) {
@@ -204,14 +221,14 @@ public class BreakoutState {
 			bounceBallsOnPaddle(paddleDir);
 			clampBalls();
 			balls = Arrays.stream(balls).filter(x -> x != null).toArray(Ball[]::new);
-		}	
+		}
 	}
 
 	private void clampBalls() {
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
 				clampBall(balls[i]);
-			}		
+			}
 		}
 	}
 
@@ -250,7 +267,7 @@ public class BreakoutState {
 
 	/**
 	 * Move the paddle right.
-	 * 
+	 *
 	 * @pre | elapsedTime >= 0
 	 * @mutates this
 	 */
@@ -275,7 +292,7 @@ public class BreakoutState {
 
 	/**
 	 * Return whether this BreakoutState represents a game where the player has won.
-	 * 
+	 *
 	 * @post | result == (getBlocks().length == 0 && !isDead())
 	 * @inspects this
 	 */
@@ -285,7 +302,7 @@ public class BreakoutState {
 
 	/**
 	 * Return whether this BreakoutState represents a game where the player is dead.
-	 * 
+	 *
 	 * @post | result == (getBalls().length == 0)
 	 * @inspects this
 	 */
