@@ -1,4 +1,4 @@
-package breakout;
+package radioactivity;
 
 import java.awt.Color;
 
@@ -104,6 +104,7 @@ public class SuperchargedBall extends Ball {
 	 * new velocity this ball will have after bouncing on the given rect all the while accounting for the conditions of SuperchargedBall.
 	 * 
 	 * @pre | rect != null
+	 * @mutates this
 	 * @post | (rect.collideWith(getLocation()) == null && result == null) ||
 	 * 		 | (rect.collideWith(getLocation()) != null && result != null && result.equals(getVelocity())) ||
 	 *       | (getVelocity().product(rect.collideWith(getLocation())) <= 0 && result == null) || 
