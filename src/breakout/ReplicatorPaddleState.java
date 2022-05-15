@@ -2,6 +2,7 @@ package breakout;
 
 import java.awt.Color;
 import radioactivity.Ball;
+import radioactivity.NormalBall;
 import utils.Point;
 import utils.Rect;
 import utils.Vector;

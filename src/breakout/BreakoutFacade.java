@@ -6,6 +6,9 @@ import java.util.Set;
 
 import radioactivity.Alpha;
 import radioactivity.Ball;
+import radioactivity.NormalBall;
+import radioactivity.SuperchargedBall;
+import utils.Circle;
 import utils.Point;
 import utils.Rect;
 import utils.Vector;
