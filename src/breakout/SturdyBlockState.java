@@ -1,6 +1,8 @@
 package breakout;
 
 import java.awt.Color;
+import radioactivity.Ball;
+import utils.Rect;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +23,6 @@ public class SturdyBlockState extends BlockState {
 	 * @invar | health >= 0 && health <= 3
 	 */
 	private int health;
-	private Color color;
 	
 	/**
 	 * Construct a sturdy Block with a certain location and health.

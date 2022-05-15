@@ -3,6 +3,9 @@ package breakout;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import radioactivity.Ball;
+import utils.Rect;
+
 /**
  * Represents the state of a block in the breakout game.
  * 

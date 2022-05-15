@@ -1,6 +1,8 @@
 package breakout;
 
 import java.awt.Color;
+import radioactivity.Ball;
+import utils.Rect;
 import java.util.ArrayList;
 
 /**
