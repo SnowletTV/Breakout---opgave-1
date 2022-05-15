@@ -44,7 +44,7 @@ public class BreakoutFacade {
 	 */
 	public BreakoutState createBreakoutState(Ball[] balls, BlockState[] blocks, Point bottomRight,
 			PaddleState paddle) {
-		return new BreakoutState(balls, blocks, bottomRight, paddle);
+				return new BreakoutState(null, balls, blocks, bottomRight, paddle);	
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class BreakoutFacade {
 			BlockState[] blocks,
 			Point bottomRight,
 			PaddleState paddle) {
-		return null;
+		return new BreakoutState(alphas, balls, blocks, bottomRight, paddle);
 	}
 
 	public BlockState createNormalBlockState(Point topLeft, Point bottomRight) {

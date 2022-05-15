@@ -1,6 +1,7 @@
 package breakout;
 import java.util.Arrays;
 
+import radioactivity.Alpha;
 import radioactivity.Ball;
 import utils.Circle;
 import utils.Point;
@@ -31,7 +32,8 @@ public class BreakoutState {
 	 * @invar | Point.ORIGIN.isUpAndLeftFrom(bottomRight)
 	 */
 	private final Point bottomRight;
-
+	
+	private Alpha[] alphas;
 	/**
 	 * @invar | balls != null
 	 * @representationObject
@@ -58,7 +60,6 @@ public class BreakoutState {
 
 	/**
 	 * Construct a new BreakoutState with the given balls, blocks, paddle.
-	 *
 	 * @throws IllegalArgumentException | balls == null
 	 * @throws IllegalArgumentException | blocks == null
 	 * @throws IllegalArgumentException | bottomRight == null
@@ -71,8 +72,9 @@ public class BreakoutState {
 	 * @post | Arrays.equals(getBlocks(),blocks)
 	 * @post | getBottomRight().equals(bottomRight)
 	 * @post | getPaddle().equals(paddle)
+	 * TODO check for alphas = getalphas
 	 */
-	public BreakoutState(Ball[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
+	public BreakoutState(Alpha[] alphas, Ball[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
 		if( balls == null) throw new IllegalArgumentException();
 		if( blocks == null) throw new IllegalArgumentException();
 		if( bottomRight == null) throw new IllegalArgumentException();
@@ -83,8 +85,17 @@ public class BreakoutState {
 		if(!getFieldInternal().contains(paddle.getLocation())) throw new IllegalArgumentException();
 		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
-
-		this.balls = balls.clone();
+		
+		if( alphas != null) {
+			this.alphas = new Alpha[alphas.length];
+			for(int i = 0; i < alphas.length; ++i) {
+				this.alphas[i] = alphas[i];
+			}
+		}
+		this.balls = new Ball[balls.length];
+		for(int i = 0; i < balls.length; ++i) {
+			this.balls[i] = balls[i];
+		}
 		this.blocks = blocks.clone();
 		this.paddle = paddle;
 
@@ -93,6 +104,19 @@ public class BreakoutState {
 		this.leftWall = new Rect( new Point(-1000,0), new Point(0,bottomRight.getY()));
 		this.walls = new Rect[] {topWall,rightWall, leftWall };
 	}
+	
+	/**
+	 * Return the Alphas of this BreakoutState.
+	 *
+	 * @creates result
+	 */
+	public Alpha[] getAlphas() {
+		Alpha[] res = new Alpha[alphas.length];
+		for (int i = 0 ; i < alphas.length ; ++i) {
+			res[i] = alphas[i];
+		}
+		return res;
+	}
 
 	/**
 	 * Return the balls of this BreakoutState.
@@ -100,7 +124,11 @@ public class BreakoutState {
 	 * @creates result
 	 */
 	public Ball[] getBalls() {
-		return balls.clone();
+		Ball[] res = new Ball[balls.length];
+		for (int i = 0 ; i < balls.length ; ++i) {
+			res[i] = balls[i];
+		}
+		return res;
 	}
 
 	/**
