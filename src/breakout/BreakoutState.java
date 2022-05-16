@@ -183,7 +183,7 @@ public class BreakoutState {
 	
 	private void bounceWallsAlphas(Alpha alpha) {
 		for( Rect wall : walls) {
-			Alpha testAlpha = alpha;
+			Alpha testAlpha = new Alpha(alpha.getLocation(), alpha.getVelocity());
 			testAlpha.hitBlock(wall, isDead());
 			if(alpha.getVelocity() != testAlpha.getVelocity()) {
 				alpha.hitBlock(wall, isDead());
