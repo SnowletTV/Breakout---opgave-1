@@ -19,6 +19,28 @@ import utils.Vector;
 public abstract class Ball {
 	
 	/**
+	 * @invar | location != null
+	 */
+	private Circle location;
+	
+	/**
+	 * @invar | velocity != null
+	 */
+	private Vector velocity;
+	
+	/**
+	 * Construct a new normal ball at a given location, with a given velocity.
+	 * @pre | location != null
+	 * @pre | velocity != null
+	 * @post | getLocation().equals(location)
+	 * @post | getVelocity().equals(velocity) 
+	 */
+	public Ball(Circle location, Vector velocity) {
+		this.location = location;
+		this.velocity = velocity;
+	}
+	
+	/**
 	 * Return this ball's colour.
 	 * @post | result != null
 	 */
@@ -28,27 +50,35 @@ public abstract class Ball {
 	 * Return this ball's location.
 	 * @post | result != null
 	 */
-	public abstract Circle getLocation();
+	public Circle getLocation() {
+		return location;
+	}
 	
 	/**
 	 * Sets this ball's location.
 	 * @pre | location != null
 	 * @mutates | this
 	 */
-	public abstract void setLocation(Circle location);
+	public void setLocation(Circle location) {
+		this.location = location;
+	}
 
 	/**
 	 * Return this ball's velocity.
 	 * @post | result != null
 	 */
-	public abstract Vector getVelocity();
+	public Vector getVelocity() {
+		return velocity;
+	}
 	
 	/**
 	 * Sets this ball's velocity.
 	 * @pre | velocity != null
 	 * @mutates | this
 	 */
-	public abstract void setVelocity(Vector velocity);
+	public void setVelocity(Vector velocity) {
+		this.velocity = velocity;
+	}
 	
 	/**
 	 * Returns the ball itself if lifetime isn't up, otherwise returns a normal ball.
@@ -77,14 +107,19 @@ public abstract class Ball {
 	 * @post | result != null
 	 * @post | getLocation().getCenter().equals(result)
 	 */
-	public abstract Point getCenter();
+	public Point getCenter() {
+		return getLocation().getCenter();
+	}
 	
 	/**
 	 * Sets this ball's center.
 	 * @pre | center != null
 	 * @mutates | this
 	 */
-	public abstract void setCenter(Point center);
+	public void setCenter(Point center) {
+		Circle newLocation = new Circle(location.getCenter(), location.getDiameter());
+		this.location = newLocation;
+	}
 	
 	/**
 	 * Return this ball's lifetime.

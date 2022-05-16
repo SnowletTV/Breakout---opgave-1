@@ -16,16 +16,7 @@ import utils.Vector;
  * @invar | getLifetime() <= 10000
  */
 public class NormalBall extends Ball {
-	
-	/**
-	 * @invar | location != null
-	 */
-	private Circle location;
-	
-	/**
-	 * @invar | velocity != null
-	 */
-	private Vector velocity;
+
 	private static final Color color = new Color(255,255,255);
 	
 	/**
@@ -36,8 +27,7 @@ public class NormalBall extends Ball {
 	 * @post | getVelocity().equals(velocity) 
 	 */
 	public NormalBall(Circle location, Vector velocity) {
-		this.location = location;
-		this.velocity = velocity;
+		super(location, velocity);
 	}
 	
 	/**
@@ -46,40 +36,6 @@ public class NormalBall extends Ball {
 	 */
 	public Color getColor() {
 		return color;
-	}
-	
-	/**
-	 * Return this ball's location.
-	 * @post | result != null
-	 */
-	public Circle getLocation() {
-		return location;
-	}
-	
-	/**
-	 * Sets this ball's location.
-	 * @pre | location != null
-	 * @mutates | this
-	 */
-	public void setLocation(Circle location) {
-		this.location = location;
-	}
-
-	/**
-	 * Return this ball's velocity.
-	 * @post | result != null
-	 */
-	public Vector getVelocity() {
-		return velocity;
-	}
-	
-	/**
-	 * Sets this ball's velocity.
-	 * @pre | velocity != null
-	 * @mutates | this
-	 */
-	public void setVelocity(Vector velocity) {
-		this.velocity = velocity;
 	}
 	
 	/**
@@ -116,25 +72,6 @@ public class NormalBall extends Ball {
 			return velocity.mirrorOver(coldir);
 		}
 		return null;
-	}
-
-	/**
-	 * Return this ball's center.
-	 * @post | result != null
-	 * @post | getLocation().getCenter().equals(result)
-	 */
-	public Point getCenter() {
-		return getLocation().getCenter();
-	}
-	
-	/**
-	 * Sets this ball's center.
-	 * @pre | center != null
-	 * @mutates | this
-	 */
-	public void setCenter(Point center) {
-		Circle newLocation = new Circle(location.getCenter(), location.getDiameter());
-		this.location = newLocation;
 	}
 	
 	/**

@@ -23,15 +23,6 @@ public class SuperchargedBall extends Ball {
 	 */
 	private int lifetime;	
 	
-	/**
-	 * @invar | location != null
-	 */
-	private Circle location;
-	
-	/**
-	 * @invar | velocity != null
-	 */
-	private Vector velocity;
 	private static final Color color = new Color(100,200,180);
 	
 	/**
@@ -42,8 +33,7 @@ public class SuperchargedBall extends Ball {
 	 * @post | getVelocity().equals(velocity) 
 	 */
 	public SuperchargedBall(Circle location, Vector velocity, int lifetime) {
-		this.location = location;
-		this.velocity = velocity;
+		super(location, velocity);
 		this.lifetime = lifetime;
 	}
 
@@ -53,40 +43,6 @@ public class SuperchargedBall extends Ball {
 	 */
 	public Color getColor() {
 		return color;
-	}
-	
-	/**
-	 * Return this ball's location.
-	 * @post | result != null
-	 */
-	public Circle getLocation() {
-		return location;
-	}
-	
-	/**
-	 * Sets this ball's location.
-	 * @pre | location != null
-	 * @mutates | this
-	 */
-	public void setLocation(Circle location) {
-		this.location = location;
-	}
-
-	/**
-	 * Return this ball's velocity.
-	 * @post | result != null
-	 */
-	public Vector getVelocity() {
-		return velocity;
-	}
-	
-	/**
-	 * Sets this ball's velocity.
-	 * @pre | velocity != null
-	 * @mutates | this
-	 */
-	public void setVelocity(Vector velocity) {
-		this.velocity = velocity;
 	}
 	
 	/**
@@ -127,25 +83,6 @@ public class SuperchargedBall extends Ball {
 			return getVelocity();
 		}
 		return null;
-	}
-
-	/**
-	 * Return this ball's center.
-	 * @post | result != null
-	 * @post | getLocation().getCenter().equals(result)
-	 */
-	public Point getCenter() {
-		return getLocation().getCenter();
-	}
-	
-	/**
-	 * Sets this ball's center.
-	 * @pre | center != null
-	 * @mutates | this
-	 */
-	public void setCenter(Point center) {
-		Circle newLocation = new Circle(location.getCenter(), location.getDiameter());
-		this.location = newLocation;
 	}
 
 	/**
