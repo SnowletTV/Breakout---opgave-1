@@ -3,6 +3,7 @@ import java.util.Arrays;
 
 import radioactivity.Alpha;
 import radioactivity.Ball;
+import radioactivity.NormalBall;
 import utils.Circle;
 import utils.Point;
 import utils.Rect;
@@ -31,6 +32,10 @@ public class BreakoutState {
 	 */
 	private final Point bottomRight;
 	
+	
+	/**
+	 * TODO documentation
+	 */
 	private Alpha[] alphas;
 	/**
 	 * @invar | balls != null
@@ -57,7 +62,8 @@ public class BreakoutState {
 	private final Rect[] walls;
 
 	/**
-	 * Construct a new BreakoutState with the given balls, blocks, paddle.
+	 * Construct a new BreakoutState with the given alphas, balls, blocks, paddle.
+	 * @throws IllegalArgumentException | alphas == null
 	 * @throws IllegalArgumentException | balls == null
 	 * @throws IllegalArgumentException | blocks == null
 	 * @throws IllegalArgumentException | bottomRight == null
@@ -73,6 +79,7 @@ public class BreakoutState {
 	 * TODO check for alphas = getalphas
 	 */
 	public BreakoutState(Alpha[] alphas, Ball[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
+		if( alphas == null) throw new IllegalArgumentException();
 		if( balls == null) throw new IllegalArgumentException();
 		if( blocks == null) throw new IllegalArgumentException();
 		if( bottomRight == null) throw new IllegalArgumentException();
@@ -169,13 +176,8 @@ public class BreakoutState {
 	}
 
 	private void bounceWalls(Ball ball) {
-		Circle loc = ball.getLocation();
 		for( Rect wall : walls) {
-			Vector nspeed = ball.hitBlock(wall, false);
-			if( nspeed != null ) {
-				ball.setLocation(loc);
-				ball.setVelocity(nspeed);
-			}
+			ball.hitBlock(wall, false);
 		}
 	}
 
@@ -191,14 +193,16 @@ public class BreakoutState {
 
 	private Ball collideBallBlocks(Ball ball) {
 		for(BlockState block : blocks) {
-			Vector nspeed = ball.hitBlock(block.getLocation(), true);
-			if(blocks.length == block.removeBlock(blocks).length) {
-				nspeed = ball.hitBlock(block.getLocation(), false);
+			Ball testBall = new NormalBall(ball.getLocation(), ball.getVelocity());
+			if(blocks.length != block.removeBlock(blocks).length) {
+				ball.hitBlock(block.getLocation(), true);
 			}
-			if(nspeed != null) {
+			else {
+				ball.hitBlock(block.getLocation(), false);
+			}
+			if(!testBall.equals(ball)) {
 				ball = block.ballChange(ball);
 				blocks = block.removeBlock(blocks);
-				ball.setVelocity(nspeed);
 				paddle = block.paddleChange(paddle);
 			}
 		}
@@ -208,15 +212,13 @@ public class BreakoutState {
 	private Ball[] collideBallPaddle(Ball[] balls, Vector paddleVel) {
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
-				Vector nspeed = balls[i].hitBlock(paddle.getLocation(), false);
-				if(nspeed != null) {
-					Point ncenter = balls[i].getLocation().getCenter().plus(nspeed);
-					nspeed = nspeed.plus(paddleVel.scaledDiv(5));
-					balls[i].setLocation(balls[i].getLocation().withCenter(ncenter));
-					balls[i].setVelocity(nspeed);
+				Ball testBall = new NormalBall(balls[i].getLocation(), balls[i].getVelocity());
+				balls[i].hitBlock(paddle.getLocation(), false);
+				if(!testBall.equals(balls[i])) {
 					balls = paddle.ballChange(balls, balls[i]);
 					paddle = paddle.samePaddle(paddle.getCenter());
-				}
+				}			
+
 			}
 		}
 		return balls;

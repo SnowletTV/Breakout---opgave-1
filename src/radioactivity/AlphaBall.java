@@ -1,5 +1,7 @@
 package radioactivity;
 
+import java.awt.Color;
+
 import utils.Circle;
 import utils.Point;
 import utils.Rect;
@@ -48,6 +50,14 @@ public abstract class AlphaBall {
 	}
 	
 	/**
+	 * Return this ball's location.
+	 * @post | result != 0
+	 */
+	public int getEcharge() {
+		return eCharge;
+	}
+	
+	/**
 	 * Sets this ball's location.
 	 * @pre | location != null
 	 * @mutates | this
@@ -65,6 +75,12 @@ public abstract class AlphaBall {
 	}
 	
 	/**
+	 * Return this object's colour.
+	 * @post | result != null
+	 */
+	public abstract Color getColor();
+	
+	/**
 	 * Sets this ball's velocity.
 	 * @pre | velocity != null
 	 * @mutates | this
@@ -79,7 +95,17 @@ public abstract class AlphaBall {
 	 * @mutates | this
 	 */
 	public void setCenter(Point center) {
-		Circle newLocation = new Circle(location.getCenter(), location.getDiameter());
+		Circle newLocation = new Circle(center, location.getDiameter());
+		this.location = newLocation;
+	}
+	
+	/**
+	 * Sets this ball's center.
+	 * @pre | diameter != 0
+	 * @mutates | this
+	 */
+	public void setDiameter(int diameter) {
+		Circle newLocation = new Circle(location.getCenter(), diameter);
 		this.location = newLocation;
 	}
 	
@@ -89,20 +115,17 @@ public abstract class AlphaBall {
 	 * 
 	 * @pre | rect != null
 	 * @mutates this
-	 * @post | (rect.collideWith(getLocation()) == null && result == null) ||
-	 * 		 | (rect.collideWith(getLocation()) != null && result != null && result.equals(getVelocity())) ||
-	 *       | (getVelocity().product(rect.collideWith(getLocation())) <= 0 && result == null) || 
-	 *       | (result.equals(getVelocity().mirrorOver(rect.collideWith(getLocation()))))
-	 * @post | (rect.collideWith(getLocation()) == null && result == null) ||
-	 *       | (getVelocity().product(rect.collideWith(getLocation())) <= 0 && result == null) || 
-	 *       | (result.equals(getVelocity().mirrorOver(rect.collideWith(getLocation()))))
+	 * (rect.collideWith(getLocation()) == null && result == null) ||
+	 * (rect.collideWith(getLocation()) != null && result != null && result.equals(getVelocity())) ||
+	 * (getVelocity().product(rect.collideWith(getLocation())) <= 0 && result == null) || 
+	 * (result.equals(getVelocity().mirrorOver(rect.collideWith(getLocation()))))
+	 * TODO documentation
 	 */
-	public Vector hitBlock(Rect rect, boolean destroyed) {
+	public void hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());
 		if(coldir != null && getVelocity().product(coldir) > 0) {
-			return getVelocity().mirrorOver(coldir);
+			this.velocity = getVelocity().mirrorOver(coldir);
 		}
-		return null;
 	}
 	
 	

@@ -23,7 +23,7 @@ public abstract class Ball extends AlphaBall {
 	/**
      * @peerObjects
      */
-    Set<Alpha> linkedAlphas;
+    private Set<Alpha> linkedAlphas;
 	
 	/**
 	 * Construct a new normal ball at a given location, with a given velocity.
@@ -84,4 +84,18 @@ public abstract class Ball extends AlphaBall {
 	* @post | result.getLifetime() <= 10000 || result.getLifetime() > 0
 	*/
 	public abstract Ball changeBall();
+
+	/**
+	 * @return the linkedAlphas
+	 */
+	public Set<Alpha> getLinkedAlphas() {
+		return linkedAlphas;
+	}
+
+	/**
+	 * @param linkedAlphas the linkedAlphas to set
+	 */
+	public void setLinkedAlphas(Set<Alpha> linkedAlphas) {
+		this.linkedAlphas = linkedAlphas;
+	}
 }

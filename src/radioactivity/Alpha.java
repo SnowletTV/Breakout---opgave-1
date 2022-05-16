@@ -1,5 +1,6 @@
 package radioactivity;
 
+import java.awt.Color;
 import java.util.Set;
 
 import utils.Circle;
@@ -11,11 +12,12 @@ import utils.Vector;
  * @mutable
  */
 public class Alpha extends AlphaBall {	
+    private static final Color color = new Color(170,170,170);
 	
 	/**
      * @peerObjects
      */
-    Set<Ball> linkedBalls;
+    private Set<Ball> linkedBalls;
     
     /**
 	 * Construct a new normal Alpha at a given location, with a given velocity.
@@ -26,5 +28,27 @@ public class Alpha extends AlphaBall {
 	 */
 	public Alpha(Circle location, Vector velocity) {
 		super(location, velocity);
+	}
+	
+	/**
+	 * Return this alpha's colour.
+	 * @post | result != null
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * @return the linkedBalls
+	 */
+	public Set<Ball> getLinkedBalls() {
+		return linkedBalls;
+	}
+
+	/**
+	 * @param linkedBalls the linkedBalls to set
+	 */
+	public void setLinkedBalls(Set<Ball> linkedBalls) {
+		this.linkedBalls = linkedBalls;
 	}
 }
