@@ -53,28 +53,6 @@ public class NormalBall extends Ball {
 	}
 	
 	/**
-	 * Check whether this ball collides with a given `rect` and if so, return the 
-	 * new velocity this ball will have after bouncing on the given rect all the while accounting for the conditions of SuperchargedBall.
-	 * 
-	 * @pre | rect != null
-	 * @mutates this
-	 * @post | (rect.collideWith(getLocation()) == null && result == null) ||
-	 * 		 | (rect.collideWith(getLocation()) != null && result != null && result.equals(getVelocity())) ||
-	 *       | (getVelocity().product(rect.collideWith(getLocation())) <= 0 && result == null) || 
-	 *       | (result.equals(getVelocity().mirrorOver(rect.collideWith(getLocation()))))
-	 * @post | (rect.collideWith(getLocation()) == null && result == null) ||
-	 *       | (getVelocity().product(rect.collideWith(getLocation())) <= 0 && result == null) || 
-	 *       | (result.equals(getVelocity().mirrorOver(rect.collideWith(getLocation()))))
-	 */
-	public Vector hitBlock(Rect rect, boolean destroyed) {
-		Vector coldir = rect.collideWith(location);
-		if(coldir != null && velocity.product(coldir) > 0) {
-			return velocity.mirrorOver(coldir);
-		}
-		return null;
-	}
-	
-	/**
 	 * Return this ball's lifetime.
 	 * @post | result > 0
 	 */
@@ -89,15 +67,6 @@ public class NormalBall extends Ball {
 	 * @mutates | this
 	 */
 	public void setLifetime(int lifetime) {
-	}
-	
-	/**
-	 * Return this ball's Diameter.
-	 * @post | result > 0
-	 * @post | getLocation().getDiameter() == result
-	 */
-	public int getDiameter() {
-		return getLocation().getDiameter();
 	}
 	
 	/**

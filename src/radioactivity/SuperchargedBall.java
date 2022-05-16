@@ -62,7 +62,7 @@ public class SuperchargedBall extends Ball {
 	/**
 	 * Check whether this ball collides with a given `rect` and if so, return the 
 	 * new velocity this ball will have after bouncing on the given rect all the while accounting for the conditions of SuperchargedBall.
-	 * 
+	 * @override
 	 * @pre | rect != null
 	 * @mutates this
 	 * @post | (rect.collideWith(getLocation()) == null && result == null) ||
@@ -102,15 +102,6 @@ public class SuperchargedBall extends Ball {
 	public void setLifetime(int lifetime) {
 		this.lifetime = lifetime;
 	}	
-	
-	/**
-	 * Return this ball's Diameter.
-	 * @post | result > 0
-	 * @post | getLocation().getDiameter() == result
-	 */
-	public int getDiameter() {
-		return getLocation().getDiameter();
-	}
 	
 	/**
 	* Changes the ball's subclass unless the Ball still has lifetime left.
