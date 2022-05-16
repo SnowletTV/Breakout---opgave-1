@@ -183,7 +183,13 @@ public class BreakoutState {
 	
 	private void bounceWallsAlphas(Alpha alpha) {
 		for( Rect wall : walls) {
-			alpha.hitBlock(wall, isDead());
+			Alpha testAlpha = alpha;
+			testAlpha.hitBlock(wall, isDead());
+			if(alpha.getVelocity() != testAlpha.getVelocity()) {
+				for (Ball ball : alpha.getLinkedBalls()) {
+					ball.setVelocity(Vector.magnetSpeed(alpha.getLocation().getCenter(), ball.getLocation().getCenter(), ball.getEcharge(), ball.getVelocity()));
+				}
+			}
 		}
 	}
 
