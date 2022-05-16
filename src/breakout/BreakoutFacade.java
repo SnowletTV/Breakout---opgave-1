@@ -143,7 +143,8 @@ public class BreakoutFacade {
 	 * TODO
 	 */
 	public void addLink(Ball ball, Alpha alpha) {
-
+		ball.getLinkedAlphas().add(alpha);
+		alpha.getLinkedBalls().add(ball);
 	}
 	
 	/**
@@ -151,7 +152,8 @@ public class BreakoutFacade {
 	 * TODO
 	 */
 	public void removeLink(Ball ball, Alpha alpha) {
-
+		ball.getLinkedAlphas().remove(alpha);
+		alpha.getLinkedBalls().remove(ball);
 	}
 	
 	/**
