@@ -1,4 +1,5 @@
 package breakout;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import radioactivity.Alpha;
@@ -198,7 +199,24 @@ public class BreakoutState {
 		if( ball.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { return null; }
 		else { return ball; }
 	}
+	
+	private boolean checkRemoveDeadAlpha(Alpha alpha) {
+		if( alpha.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { 
+			return true; 
+		}
+		return false;
+	}
+	
+	private Alpha removeDeadAlpha(Alpha alpha) {
+		if( alpha.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { return null; }
+		else { return alpha; }
+	}
 
+	private void clampAlpha(Alpha a) {
+		Circle loca = new Circle(getFieldInternal().constrain(a.getLocation().getCenter()), a.getDiameter());
+		a.setLocation(loca);
+	}
+	
 	private void clampBall(Ball b) {
 		Circle loc = new Circle(getFieldInternal().constrain(b.getCenter()), b.getDiameter());
 		b.setLocation(loc);
@@ -241,6 +259,23 @@ public class BreakoutState {
 		}
 		return balls;
 	}
+	
+	private Alpha[] collideAlphaPaddle(Alpha[] alphas, Vector paddleVel) {
+		for(int i = 0; i < alphas.length; ++i) {
+			if(alphas[i] != null) {
+				Alpha testAlpha = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
+				testAlpha.hitBlock(paddle.getLocation(), false);
+				if(!testAlpha.getVelocity().equals(alphas[i].getVelocity())) {
+					alphas[i].hitBlock(paddle.getLocation(), false);			
+					Ball newBall = new NormalBall(balls[i].getLocation(), balls[i].getVelocity().plus(new Vector(-2,-2)));
+					newBall.getLinkedAlphas().add(alphas[i]);
+					alphas[i].getLinkedBalls().add(newBall);
+					balls = newBall.ballChange(balls);
+				}
+			}
+		}
+		return alphas;
+	}
 
 	/**
 	 * Move all moving objects one step forward.
@@ -253,22 +288,34 @@ public class BreakoutState {
 			bounceBallsOnWalls();
 			bounceAlphasOnWalls();
 			removeDeadBalls();
+			removeDeadAlphas();
 			bounceBallsOnBlocks();
 			bounceBallsOnPaddle(paddleDir);
-			clampBalls();
+			bounceAlphasOnPaddle(paddleDir);
+			clampObjects();
 			balls = Arrays.stream(balls).filter(x -> x != null).toArray(Ball[]::new);
 		}
 	}
 
-	private void clampBalls() {
+	private void clampObjects() {
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
 				clampBall(balls[i]);
 			}
 		}
+		for(int i = 0; i < alphas.length; ++i) {
+			if(alphas[i] != null) {
+				clampAlpha(alphas[i]);
+			}
+		}
 	}
 
 	private void bounceBallsOnPaddle(int paddleDir) {
+		Vector paddleVel = PADDLE_VEL.scaled(paddleDir);
+		alphas = collideAlphaPaddle(alphas, paddleVel);
+	}
+	
+	private void bounceAlphasOnPaddle(int paddleDir) {
 		Vector paddleVel = PADDLE_VEL.scaled(paddleDir);
 		balls = collideBallPaddle(balls, paddleVel);
 	}
@@ -285,6 +332,25 @@ public class BreakoutState {
 		for(int i = 0; i < balls.length; ++i) {
 			balls[i] = removeDead(balls[i]);
 		}
+	}
+	
+	private void removeDeadAlphas() {
+		for(int i = 0; i < alphas.length; ++i) {
+			if(checkRemoveDeadAlpha(alphas[i])) {
+				for (Ball ball : alphas[i].getLinkedBalls()) {
+					ball.getLinkedAlphas().remove(alphas[i]);
+				}
+				alphas[i].getLinkedBalls().clear();
+				alphas[i] = removeDeadAlpha(alphas[i]);
+			}
+		}
+		ArrayList<Alpha> nalphas = new ArrayList<Alpha>();
+		for( Alpha a : alphas ) {
+			if(a != null) {
+				nalphas.add(a);
+			}
+		}
+		alphas = nalphas.toArray(new Alpha[] {});
 	}
 
 	private void bounceBallsOnWalls() {
