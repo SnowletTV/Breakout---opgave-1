@@ -180,6 +180,12 @@ public class BreakoutState {
 			ball.hitBlock(wall, false);
 		}
 	}
+	
+	private void bounceWallsAlphas(Alpha alpha) {
+		for( Rect wall : walls) {
+			alpha.hitBlock(wall, isDead());
+		}
+	}
 
 	private Ball removeDead(Ball ball) {
 		if( ball.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { return null; }
@@ -218,11 +224,11 @@ public class BreakoutState {
 				if(!testBall.getVelocity().equals(balls[i].getVelocity())) {
 					balls[i].hitBlock(paddle.getLocation(), false);
 					balls = paddle.ballChange(balls, balls[i]);
-					paddle = paddle.samePaddle(paddle.getCenter());
-					
+					paddle = paddle.samePaddle(paddle.getCenter());				
 					Alpha newAlpha = new Alpha(balls[i].getLocation(), balls[i].getVelocity().plus(new Vector(-2,-2)));
 					newAlpha.getLinkedBalls().add(balls[i]);
 					balls[i].getLinkedAlphas().add(newAlpha);
+					alphas = newAlpha.alphaChange(alphas);
 				}
 			}
 		}
@@ -236,8 +242,9 @@ public class BreakoutState {
 	 */
 	public void tick(int paddleDir, int elapsedTime) {
 		for(int i = elapsedTime; i >= 0; --i) {
-			stepBalls();
+			stepObjects();
 			bounceBallsOnWalls();
+			bounceAlphasOnWalls();
 			removeDeadBalls();
 			bounceBallsOnBlocks();
 			bounceBallsOnPaddle(paddleDir);
@@ -278,12 +285,22 @@ public class BreakoutState {
 			bounceWalls(balls[i]);
 		}
 	}
+	
+	private void bounceAlphasOnWalls() {
+		for(int i = 0; i < alphas.length; ++i) {
+			bounceWallsAlphas(alphas[i]);
+		}
+	}
 
-	private void stepBalls() {
+	private void stepObjects() {
 		for(int i = 0; i < balls.length; ++i) {
 			Point newcenter = balls[i].getLocation().getCenter().plus(balls[i].getVelocity());
 			balls[i].setLocation(balls[i].getLocation().withCenter(newcenter));
 			balls[i] = balls[i].checkLife();
+		}		
+		for(int i = 0; i < alphas.length; ++i) {
+			Point newcenter = alphas[i].getLocation().getCenter().plus(alphas[i].getVelocity());
+			alphas[i].setLocation(alphas[i].getLocation().withCenter(newcenter));
 		}
 	}
 

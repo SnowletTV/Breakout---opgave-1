@@ -1,6 +1,7 @@
 package radioactivity;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -51,5 +52,23 @@ public class Alpha extends AlphaBall {
 	 */
 	public void setLinkedBalls(Set<Ball> linkedBalls) {
 		this.linkedBalls = linkedBalls;
+	}
+	
+	/**
+	* TODO informal documentation
+	* @pre | alphas != null
+	* @pre | this != null
+	* @inspects | this
+	* @creates | result
+	* @post | result != null
+	* @post | result.length - alphas.length == 1
+	*/
+	public Alpha[] alphaChange(Alpha[] alphas) {
+		ArrayList<Alpha> nalphas = new ArrayList<Alpha>();
+		for( Alpha a : alphas ) {
+			nalphas.add(a);
+		}
+		nalphas.add(this);
+		return nalphas.toArray(new Alpha[] {});
 	}
 }
