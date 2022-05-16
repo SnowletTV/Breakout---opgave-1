@@ -186,6 +186,7 @@ public class BreakoutState {
 			Alpha testAlpha = alpha;
 			testAlpha.hitBlock(wall, isDead());
 			if(alpha.getVelocity() != testAlpha.getVelocity()) {
+				alpha.hitBlock(wall, isDead());
 				for (Ball ball : alpha.getLinkedBalls()) {
 					ball.setVelocity(Vector.magnetSpeed(alpha.getLocation().getCenter(), ball.getLocation().getCenter(), ball.getEcharge(), ball.getVelocity()));
 				}
