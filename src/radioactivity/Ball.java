@@ -1,6 +1,7 @@
 package radioactivity;
 
 import java.awt.Color;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import utils.Circle;
@@ -23,7 +24,7 @@ public abstract class Ball extends AlphaBall {
 	/**
      * @peerObjects
      */
-    private Set<Alpha> linkedAlphas;
+    private Set<Alpha> linkedAlphas = new LinkedHashSet<Alpha>();;
 	
 	/**
 	 * Construct a new normal ball at a given location, with a given velocity.

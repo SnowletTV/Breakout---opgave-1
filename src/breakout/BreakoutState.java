@@ -194,13 +194,14 @@ public class BreakoutState {
 	private Ball collideBallBlocks(Ball ball) {
 		for(BlockState block : blocks) {
 			Ball testBall = new NormalBall(ball.getLocation(), ball.getVelocity());
-			if(blocks.length != block.removeBlock(blocks).length) {
-				ball.hitBlock(block.getLocation(), true);
-			}
-			else {
-				ball.hitBlock(block.getLocation(), false);
-			}
-			if(!testBall.equals(ball)) {
+			testBall.hitBlock(block.getLocation(), false);
+			if(!testBall.getVelocity().equals(ball.getVelocity())) {
+				if(blocks.length != block.removeBlock(blocks).length) {
+					ball.hitBlock(block.getLocation(), true);
+				}
+				else {
+					ball.hitBlock(block.getLocation(), false);
+				}
 				ball = block.ballChange(ball);
 				blocks = block.removeBlock(blocks);
 				paddle = block.paddleChange(paddle);
@@ -213,12 +214,13 @@ public class BreakoutState {
 		for(int i = 0; i < balls.length; ++i) {
 			if(balls[i] != null) {
 				Ball testBall = new NormalBall(balls[i].getLocation(), balls[i].getVelocity());
-				balls[i].hitBlock(paddle.getLocation(), false);
-				if(!testBall.equals(balls[i])) {
+				testBall.hitBlock(paddle.getLocation(), false);
+				if(!testBall.getVelocity().equals(balls[i].getVelocity())) {
+					balls[i].hitBlock(paddle.getLocation(), false);
 					balls = paddle.ballChange(balls, balls[i]);
 					paddle = paddle.samePaddle(paddle.getCenter());
-				}			
-
+					balls[i].getLinkedAlphas().add(new Alpha(balls[i].getLocation(), balls[i].getVelocity().plus(new Vector(-2,-2))));
+				}
 			}
 		}
 		return balls;
