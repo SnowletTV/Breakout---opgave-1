@@ -267,7 +267,7 @@ public class BreakoutState {
 				testAlpha.hitBlock(paddle.getLocation(), false);
 				if(!testAlpha.getVelocity().equals(alphas[i].getVelocity())) {
 					alphas[i].hitBlock(paddle.getLocation(), false);			
-					Ball newBall = new NormalBall(balls[i].getLocation(), balls[i].getVelocity().plus(new Vector(-2,-2)));
+					Ball newBall = new NormalBall(alphas[i].getLocation(), alphas[i].getVelocity().plus(new Vector(-2,-2)));
 					newBall.getLinkedAlphas().add(alphas[i]);
 					alphas[i].getLinkedBalls().add(newBall);
 					balls = newBall.ballChange(balls);

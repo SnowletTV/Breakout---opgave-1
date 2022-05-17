@@ -50,11 +50,20 @@ public abstract class AlphaBall {
 	}
 	
 	/**
-	 * Return this ball's location.
+	 * Return this ball's electric charge.
 	 * @post | result != 0
 	 */
-	public int getEcharge() {
+	public int getECharge() {
 		return eCharge;
+	}
+	
+	/**
+	 * Sets this alpha/ball's electric charge.
+	 * @pre | eCharge != 0
+	 * @mutates | this
+	 */
+	public void setECharge(int eCharge) {
+		this.eCharge = eCharge;
 	}
 	
 	/**
