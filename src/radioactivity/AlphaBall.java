@@ -67,6 +67,12 @@ public abstract class AlphaBall {
 	}
 	
 	/**
+	 * Sets this alpha/ball's dynamically electric charge.
+	 * @mutates | this
+	 */
+	abstract void EChargeCheck();
+	
+	/**
 	 * Sets this ball's location.
 	 * @pre | location != null
 	 * @mutates | this

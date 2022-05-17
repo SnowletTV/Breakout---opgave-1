@@ -189,7 +189,7 @@ public class BreakoutState {
 			if(alpha.getVelocity() != testAlpha.getVelocity()) {
 				alpha.hitBlock(wall, isDead());
 				for (Ball ball : alpha.getLinkedBalls()) {
-					ball.setVelocity(Vector.magnetSpeed(alpha.getLocation().getCenter(), ball.getLocation().getCenter(), ball.getEcharge(), ball.getVelocity()));
+					ball.setVelocity(Vector.magnetSpeed(alpha.getLocation().getCenter(), ball.getLocation().getCenter(), ball.getECharge(), ball.getVelocity()));
 				}
 			}
 		}
@@ -254,6 +254,7 @@ public class BreakoutState {
 					newAlpha.getLinkedBalls().add(balls[i]);
 					balls[i].getLinkedAlphas().add(newAlpha);
 					alphas = newAlpha.alphaChange(alphas);
+					balls[i].EChargeCheck();
 				}
 			}
 		}
@@ -269,6 +270,7 @@ public class BreakoutState {
 					alphas[i].hitBlock(paddle.getLocation(), false);			
 					Ball newBall = new NormalBall(alphas[i].getLocation(), alphas[i].getVelocity().plus(new Vector(-2,-2)));
 					newBall.getLinkedAlphas().add(alphas[i]);
+					newBall.EChargeCheck();
 					alphas[i].getLinkedBalls().add(newBall);
 					balls = newBall.ballChange(balls);
 				}
@@ -337,8 +339,9 @@ public class BreakoutState {
 	private void removeDeadAlphas() {
 		for(int i = 0; i < alphas.length; ++i) {
 			if(checkRemoveDeadAlpha(alphas[i])) {
-				for (Ball ball : alphas[i].getLinkedBalls()) {
+				for (Ball ball : getAlphas()[i].getLinkedBalls()) {
 					ball.getLinkedAlphas().remove(alphas[i]);
+					ball.EChargeCheck();
 				}
 				alphas[i].getLinkedBalls().clear();
 				alphas[i] = removeDeadAlpha(alphas[i]);

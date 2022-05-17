@@ -36,6 +36,7 @@ public abstract class Ball extends AlphaBall {
 	 */
 	public Ball(Circle location, Vector velocity) {
 		super(location, velocity);
+		this.EChargeCheck();
 	}
 	
 	/**
@@ -43,6 +44,24 @@ public abstract class Ball extends AlphaBall {
 	 * @post | result != null
 	 */
 	public abstract Color getColor();
+	
+	
+	/**
+	 * Sets this alpha/ball's dynamically electric charge.
+	 * TODO document formally
+	 * @mutates | this
+	 */
+	public void EChargeCheck() {
+		for(Alpha a: this.getLinkedAlphas()) {
+			for(Ball b: a.getLinkedBalls()) {
+				int newCharge = b.getLinkedAlphas().size();
+				if(newCharge % 2 == 0){
+					newCharge = newCharge*-1;
+				}
+				b.setECharge(newCharge);
+			}
+		}
+	}
 	
 	/**
 	 * Returns the ball itself if lifetime isn't up, otherwise returns a normal ball.
