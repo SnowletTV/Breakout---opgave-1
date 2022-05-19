@@ -1,4 +1,5 @@
 package breakout;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -73,6 +74,7 @@ public class BreakoutState {
 	 * @throws IllegalArgumentException | !(new Rect(Point.ORIGIN,bottomRight)).contains(paddle.getLocation())
 	 * @throws IllegalArgumentException | !Arrays.stream(blocks).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @throws IllegalArgumentException | !Arrays.stream(balls).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
+	 * @post | Arrays.equals(getAlphas(),alphas)
 	 * @post | Arrays.equals(getBalls(),balls)
 	 * @post | Arrays.equals(getBlocks(),blocks)
 	 * @post | getBottomRight().equals(bottomRight)
@@ -95,12 +97,15 @@ public class BreakoutState {
 		if( alphas != null) {
 			this.alphas = new Alpha[alphas.length];
 			for(int i = 0; i < alphas.length; ++i) {
-				this.alphas[i] = alphas[i];
+				this.alphas[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
+				this.alphas[i].setLinkedBalls(alphas[i].getLinkedBalls());
 			}
 		}
 		this.balls = new Ball[balls.length];
 		for(int i = 0; i < balls.length; ++i) {
-			this.balls[i] = balls[i];
+			this.balls[i] = new NormalBall(balls[i].getLocation(), balls[i].getVelocity());
+			this.balls[i].setLinkedAlphas(balls[i].getLinkedAlphas());
+			this.balls[i].EChargeCheckAll();
 		}
 		this.blocks = blocks.clone();
 		this.paddle = paddle;
@@ -119,7 +124,8 @@ public class BreakoutState {
 	public Alpha[] getAlphas() {
 		Alpha[] res = new Alpha[alphas.length];
 		for (int i = 0 ; i < alphas.length ; ++i) {
-			res[i] = alphas[i];
+			res[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
+			res[i].setLinkedBalls(alphas[i].getLinkedBalls());
 		}
 		return res;
 	}
@@ -132,7 +138,9 @@ public class BreakoutState {
 	public Ball[] getBalls() {
 		Ball[] res = new Ball[balls.length];
 		for (int i = 0 ; i < balls.length ; ++i) {
-			res[i] = balls[i];
+			res[i] = new NormalBall(balls[i].getLocation(), balls[i].getVelocity());
+			res[i].setLinkedAlphas(balls[i].getLinkedAlphas());
+			res[i].EChargeCheckAll();
 		}
 		return res;
 	}

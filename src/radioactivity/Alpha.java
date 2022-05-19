@@ -59,7 +59,7 @@ public class Alpha extends AlphaBall {
 	 * @param linkedBalls the linkedBalls to set
 	 */
 	public void setLinkedBalls(Set<Ball> linkedBalls) {
-		this.linkedBalls = linkedBalls;
+		this.linkedBalls = Set.copyOf(linkedBalls);
 	}
 	
 	/**

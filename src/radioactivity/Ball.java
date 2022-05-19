@@ -121,7 +121,7 @@ public abstract class Ball extends AlphaBall {
 	 * @param linkedAlphas the linkedAlphas to set
 	 */
 	public void setLinkedAlphas(Set<Alpha> linkedAlphas) {
-		this.linkedAlphas = linkedAlphas;
+		this.linkedAlphas = Set.copyOf(linkedAlphas);
 	}
 	
 	/**
