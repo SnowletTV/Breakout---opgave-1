@@ -52,14 +52,11 @@ public abstract class Ball extends AlphaBall {
 	 * @mutates | this
 	 */
 	public void EChargeCheck() {
+		int largestSize = 0;
 		for(Alpha a: this.getLinkedAlphas()) {
-			for(Ball b: a.getLinkedBalls()) {
-				int newCharge = b.getLinkedAlphas().size();
-				if(newCharge % 2 == 0){
-					newCharge = newCharge*-1;
-				}
-				b.setECharge(newCharge);
-			}
+			if(a.getLinkedBalls().size() > largestSize) {
+				largestSize = a.getLinkedBalls().size();
+			}	
 		}
 	}
 	

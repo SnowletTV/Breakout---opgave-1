@@ -206,11 +206,6 @@ public class BreakoutState {
 		}
 		return false;
 	}
-	
-	private Alpha removeDeadAlpha(Alpha alpha) {
-		if( alpha.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { return null; }
-		else { return alpha; }
-	}
 
 	private void clampAlpha(Alpha a) {
 		Circle loca = new Circle(getFieldInternal().constrain(a.getLocation().getCenter()), a.getDiameter());
@@ -344,7 +339,7 @@ public class BreakoutState {
 					ball.EChargeCheck();
 				}
 				alphas[i].getLinkedBalls().clear();
-				alphas[i] = removeDeadAlpha(alphas[i]);
+				alphas[i] = null;
 			}
 		}
 		ArrayList<Alpha> nalphas = new ArrayList<Alpha>();
