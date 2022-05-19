@@ -36,7 +36,7 @@ public class Alpha extends AlphaBall {
 	 * Sets this alpha/ball's dynamically electric charge.
 	 * @mutates | this
 	 */
-	public void EChargeCheck() {
+	public void EChargeCheckAll() {
 		
 	}
 	

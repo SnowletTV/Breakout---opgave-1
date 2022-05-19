@@ -194,10 +194,12 @@ public class BreakoutState {
 			}
 		}
 	}
-
-	private Ball removeDead(Ball ball) {
-		if( ball.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { return null; }
-		else { return ball; }
+	
+	private boolean checkRemoveDeadBall(Ball ball) {
+		if( ball.getLocation().getBottommostPoint().getY() > bottomRight.getY()) { 
+			return true; 
+		}
+		return false;
 	}
 	
 	private boolean checkRemoveDeadAlpha(Alpha alpha) {
@@ -249,7 +251,7 @@ public class BreakoutState {
 					newAlpha.getLinkedBalls().add(balls[i]);
 					balls[i].getLinkedAlphas().add(newAlpha);
 					alphas = newAlpha.alphaChange(alphas);
-					balls[i].EChargeCheck();
+					balls[i].EChargeCheckAll();
 				}
 			}
 		}
@@ -265,7 +267,7 @@ public class BreakoutState {
 					alphas[i].hitBlock(paddle.getLocation(), false);			
 					Ball newBall = new NormalBall(alphas[i].getLocation(), alphas[i].getVelocity().plus(new Vector(-2,-2)));
 					newBall.getLinkedAlphas().add(alphas[i]);
-					newBall.EChargeCheck();
+					newBall.EChargeCheckAll();
 					alphas[i].getLinkedBalls().add(newBall);
 					balls = newBall.ballChange(balls);
 				}
@@ -327,8 +329,22 @@ public class BreakoutState {
 
 	private void removeDeadBalls() {
 		for(int i = 0; i < balls.length; ++i) {
-			balls[i] = removeDead(balls[i]);
+			if(checkRemoveDeadBall(balls[i])) {
+				for (Alpha alpha : getBalls()[i].getLinkedAlphas()) {
+					alpha.getLinkedBalls().remove(balls[i]);
+				}
+				balls[i].EChargeCheckAll();
+				balls[i].getLinkedAlphas().clear();
+				balls[i] = null;
+			}
 		}
+		ArrayList<Ball> nballs = new ArrayList<Ball>();
+		for( Ball b : balls ) {
+			if(b != null) {
+				nballs.add(b);
+			}
+		}
+		balls = nballs.toArray(new Ball[] {});
 	}
 	
 	private void removeDeadAlphas() {
@@ -336,7 +352,7 @@ public class BreakoutState {
 			if(checkRemoveDeadAlpha(alphas[i])) {
 				for (Ball ball : getAlphas()[i].getLinkedBalls()) {
 					ball.getLinkedAlphas().remove(alphas[i]);
-					ball.EChargeCheck();
+					ball.EChargeCheckAll();
 				}
 				alphas[i].getLinkedBalls().clear();
 				alphas[i] = null;

@@ -145,7 +145,7 @@ public class BreakoutFacade {
 	public void addLink(Ball ball, Alpha alpha) {
 		ball.getLinkedAlphas().add(alpha);
 		alpha.getLinkedBalls().add(ball);
-		ball.EChargeCheck();
+		ball.EChargeCheckAll();
 	}
 	
 	/**
@@ -155,7 +155,7 @@ public class BreakoutFacade {
 	public void removeLink(Ball ball, Alpha alpha) {
 		ball.getLinkedAlphas().remove(alpha);
 		alpha.getLinkedBalls().remove(ball);
-		ball.EChargeCheck();
+		ball.EChargeCheckAll();
 	}
 	
 	/**

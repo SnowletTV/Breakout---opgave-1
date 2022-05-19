@@ -36,7 +36,7 @@ public abstract class Ball extends AlphaBall {
 	 */
 	public Ball(Circle location, Vector velocity) {
 		super(location, velocity);
-		this.EChargeCheck();
+		this.EChargeCheckAll();
 	}
 	
 	/**
@@ -45,18 +45,25 @@ public abstract class Ball extends AlphaBall {
 	 */
 	public abstract Color getColor();
 	
+	private void EChargeCheck() {
+		int largestSize = 0;
+		for(Alpha a: this.getLinkedAlphas()) {
+			if(a.getLinkedBalls().size() > largestSize) {
+				largestSize = a.getLinkedBalls().size();
+			}	
+		}
+	}
 	
 	/**
 	 * Sets this alpha/ball's dynamically electric charge.
 	 * TODO document formally
 	 * @mutates | this
 	 */
-	public void EChargeCheck() {
-		int largestSize = 0;
+	public void EChargeCheckAll() {
 		for(Alpha a: this.getLinkedAlphas()) {
-			if(a.getLinkedBalls().size() > largestSize) {
-				largestSize = a.getLinkedBalls().size();
-			}	
+			for(Ball b: a.getLinkedBalls()) {
+				b.EChargeCheck();
+			}
 		}
 	}
 	
