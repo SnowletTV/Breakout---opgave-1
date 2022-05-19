@@ -13,12 +13,14 @@ import utils.Vector;
  
 /**
  * Represents the current state of a breakout game.
- *
+ * @invar | getAlphas() != null
  * @invar | getBalls() != null
  * @invar | getBlocks() != null
  * @invar | getPaddle() != null
  * @invar | getBottomRight() != null
  * @invar | Point.ORIGIN.isUpAndLeftFrom(getBottomRight())
+ * @invar | Arrays.stream(getAlphas()).allMatch(b -> getField().contains(b.getCenter()))
+ * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
  * @invar | getField().contains(getPaddle().getLocation())
  */
@@ -36,11 +38,14 @@ public class BreakoutState {
 	
 	
 	/**
-	 * TODO documentation
+	 * @invar | alphas != null
+	 * @invar | Arrays.stream(alphas).allMatch(b -> getFieldInternal().contains(b.getCenter()))
+	 * @representationObject
 	 */
 	private Alpha[] alphas;
 	/**
 	 * @invar | balls != null
+	 * @invar | Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getCenter()))
 	 * @representationObject
 	 */
 	private Ball[] balls;
@@ -72,12 +77,14 @@ public class BreakoutState {
 	 * @throws IllegalArgumentException | paddle == null
 	 * @throws IllegalArgumentException | !Point.ORIGIN.isUpAndLeftFrom(bottomRight)
 	 * @throws IllegalArgumentException | !(new Rect(Point.ORIGIN,bottomRight)).contains(paddle.getLocation())
+	 * @throws IllegalArgumentException | !Arrays.stream(alphas).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @throws IllegalArgumentException | !Arrays.stream(blocks).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @throws IllegalArgumentException | !Arrays.stream(balls).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
+	 * @post | Arrays.stream(getAlphas()).allMatch(b -> Arrays.stream(alphas).anyMatch(a -> a.equalContent(b)))
+	 * @post | Arrays.stream(getBalls()).allMatch(b -> Arrays.stream(balls).anyMatch(a -> a.equalContent(b)))
 	 * @post | Arrays.equals(getBlocks(),blocks)
 	 * @post | getBottomRight().equals(bottomRight)
 	 * @post | getPaddle().equals(paddle)
-	 * TODO check for alphas = getalphas
 	 */
 	public BreakoutState(Alpha[] alphas, Ball[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
 		if( alphas == null) throw new IllegalArgumentException();
@@ -89,6 +96,7 @@ public class BreakoutState {
 		if(!Point.ORIGIN.isUpAndLeftFrom(bottomRight)) throw new IllegalArgumentException();
 		this.bottomRight = bottomRight;
 		if(!getFieldInternal().contains(paddle.getLocation())) throw new IllegalArgumentException();
+		if(!Arrays.stream(alphas).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();		
 		if( alphas != null) {
@@ -115,7 +123,6 @@ public class BreakoutState {
 	
 	/**
 	 * Return the alphas of this BreakoutState.
-	 *
 	 * @creates result
 	 */
 	public Alpha[] getAlphas() {
@@ -129,7 +136,6 @@ public class BreakoutState {
 
 	/**
 	 * Return the balls of this BreakoutState.
-	 *
 	 * @creates result
 	 */
 	public Ball[] getBalls() {
@@ -144,7 +150,6 @@ public class BreakoutState {
 
 	/**
 	 * Return the blocks of this BreakoutState.
-	 *
 	 * @creates result
 	 */
 	public BlockState[] getBlocks() {
@@ -336,7 +341,7 @@ public class BreakoutState {
 		for(int i = 0; i < balls.length; ++i) {
 			if(checkRemoveDeadBall(balls[i])) {
 				for (Alpha alpha : getBalls()[i].getLinkedAlphas()) {
-					alpha.getLinkedBalls().remove(balls[i]);
+					alpha.unlinkFrom(balls[i]);
 				}
 				balls[i].EChargeCheckAll();
 				balls[i] = null;
@@ -355,7 +360,7 @@ public class BreakoutState {
 		for(int i = 0; i < alphas.length; ++i) {
 			if(checkRemoveDeadAlpha(alphas[i])) {
 				for (Ball ball : getAlphas()[i].getLinkedBalls()) {
-					ball.getLinkedAlphas().remove(alphas[i]);
+					ball.unlinkFrom(alphas[i]);
 					ball.EChargeCheckAll();
 				}
 				alphas[i].getLinkedBalls().clear();

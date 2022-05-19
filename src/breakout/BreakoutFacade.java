@@ -152,9 +152,8 @@ public class BreakoutFacade {
 	 * TODO
 	 */
 	public void removeLink(Ball ball, Alpha alpha) {
-		ball.getLinkedAlphas().remove(alpha);
-		alpha.getLinkedBalls().remove(ball);
-		ball.EChargeCheckAll();
+		ball.unlinkFrom(alpha);
+		alpha.unlinkFrom(ball);
 	}
 	
 	/**

@@ -17,6 +17,7 @@ import utils.Vector;
  * @mutable
  * @invar | getLocation() != null
  * @invar | getVelocity() != null
+ * @invar | getECharge() != 0
  * @invar | getLifetime() >= 0
  * @invar | getLifetime() <= 10000
  * TODO documentation for eCharge
@@ -25,6 +26,8 @@ public abstract class Ball extends AlphaBall {
 	
 	/**
      * @peerObjects
+     * @invar | linkedAlphas != null
+     * TODO invar
      */
     private Set<Alpha> linkedAlphas = new LinkedHashSet<Alpha>();
 	
@@ -32,8 +35,9 @@ public abstract class Ball extends AlphaBall {
 	 * Construct a new normal ball at a given location, with a given velocity.
 	 * @pre | location != null
 	 * @pre | velocity != null
+	 * @mutates | this
 	 * @post | getLocation().equals(location)
-	 * @post | getVelocity().equals(velocity) 
+	 * @post | getVelocity().equals(velocity)
 	 */
 	public Ball(Circle location, Vector velocity) {
 		super(location, velocity);
@@ -41,13 +45,19 @@ public abstract class Ball extends AlphaBall {
 		this.EChargeCheckAll();
 	}
 	
+	/**
+	 * Checks if the contents are equal for two arrays of Balls
+	 * TODO check if LinkedAlphas equal
+	 * @pre | ball != null
+	 * @inspects this
+	 * @post | result == false || (ball.getLocation().equals(this.getLocation()) && ball.getECharge() == this.getECharge() && ball.getColor().equals(this.getColor()) && ball.getVelocity().equals(this.getVelocity()) && ball.getClass().equals(this.getClass()))
+	 */
 	public boolean equalContent(Ball ball) {
-		if(ball.getLocation() != this.getLocation()) return false;
+		if(!ball.getLocation().equals(this.getLocation())) return false;
 		if(ball.getECharge() != this.getECharge()) return false;
-		if(ball.getColor() != this.getColor()) return false;
-		if(ball.getVelocity() != this.getVelocity()) return false;
-		if(ball.getClass() != this.getClass()) return false;
-		if(ball.getLinkedAlphas() != this.getLinkedAlphas()) return false;
+		if(!ball.getColor().equals(this.getColor())) return false;
+		if(!ball.getVelocity().equals(this.getVelocity())) return false;
+		if(!ball.getClass().equals(this.getClass())) return false;
 		return true;
 	}
 	
@@ -71,9 +81,12 @@ public abstract class Ball extends AlphaBall {
 	}
 	
 	/**
-	 * Sets this alpha/ball's dynamically electric charge.
-	 * TODO document formally
+	 * Sets this alpha/ball's dynamically calculated electric charge.
+	 * @pre | getLinkedAlphas() != null
+	 * @pre | getECharge() != 0
 	 * @mutates | this
+	 * @post | getLinkedAlphas() != null
+	 * @post | getECharge() != 0
 	 */
 	public void EChargeCheckAll() {
 		for(Alpha a: this.getLinkedAlphas()) {
@@ -83,8 +96,27 @@ public abstract class Ball extends AlphaBall {
 		}
 	}
 	
+	/**
+	 * Links this ball to an alpha
+	 * @pre ball != null
+	 * @mutates | this
+	 * @mutates | alpha
+	 * @post | getLinkedAlphas().contains(alpha)
+	 */
 	public void linkTo(Alpha alpha) {
 		this.linkedAlphas.add(alpha);
+		this.EChargeCheckAll();
+	}
+	
+	/**
+	 * Unlinks this ball from an alpha
+	 * @pre ball != null
+	 * @mutates | this
+	 * @mutates | alpha
+	 * @post | !getLinkedAlphas().contains(alpha)
+	 */
+	public void unlinkFrom(Alpha alpha) {
+		this.linkedAlphas.remove(alpha);
 		this.EChargeCheckAll();
 	}
 	
@@ -96,15 +128,6 @@ public abstract class Ball extends AlphaBall {
 	 * @post | result.getLifetime() <= 10000 || result.getLifetime() > 0
 	 */
 	public abstract Ball checkLife();
-
-	/**
-	 * Return this ball's center.
-	 * @post | result != null
-	 * @post | getLocation().getCenter().equals(result)
-	 */
-	public Point getCenter() {
-		return getLocation().getCenter();
-	}
 	
 	/**
 	 * Return this ball's lifetime.

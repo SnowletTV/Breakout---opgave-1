@@ -65,7 +65,9 @@ public class SuperchargedBall extends Ball {
 	 * @override
 	 * @pre | rect != null
 	 * @mutates this
-	 * TODO documentation
+	 * @post | (rect.collideWith(getLocation()) == null && this.getVelocity() == old(this.getVelocity())) ||
+	 * | (rect.collideWith(getLocation()) != null && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))) ||
+	 * | (rect.collideWith(getLocation()) != null && this.getVelocity().equals(old(this.getVelocity())) && destroyed != false)
 	 */
 	public void hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());
