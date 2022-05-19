@@ -2,6 +2,7 @@ package radioactivity;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -32,12 +33,27 @@ public class Alpha extends AlphaBall {
 		super(location, velocity);
 	}
 	
+	public boolean equalContent(Alpha alpha) {
+		if(alpha.getLocation() != this.getLocation()) return false;
+		if(alpha.getECharge() != this.getECharge()) return false;
+		if(alpha.getColor() != this.getColor()) return false;
+		if(alpha.getVelocity() != this.getVelocity()) return false;
+		if(alpha.getClass() != this.getClass()) return false;
+		if(alpha.getLinkedBalls() != this.getLinkedBalls()) return false;
+		return true;
+	}
+	
 	/**
 	 * Sets this alpha/ball's dynamically electric charge.
 	 * @mutates | this
 	 */
 	public void EChargeCheckAll() {
 		
+	}
+	
+	public void linkTo(Ball ball) {
+		this.linkedBalls.add(ball);
+		ball.EChargeCheckAll();
 	}
 	
 	/**
@@ -52,14 +68,18 @@ public class Alpha extends AlphaBall {
 	 * @return the linkedBalls
 	 */
 	public Set<Ball> getLinkedBalls() {
-		return linkedBalls;
+		LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
+		a.addAll(linkedBalls);
+		return a;
 	}
 
 	/**
 	 * @param linkedBalls the linkedBalls to set
 	 */
 	public void setLinkedBalls(Set<Ball> linkedBalls) {
-		this.linkedBalls = Set.copyOf(linkedBalls);
+		LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
+		a.addAll(linkedBalls);
+		this.linkedBalls = a;
 	}
 	
 	/**

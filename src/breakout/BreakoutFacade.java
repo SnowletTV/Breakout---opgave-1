@@ -143,9 +143,8 @@ public class BreakoutFacade {
 	 * TODO
 	 */
 	public void addLink(Ball ball, Alpha alpha) {
-		ball.getLinkedAlphas().add(alpha);
-		alpha.getLinkedBalls().add(ball);
-		ball.EChargeCheckAll();
+		ball.linkTo(alpha);
+		alpha.linkTo(ball);
 	}
 	
 	/**

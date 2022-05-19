@@ -74,8 +74,6 @@ public class BreakoutState {
 	 * @throws IllegalArgumentException | !(new Rect(Point.ORIGIN,bottomRight)).contains(paddle.getLocation())
 	 * @throws IllegalArgumentException | !Arrays.stream(blocks).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @throws IllegalArgumentException | !Arrays.stream(balls).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
-	 * @post | Arrays.equals(getAlphas(),alphas)
-	 * @post | Arrays.equals(getBalls(),balls)
 	 * @post | Arrays.equals(getBlocks(),blocks)
 	 * @post | getBottomRight().equals(bottomRight)
 	 * @post | getPaddle().equals(paddle)
@@ -92,8 +90,7 @@ public class BreakoutState {
 		this.bottomRight = bottomRight;
 		if(!getFieldInternal().contains(paddle.getLocation())) throw new IllegalArgumentException();
 		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
-		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
-		
+		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();		
 		if( alphas != null) {
 			this.alphas = new Alpha[alphas.length];
 			for(int i = 0; i < alphas.length; ++i) {
@@ -117,7 +114,7 @@ public class BreakoutState {
 	}
 	
 	/**
-	 * Return the Alphas of this BreakoutState.
+	 * Return the alphas of this BreakoutState.
 	 *
 	 * @creates result
 	 */
@@ -247,7 +244,7 @@ public class BreakoutState {
 	}
 
 	private Ball[] collideBallPaddle(Ball[] balls, Vector paddleVel) {
-		for(int i = 0; i < balls.length; ++i) {
+		for(int i = 0; i < balls.length; i++) {
 			if(balls[i] != null) {
 				Ball testBall = new NormalBall(balls[i].getLocation(), balls[i].getVelocity());
 				testBall.hitBlock(paddle.getLocation(), false);
@@ -256,8 +253,8 @@ public class BreakoutState {
 					balls = paddle.ballChange(balls, balls[i]);
 					paddle = paddle.samePaddle(paddle.getCenter());				
 					Alpha newAlpha = new Alpha(balls[i].getLocation(), balls[i].getVelocity().plus(new Vector(-2,-2)));
-					newAlpha.getLinkedBalls().add(balls[i]);
-					balls[i].getLinkedAlphas().add(newAlpha);
+					newAlpha.linkTo(balls[i]);
+					balls[i].linkTo(newAlpha);
 					alphas = newAlpha.alphaChange(alphas);
 					balls[i].EChargeCheckAll();
 				}
@@ -267,16 +264,16 @@ public class BreakoutState {
 	}
 	
 	private Alpha[] collideAlphaPaddle(Alpha[] alphas, Vector paddleVel) {
-		for(int i = 0; i < alphas.length; ++i) {
+		for(int i = 0; i < alphas.length; i++) {
 			if(alphas[i] != null) {
 				Alpha testAlpha = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
 				testAlpha.hitBlock(paddle.getLocation(), false);
 				if(!testAlpha.getVelocity().equals(alphas[i].getVelocity())) {
 					alphas[i].hitBlock(paddle.getLocation(), false);			
 					Ball newBall = new NormalBall(alphas[i].getLocation(), alphas[i].getVelocity().plus(new Vector(-2,-2)));
-					newBall.getLinkedAlphas().add(alphas[i]);
+					newBall.linkTo(alphas[i]);
 					newBall.EChargeCheckAll();
-					alphas[i].getLinkedBalls().add(newBall);
+					alphas[i].linkTo(newBall);
 					balls = newBall.ballChange(balls);
 				}
 			}
@@ -342,7 +339,6 @@ public class BreakoutState {
 					alpha.getLinkedBalls().remove(balls[i]);
 				}
 				balls[i].EChargeCheckAll();
-				balls[i].getLinkedAlphas().clear();
 				balls[i] = null;
 			}
 		}

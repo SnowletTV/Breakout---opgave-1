@@ -2,6 +2,7 @@ package radioactivity;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public abstract class Ball extends AlphaBall {
 	/**
      * @peerObjects
      */
-    private Set<Alpha> linkedAlphas = new LinkedHashSet<Alpha>();;
+    private Set<Alpha> linkedAlphas = new LinkedHashSet<Alpha>();
 	
 	/**
 	 * Construct a new normal ball at a given location, with a given velocity.
@@ -37,6 +38,16 @@ public abstract class Ball extends AlphaBall {
 	public Ball(Circle location, Vector velocity) {
 		super(location, velocity);
 		this.EChargeCheckAll();
+	}
+	
+	public boolean equalContent(Ball ball) {
+		if(ball.getLocation() != this.getLocation()) return false;
+		if(ball.getECharge() != this.getECharge()) return false;
+		if(ball.getColor() != this.getColor()) return false;
+		if(ball.getVelocity() != this.getVelocity()) return false;
+		if(ball.getClass() != this.getClass()) return false;
+		if(ball.getLinkedAlphas() != this.getLinkedAlphas()) return false;
+		return true;
 	}
 	
 	/**
@@ -52,6 +63,9 @@ public abstract class Ball extends AlphaBall {
 				largestSize = a.getLinkedBalls().size();
 			}	
 		}
+		if(largestSize % 2 != 0) {
+			largestSize *= -1;
+		}
 	}
 	
 	/**
@@ -65,6 +79,11 @@ public abstract class Ball extends AlphaBall {
 				b.EChargeCheck();
 			}
 		}
+	}
+	
+	public void linkTo(Alpha alpha) {
+		this.linkedAlphas.add(alpha);
+		this.EChargeCheckAll();
 	}
 	
 	/**
@@ -114,14 +133,18 @@ public abstract class Ball extends AlphaBall {
 	 * @return the linkedAlphas
 	 */
 	public Set<Alpha> getLinkedAlphas() {
-		return linkedAlphas;
+		LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
+		a.addAll(linkedAlphas);
+		return a;
 	}
 
 	/**
 	 * @param linkedAlphas the linkedAlphas to set
 	 */
 	public void setLinkedAlphas(Set<Alpha> linkedAlphas) {
-		this.linkedAlphas = Set.copyOf(linkedAlphas);
+		LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
+		a.addAll(linkedAlphas);
+		this.linkedAlphas = a;
 	}
 	
 	/**
