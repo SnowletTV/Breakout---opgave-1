@@ -37,6 +37,7 @@ public abstract class Ball extends AlphaBall {
 	 */
 	public Ball(Circle location, Vector velocity) {
 		super(location, velocity);
+		this.EChargeCheck();
 		this.EChargeCheckAll();
 	}
 	
@@ -57,7 +58,7 @@ public abstract class Ball extends AlphaBall {
 	public abstract Color getColor();
 	
 	private void EChargeCheck() {
-		int largestSize = 0;
+		int largestSize = 1;
 		for(Alpha a: this.getLinkedAlphas()) {
 			if(a.getLinkedBalls().size() > largestSize) {
 				largestSize = a.getLinkedBalls().size();
@@ -66,6 +67,7 @@ public abstract class Ball extends AlphaBall {
 		if(largestSize % 2 != 0) {
 			largestSize *= -1;
 		}
+		this.setECharge(largestSize);
 	}
 	
 	/**
