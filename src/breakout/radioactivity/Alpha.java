@@ -16,7 +16,6 @@ import breakout.utils.Vector;
  * @mutable
  * @invar | getLocation() != null
  * @invar | getVelocity() != null
- * @invar | Arrays.stream(getLinkedBalls().toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
  * @invar | getECharge() == 1
  */
 public class Alpha extends AlphaBall {	
@@ -24,8 +23,9 @@ public class Alpha extends AlphaBall {
 	
 	 /**
      * @peerObjects
+     * dus we doen een stream over alle linkedballs, allmatch(een stream over alle linkedalphas, anymatch c equalContent aan het originele
      * @invar | linkedBalls != null
-     * @invar | Arrays.stream(linkedBalls.toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
+     * @invar | Arrays.stream(linkedBalls.toArray()).allMatch(b -> (Arrays.stream(((Ball) b).getLinkedAlphas().toArray()).anyMatch(c ->((Alpha) c).equalContent((this)))))
      */
     private Set<Ball> linkedBalls = new LinkedHashSet<Ball>();
     
@@ -110,7 +110,6 @@ public class Alpha extends AlphaBall {
 
 	/**
 	 * @pre | linkedBalls != null
-	 * @pre | Arrays.stream(linkedBalls.toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
 	 * @mutates | this
 	 */
 	public void setLinkedBalls(Set<Ball> linkedBalls) {

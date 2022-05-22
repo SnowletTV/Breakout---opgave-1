@@ -66,11 +66,11 @@ public class SuperchargedBall extends Ball {
 	 * @override
 	 * @pre | rect != null
 	 * @mutates this
-	 * TODO | ((this.getVelocity() == old(this.getVelocity())) ||
-	 * TODO | | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))) ||
-	 * TODO | | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && destroyed == false && this.getVelocity().equals(old(this.getVelocity().mirrorOver(rect.collideWith(getLocation()))))))
-	 * TODO | ((this.getVelocity() == old(this.getVelocity())) ||
-	 * TODO | | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && destroyed == false && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))))
+	 * @post | ((this.getVelocity() == old(this.getVelocity())) ||
+	 * | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))) ||
+	 * | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && destroyed == false && this.getVelocity().equals(old(this.getVelocity().mirrorOver(rect.collideWith(getLocation()))))))
+	 * @post | ((this.getVelocity() == old(this.getVelocity())) ||
+	 * | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && destroyed == false && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))))
 	 */
 	public void hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());
