@@ -107,12 +107,10 @@ public class BreakoutState {
 		if(!Arrays.stream(alphas).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();		
-		if( alphas != null) {
-			this.alphas = new Alpha[alphas.length];
-			for(int i = 0; i < alphas.length; ++i) {
-				this.alphas[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
-				this.alphas[i].setLinkedBalls(alphas[i].getLinkedBalls());
-			}
+		this.alphas = new Alpha[alphas.length];
+		for(int i = 0; i < alphas.length; ++i) {
+			this.alphas[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
+			this.alphas[i].setLinkedBalls(alphas[i].getLinkedBalls());
 		}
 		this.balls = new Ball[balls.length];
 		for(int i = 0; i < balls.length; ++i) {
