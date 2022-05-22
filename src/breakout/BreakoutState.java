@@ -25,7 +25,9 @@ import breakout.utils.Vector;
  * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
  * @invar | Arrays.stream(getAlphas()).allMatch(b -> Arrays.stream(b.getLinkedBalls().toArray()).allMatch(c -> Arrays.stream(getBalls()).anyMatch(d -> ((Ball) c).equalContent(d))))
+ * @invar | Arrays.stream(getAlphas()).allMatch(b -> Arrays.stream(b.getLinkedBalls().toArray()).allMatch(c -> c != null))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> Arrays.stream(b.getLinkedAlphas().toArray()).allMatch(c -> Arrays.stream(getAlphas()).anyMatch(d -> ((Alpha) c).equalContent(d))))
+ * @invar | Arrays.stream(getBalls()).allMatch(b -> Arrays.stream(b.getLinkedAlphas().toArray()).allMatch(c -> c != null))
  * @invar | getField().contains(getPaddle().getLocation())
  */
 public class BreakoutState {

@@ -21,12 +21,14 @@ import breakout.utils.Vector;
  * @invar | getECharge() != 0
  * @invar | getLifetime() >= 0
  * @invar | getLifetime() <= 10000
+ * @invar | Arrays.stream(getLinkedAlphas().toArray()).allMatch(b -> b != null)
  */
 public abstract class Ball extends AlphaBall {
 	
 	/**
      * @peerObjects
      * @invar | linkedAlphas != null
+     * @invar | Arrays.stream(linkedAlphas.toArray()).allMatch(b -> b != null)
      */
     private Set<Alpha> linkedAlphas = new LinkedHashSet<Alpha>();
 	
