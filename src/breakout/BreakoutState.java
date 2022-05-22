@@ -132,7 +132,6 @@ public class BreakoutState {
 	/**
 	 * Return the alphas of this BreakoutState.
 	 * @creates result
-	 * TODO documebt
 	 */
 	public Alpha[] getAlphas() {
 		Alpha[] res = new Alpha[alphas.length];
@@ -148,7 +147,6 @@ public class BreakoutState {
 	/**
 	 * Return the balls of this BreakoutState.
 	 * @creates result
-	 * TODO document
 	 */
 	public Ball[] getBalls() {
 		Ball[] res = new Ball[balls.length];
