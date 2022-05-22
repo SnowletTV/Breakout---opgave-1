@@ -43,10 +43,9 @@ public class Alpha extends AlphaBall {
 	
 	/**
 	 * Checks if the contents are equal for two arrays of Alphas
-	 * TODO check if LinkedBalls equal
 	 * @pre | alpha != null
 	 * @inspects this
-	 * @post | result == false || (alpha.getLocation().equals(this.getLocation()) && alpha.getECharge() == this.getECharge() && alpha.getColor().equals(this.getColor()) && alpha.getVelocity().equals(this.getVelocity()) && alpha.getClass().equals(this.getClass()))
+	 * @post | result == false || (alpha.getLocation().equals(this.getLocation()) && alpha.getECharge() == this.getECharge() && alpha.getColor().equals(this.getColor()) && alpha.getVelocity().equals(this.getVelocity()) && alpha.getClass().equals(this.getClass())) && Arrays.stream(alpha.getLinkedBalls().toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
 	 */
 	public boolean equalContent(Alpha alpha) {
 		if(!alpha.getLocation().equals(this.getLocation())) return false;
