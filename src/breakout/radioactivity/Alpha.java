@@ -25,7 +25,6 @@ public class Alpha extends AlphaBall {
 	 /**
      * @peerObjects
      * @invar | linkedBalls != null
-     * @invar 
      * @invar | Arrays.stream(linkedBalls.toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
      */
     private Set<Ball> linkedBalls = new LinkedHashSet<Ball>();
@@ -111,8 +110,8 @@ public class Alpha extends AlphaBall {
 
 	/**
 	 * @pre | linkedBalls != null
+	 * @pre | Arrays.stream(linkedBalls.toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
 	 * @mutates | this
-	 * @post | Arrays.stream(linkedBalls.toArray()).allMatch(b -> getLinkedBalls().contains(b))
 	 */
 	public void setLinkedBalls(Set<Ball> linkedBalls) {
 		this.linkedBalls = linkedBalls;

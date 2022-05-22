@@ -131,16 +131,15 @@ public class BreakoutFacade {
 	 * the peer references.)
 	 */
 	public Set<Ball> getBalls(Alpha alpha) {
-		return Set.copyOf(alpha.getLinkedBalls());
+		return alpha.getLinkedBalls();
 	}
 	
 	public Set<Alpha> getAlphas(Ball ball) {
-		return Set.copyOf(ball.getLinkedAlphas());
+		return ball.getLinkedAlphas();
 	}
 	
 	/**
 	 * note: re-adding a link does nothing
-	 * TODO
 	 */
 	public void addLink(Ball ball, Alpha alpha) {
 		ball.linkTo(alpha);
@@ -149,7 +148,6 @@ public class BreakoutFacade {
 	
 	/**
 	 * note: re-removing a link does nothing.
-	 * TODO
 	 */
 	public void removeLink(Ball ball, Alpha alpha) {
 		ball.unlinkFrom(alpha);

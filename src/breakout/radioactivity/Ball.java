@@ -163,7 +163,6 @@ public abstract class Ball extends AlphaBall {
 	/**
 	 *  Return this ball's linked alphas
 	 * @post | result != null
-	 * TODO
 	 */
 	public Set<Alpha> getLinkedAlphas() {
 		return linkedAlphas;
@@ -172,7 +171,8 @@ public abstract class Ball extends AlphaBall {
 	/**
 	 * Sets this ball's linked alphas
 	 * @pre | linkedAlphas != null
-	 * @post | this.getLinkedAlphas() != null
+	 * @pre | Arrays.stream(linkedAlphas.toArray()).allMatch(b -> ((Alpha) b).getLinkedBalls().contains(this))
+	 * @mutates this
 	 */
 	public void setLinkedAlphas(Set<Alpha> linkedAlphas) {
 		this.linkedAlphas = linkedAlphas;
