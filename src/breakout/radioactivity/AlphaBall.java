@@ -71,7 +71,9 @@ public abstract class AlphaBall {
 	
 	/**
 	 * Sets this alpha/ball's dynamically calculated electric charge.
+	 * @pre | getECharge() != 0
 	 * @mutates | this
+	 * @post | getECharge() != 0
 	 */
 	abstract public void EChargeCheckAll();
 	

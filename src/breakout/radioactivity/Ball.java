@@ -2,6 +2,7 @@ package breakout.radioactivity;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -20,14 +21,14 @@ import breakout.utils.Vector;
  * @invar | getECharge() != 0
  * @invar | getLifetime() >= 0
  * @invar | getLifetime() <= 10000
- * TODO documentation for eCharge
+ * @invar | Arrays.stream(getLinkedAlphas().toArray()).allMatch(b -> ((Alpha) b).getLinkedBalls().contains(this))
  */
 public abstract class Ball extends AlphaBall {
 	
 	/**
      * @peerObjects
      * @invar | linkedAlphas != null
-     * TODO invar
+     * @invar | Arrays.stream(linkedAlphas.toArray()).allMatch(b -> ((Alpha) b).getLinkedBalls().contains(this))
      */
     private Set<Alpha> linkedAlphas = new LinkedHashSet<Alpha>();
 	
@@ -58,6 +59,7 @@ public abstract class Ball extends AlphaBall {
 		if(!ball.getColor().equals(this.getColor())) return false;
 		if(!ball.getVelocity().equals(this.getVelocity())) return false;
 		if(!ball.getClass().equals(this.getClass())) return false;
+		if(!Arrays.stream(ball.getLinkedAlphas().toArray()).allMatch(b -> ((Alpha) b).getLinkedBalls().contains(this))) return false;
 		return true;
 	}
 	
@@ -67,6 +69,11 @@ public abstract class Ball extends AlphaBall {
 	 */
 	public abstract Color getColor();
 	
+	/**
+	 * Return this ball's colour.
+	 * @post | getECharge() != 0
+	 * Redundant (Arrays.stream(getLinkedAlphas().toArray()).anyMatch(b -> ((Alpha) b).getLinkedBalls().toArray().length == this.getECharge()) || getECharge() == -1)
+	 */
 	private void EChargeCheck() {
 		int largestSize = 1;
 		for(Alpha a: this.getLinkedAlphas()) {
@@ -155,21 +162,21 @@ public abstract class Ball extends AlphaBall {
 	public abstract Ball changeBall();
 
 	/**
-	 * @return the linkedAlphas
+	 *  Return this ball's linked alphas
+	 * @post | result != null
+	 * TODO
 	 */
 	public Set<Alpha> getLinkedAlphas() {
-		LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
-		a.addAll(linkedAlphas);
-		return a;
+		return linkedAlphas;
 	}
 
 	/**
-	 * @param linkedAlphas the linkedAlphas to set
+	 * Sets this ball's linked alphas
+	 * @pre | linkedAlphas != null
+	 * @post | this.getLinkedAlphas() != null
 	 */
 	public void setLinkedAlphas(Set<Alpha> linkedAlphas) {
-		LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
-		a.addAll(linkedAlphas);
-		this.linkedAlphas = a;
+		this.linkedAlphas = linkedAlphas;
 	}
 	
 	/**

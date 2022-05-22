@@ -2,6 +2,7 @@ package breakout;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 import breakout.radioactivity.Alpha;
 import breakout.radioactivity.Ball;
@@ -23,6 +24,8 @@ import breakout.utils.Vector;
  * @invar | Arrays.stream(getAlphas()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
+ * @invar | Arrays.stream(getAlphas()).allMatch(b -> Arrays.stream(b.getLinkedBalls().toArray()).allMatch(c -> Arrays.stream(getBalls()).anyMatch(d -> ((Ball) c).equalContent(d))))
+ * @invar | Arrays.stream(getBalls()).allMatch(b -> Arrays.stream(b.getLinkedAlphas().toArray()).allMatch(c -> Arrays.stream(getAlphas()).anyMatch(d -> ((Alpha) c).equalContent(d))))
  * @invar | getField().contains(getPaddle().getLocation())
  */
 public class BreakoutState {
@@ -41,12 +44,14 @@ public class BreakoutState {
 	/**
 	 * @invar | alphas != null
 	 * @invar | Arrays.stream(alphas).allMatch(b -> getFieldInternal().contains(b.getCenter()))
+	 * @invar | Arrays.stream(alphas).allMatch(b -> Arrays.stream(b.getLinkedBalls().toArray()).allMatch(c -> Arrays.stream(balls).anyMatch(d -> ((Ball) c).equalContent(d))))
 	 * @representationObject
 	 */
 	private Alpha[] alphas;
 	/**
 	 * @invar | balls != null
 	 * @invar | Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getCenter()))
+	 * @invar | Arrays.stream(balls).allMatch(b -> Arrays.stream(b.getLinkedAlphas().toArray()).allMatch(c -> Arrays.stream(alphas).anyMatch(d -> ((Alpha) c).equalContent(d))))
 	 * @representationObject
 	 */
 	private Ball[] balls;
@@ -127,12 +132,15 @@ public class BreakoutState {
 	/**
 	 * Return the alphas of this BreakoutState.
 	 * @creates result
+	 * TODO documebt
 	 */
 	public Alpha[] getAlphas() {
 		Alpha[] res = new Alpha[alphas.length];
 		for (int i = 0 ; i < alphas.length ; ++i) {
 			res[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
-			res[i].setLinkedBalls(alphas[i].getLinkedBalls());
+			LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
+			a.addAll(alphas[i].getLinkedBalls());
+			res[i].setLinkedBalls(a);
 		}
 		return res;
 	}
@@ -140,6 +148,7 @@ public class BreakoutState {
 	/**
 	 * Return the balls of this BreakoutState.
 	 * @creates result
+	 * TODO document
 	 */
 	public Ball[] getBalls() {
 		Ball[] res = new Ball[balls.length];
@@ -147,7 +156,9 @@ public class BreakoutState {
 			res[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
 			res[i] = this.balls[i].checkLife();
 			res[i].setLifetime(this.balls[i].getLifetime()+1);
-			res[i].setLinkedAlphas(balls[i].getLinkedAlphas());
+			LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
+			a.addAll(balls[i].getLinkedAlphas());
+			res[i].setLinkedAlphas(a);
 			res[i].EChargeCheckAll();
 		}
 		return res;

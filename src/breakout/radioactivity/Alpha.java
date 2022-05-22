@@ -16,6 +16,7 @@ import breakout.utils.Vector;
  * @mutable
  * @invar | getLocation() != null
  * @invar | getVelocity() != null
+ * @invar | Arrays.stream(getLinkedBalls().toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
  * @invar | getECharge() == 1
  */
 public class Alpha extends AlphaBall {	
@@ -24,7 +25,8 @@ public class Alpha extends AlphaBall {
 	 /**
      * @peerObjects
      * @invar | linkedBalls != null
-     * TODO invar
+     * @invar 
+     * @invar | Arrays.stream(linkedBalls.toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
      */
     private Set<Ball> linkedBalls = new LinkedHashSet<Ball>();
     
@@ -52,12 +54,17 @@ public class Alpha extends AlphaBall {
 		if(!alpha.getColor().equals(this.getColor())) return false;
 		if(!alpha.getVelocity().equals(this.getVelocity())) return false;
 		if(!alpha.getClass().equals(this.getClass())) return false;
+		if(!Arrays.stream(alpha.getLinkedBalls().toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))) return false;
 		return true;
 	}
 	
 	/**
 	 * Sets this alpha/ball's dynamically electric charge.
+	 * @pre | getLinkedBalls() != null
+	 * @pre | getECharge() != 0
 	 * @mutates | this
+	 * @post | getLinkedBalls() != null
+	 * @post | getECharge() != 0
 	 */
 	public void EChargeCheckAll() {
 	}
@@ -100,9 +107,7 @@ public class Alpha extends AlphaBall {
 	 * @post | result != null
 	 */
 	public Set<Ball> getLinkedBalls() {
-		LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
-		a.addAll(linkedBalls);
-		return a;
+		return linkedBalls;
 	}
 
 	/**
@@ -111,9 +116,7 @@ public class Alpha extends AlphaBall {
 	 * @post | Arrays.stream(linkedBalls.toArray()).allMatch(b -> getLinkedBalls().contains(b))
 	 */
 	public void setLinkedBalls(Set<Ball> linkedBalls) {
-		LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
-		a.addAll(linkedBalls);
-		this.linkedBalls = a;
+		this.linkedBalls = linkedBalls;
 	}
 	
 	/**
