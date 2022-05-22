@@ -1,16 +1,19 @@
-package radioactivity;
+package breakout.radioactivity;
 
 import java.awt.Color;
 
-import utils.Circle;
-import utils.Point;
-import utils.Rect;
-import utils.Vector;
+import breakout.utils.Circle;
+import breakout.utils.Point;
+import breakout.utils.Rect;
+import breakout.utils.Vector;
 
 /**
  * Represents the alpha particles and ball in the breakout game.
  * 
  * @mutable
+ * @invar | getLocation() != null
+ * @invar | getVelocity() != null
+ * @invar | getECharge() != 0
  */
 public abstract class AlphaBall {
 	
@@ -139,9 +142,9 @@ public abstract class AlphaBall {
 	 * 
 	 * @pre | rect != null
 	 * @mutates this
-	 * @post | (rect.collideWith(getLocation()) == null && this.getVelocity() == old(this.getVelocity())) ||
-	 * | (rect.collideWith(getLocation()) != null && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))) ||
-	 * | (rect.collideWith(getLocation()) != null && this.getVelocity().equals(old(this.getVelocity())) && destroyed != false)
+	 * TODO | ((this.getVelocity() == old(this.getVelocity())) ||
+	 * TODO | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(old(getLocation()))))) ||
+	 * TODO | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && !destroyed && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(old(getLocation()))))))
 	 */
 	public void hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());

@@ -1,4 +1,4 @@
-package radioactivity;
+package breakout.radioactivity;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import utils.Circle;
-import utils.Point;
-import utils.Rect;
-import utils.Vector;
+import breakout.utils.Circle;
+import breakout.utils.Point;
+import breakout.utils.Rect;
+import breakout.utils.Vector;
 
 /**
  * Represents the state of a ball in the breakout game.
@@ -189,4 +189,6 @@ public abstract class Ball extends AlphaBall {
 		nballs.add(this);
 		return nballs.toArray(new Ball[] {});
 	}
+	
+	
 }

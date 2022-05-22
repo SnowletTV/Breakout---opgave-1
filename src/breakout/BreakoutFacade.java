@@ -4,14 +4,14 @@ package breakout;
 import java.awt.Color;
 import java.util.Set;
 
-import radioactivity.Alpha;
-import radioactivity.Ball;
-import radioactivity.NormalBall;
-import radioactivity.SuperchargedBall;
-import utils.Circle;
-import utils.Point;
-import utils.Rect;
-import utils.Vector;
+import breakout.radioactivity.Alpha;
+import breakout.radioactivity.Ball;
+import breakout.radioactivity.NormalBall;
+import breakout.radioactivity.SuperchargedBall;
+import breakout.utils.Circle;
+import breakout.utils.Point;
+import breakout.utils.Rect;
+import breakout.utils.Vector;
 
 //No documentation required for this class
 public class BreakoutFacade {

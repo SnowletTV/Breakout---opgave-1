@@ -1,10 +1,11 @@
-package radioactivity;
+package breakout.radioactivity;
 
 import java.awt.Color;
-import utils.Circle;
-import utils.Point;
-import utils.Rect;
-import utils.Vector;
+
+import breakout.utils.Circle;
+import breakout.utils.Point;
+import breakout.utils.Rect;
+import breakout.utils.Vector;
 
 /**
  * Represents the state of a ball in the breakout game.
@@ -65,9 +66,11 @@ public class SuperchargedBall extends Ball {
 	 * @override
 	 * @pre | rect != null
 	 * @mutates this
-	 * @post | (rect.collideWith(getLocation()) == null && this.getVelocity() == old(this.getVelocity())) ||
-	 * | (rect.collideWith(getLocation()) != null && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))) ||
-	 * | (rect.collideWith(getLocation()) != null && this.getVelocity().equals(old(this.getVelocity())) && destroyed != false)
+	 * TODO | ((this.getVelocity() == old(this.getVelocity())) ||
+	 * TODO | | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))) ||
+	 * TODO | | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && destroyed == false && this.getVelocity().equals(old(this.getVelocity().mirrorOver(rect.collideWith(getLocation()))))))
+	 * TODO | ((this.getVelocity() == old(this.getVelocity())) ||
+	 * TODO | | (rect.collideWith(getLocation()) != null && getVelocity().product(rect.collideWith(getLocation())) > 0 && destroyed == false && this.getVelocity().equals(old(this.getVelocity()).mirrorOver(rect.collideWith(getLocation())))))
 	 */
 	public void hitBlock(Rect rect, boolean destroyed) {
 		Vector coldir = rect.collideWith(getLocation());
@@ -106,7 +109,13 @@ public class SuperchargedBall extends Ball {
 	*/
 	public Ball changeBall() {
 		if(lifetime <= 0) {
-			return new NormalBall(this.getLocation(), this.getVelocity());
+			Ball newBall = new NormalBall(this.getLocation(), this.getVelocity());
+			newBall.setLinkedAlphas(getLinkedAlphas());
+			for (Alpha alpha : this.getLinkedAlphas()) {
+				alpha.unlinkFrom(this);
+				alpha.linkTo(newBall);
+			}
+			return newBall;
 		}
 		return this;
 	}

@@ -3,13 +3,14 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import radioactivity.Alpha;
-import radioactivity.Ball;
-import radioactivity.NormalBall;
-import utils.Circle;
-import utils.Point;
-import utils.Rect;
-import utils.Vector;
+import breakout.radioactivity.Alpha;
+import breakout.radioactivity.Ball;
+import breakout.radioactivity.NormalBall;
+import breakout.radioactivity.SuperchargedBall;
+import breakout.utils.Circle;
+import breakout.utils.Point;
+import breakout.utils.Rect;
+import breakout.utils.Vector;
  
 /**
  * Represents the current state of a breakout game.
@@ -108,7 +109,9 @@ public class BreakoutState {
 		}
 		this.balls = new Ball[balls.length];
 		for(int i = 0; i < balls.length; ++i) {
-			this.balls[i] = new NormalBall(balls[i].getLocation(), balls[i].getVelocity());
+			this.balls[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			this.balls[i] = this.balls[i].checkLife();
+			this.balls[i].setLifetime(this.balls[i].getLifetime()+1);
 			this.balls[i].setLinkedAlphas(balls[i].getLinkedAlphas());
 			this.balls[i].EChargeCheckAll();
 		}
@@ -141,7 +144,9 @@ public class BreakoutState {
 	public Ball[] getBalls() {
 		Ball[] res = new Ball[balls.length];
 		for (int i = 0 ; i < balls.length ; ++i) {
-			res[i] = new NormalBall(balls[i].getLocation(), balls[i].getVelocity());
+			res[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			res[i] = this.balls[i].checkLife();
+			res[i].setLifetime(this.balls[i].getLifetime()+1);
 			res[i].setLinkedAlphas(balls[i].getLinkedAlphas());
 			res[i].EChargeCheckAll();
 		}

@@ -1,9 +1,10 @@
 package breakout;
 
 import java.awt.Color;
-import radioactivity.Ball;
-import utils.Rect;
 import java.util.ArrayList;
+
+import breakout.radioactivity.Ball;
+import breakout.utils.Rect;
 
 /**
  * Represents the state of a powerup block in the breakout game.

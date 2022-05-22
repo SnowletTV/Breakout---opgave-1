@@ -13,11 +13,11 @@ import breakout.BlockState;
 import breakout.BreakoutFacade;
 import breakout.BreakoutState;
 import breakout.PaddleState;
-import radioactivity.Alpha;
-import radioactivity.Ball;
-import utils.Point;
-import utils.Rect;
-import utils.Vector;
+import breakout.radioactivity.Alpha;
+import breakout.radioactivity.Ball;
+import breakout.utils.Point;
+import breakout.utils.Rect;
+import breakout.utils.Vector;
 
 class SubmissionTest3 {
 
@@ -241,7 +241,7 @@ class SubmissionTest3 {
 	/**
 	 * Other tests coming from iteration2 and adapted
 	 */
-	class SubmissionTestSuiteIter2Bis {
+	@Nested class SubmissionTestSuiteIter2Bis {
 
 		private Ball[] oneBall;
 		private BlockState block;

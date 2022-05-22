@@ -1,12 +1,13 @@
 package breakout;
 
 import java.awt.Color;
-import radioactivity.Ball;
-import radioactivity.NormalBall;
-import utils.Point;
-import utils.Rect;
-import utils.Vector;
 import java.util.ArrayList;
+
+import breakout.radioactivity.Ball;
+import breakout.radioactivity.NormalBall;
+import breakout.utils.Point;
+import breakout.utils.Rect;
+import breakout.utils.Vector;
 
 /**
  * Represents the state of a replicator paddle in the breakout game.
