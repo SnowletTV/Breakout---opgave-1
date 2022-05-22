@@ -93,6 +93,7 @@ public class BreakoutState {
 	 * @post | Arrays.equals(getBlocks(),blocks)
 	 * @post | getBottomRight().equals(bottomRight)
 	 * @post | getPaddle().equals(paddle)
+	 * TODO fix bug that Alphas and Balls change due to deep copy and don't point to each other
 	 */
 	public BreakoutState(Alpha[] alphas, Ball[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
 		if( alphas == null) throw new IllegalArgumentException();
