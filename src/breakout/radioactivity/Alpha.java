@@ -18,7 +18,6 @@ import breakout.utils.Vector;
  * @invar | getVelocity() != null
  * @invar | getECharge() == 1
  * @invar | Arrays.stream(getLinkedBalls().toArray()).allMatch(b -> b != null)
- * @invar | Arrays.stream(getLinkedBalls().toArray()).allMatch(b -> (Arrays.stream(((Ball) b).getLinkedAlphas().toArray()).anyMatch(c ->((Alpha) c).equalContent((this)))))
  */
 public class Alpha extends AlphaBall {	
     private static final Color color = new Color(170,170,170);
