@@ -140,20 +140,11 @@ public class BreakoutState {
 	 */
 	public Alpha[] getAlphas() {
 		Alpha[] res = new Alpha[alphas.length];
-		Ball[] resballs = new Ball[balls.length];
-		for(int i = 0; i < balls.length; ++i) {
-			resballs[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
-			resballs[i] = this.balls[i].checkLife();
-			resballs[i].setLifetime(this.balls[i].getLifetime()+1);
-			for(int j = 0; j < alphas.length; j++) {
-				if(alphas[j].getLinkedBalls().contains(balls[i])) {
-					res[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
-					res[j].linkTo(resballs[i]);
-					resballs[i].linkTo(res[j]);
-				}
-			}
-			resballs[i].EChargeCheckAll();
-			
+		for (int i = 0 ; i < alphas.length ; ++i) {
+			res[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
+			LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
+			a.addAll(alphas[i].getLinkedBalls());
+			res[i].setLinkedBalls(a);
 		}
 		return res;
 	}
@@ -164,23 +155,17 @@ public class BreakoutState {
 	 * TODO encapsulate peers
 	 */
 	public Ball[] getBalls() {
-		Alpha[] res = new Alpha[alphas.length];
-		Ball[] resballs = new Ball[balls.length];
-		for(int i = 0; i < balls.length; ++i) {
-			resballs[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
-			resballs[i] = this.balls[i].checkLife();
-			resballs[i].setLifetime(this.balls[i].getLifetime()+1);
-			for(int j = 0; j < alphas.length; j++) {
-				if(alphas[j].getLinkedBalls().contains(balls[i])) {
-					res[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
-					res[j].linkTo(resballs[i]);
-					resballs[i].linkTo(res[j]);
-				}
-			}
-			resballs[i].EChargeCheckAll();
-			
+		Ball[] res = new Ball[balls.length];
+		for (int i = 0 ; i < balls.length ; ++i) {
+			res[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			res[i] = this.balls[i].checkLife();
+			res[i].setLifetime(this.balls[i].getLifetime()+1);
+			LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
+			a.addAll(balls[i].getLinkedAlphas());
+			res[i].setLinkedAlphas(a);
+			res[i].EChargeCheckAll();			
 		}
-		return resballs;
+		return res;
 	}
 
 	/**
