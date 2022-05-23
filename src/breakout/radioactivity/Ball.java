@@ -50,7 +50,7 @@ public abstract class Ball extends AlphaBall {
 	 * Checks if the contents are equal for two arrays of Balls
 	 * @pre | ball != null
 	 * @inspects this
-	 * @post | result == false || (ball.getLocation().equals(this.getLocation()) && ball.getECharge() == this.getECharge() && ball.getColor().equals(this.getColor()) && ball.getVelocity().equals(this.getVelocity()) && ball.getClass().equals(this.getClass())) && Arrays.stream(ball.getLinkedAlphas().toArray()).allMatch(b -> ((Alpha) b).getLinkedBalls().contains(this))
+	 * @post | result == false || (ball.getLocation().equals(this.getLocation()) && ball.getECharge() == this.getECharge() && ball.getColor().equals(this.getColor()) && ball.getVelocity().equals(this.getVelocity()) && ball.getClass().equals(this.getClass()))
 	 */
 	public boolean equalContent(Ball ball) {
 		if(!ball.getLocation().equals(this.getLocation())) return false;
@@ -58,7 +58,6 @@ public abstract class Ball extends AlphaBall {
 		if(!ball.getColor().equals(this.getColor())) return false;
 		if(!ball.getVelocity().equals(this.getVelocity())) return false;
 		if(!ball.getClass().equals(this.getClass())) return false;
-		if(!Arrays.stream(ball.getLinkedAlphas().toArray()).allMatch(b -> ((Alpha) b).getLinkedBalls().contains(this))) return false;
 		return true;
 	}
 	

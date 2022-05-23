@@ -3,6 +3,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import breakout.radioactivity.Alpha;
 import breakout.radioactivity.Ball;
@@ -93,7 +94,6 @@ public class BreakoutState {
 	 * @post | Arrays.equals(getBlocks(),blocks)
 	 * @post | getBottomRight().equals(bottomRight)
 	 * @post | getPaddle().equals(paddle)
-	 * TODO fix bug that Alphas and Balls change due to deep copy and don't point to each other
 	 */
 	public BreakoutState(Alpha[] alphas, Ball[] balls, BlockState[] blocks, Point bottomRight, PaddleState paddle) {
 		if( alphas == null) throw new IllegalArgumentException();
@@ -109,17 +109,24 @@ public class BreakoutState {
 		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();		
 		this.alphas = new Alpha[alphas.length];
-		for(int i = 0; i < alphas.length; ++i) {
-			this.alphas[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
-			this.alphas[i].setLinkedBalls(alphas[i].getLinkedBalls());
-		}
 		this.balls = new Ball[balls.length];
 		for(int i = 0; i < balls.length; ++i) {
 			this.balls[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
 			this.balls[i] = this.balls[i].checkLife();
 			this.balls[i].setLifetime(this.balls[i].getLifetime()+1);
 			this.balls[i].setLinkedAlphas(balls[i].getLinkedAlphas());
+			for(int j = 0; j < alphas.length; j++) {
+				if(alphas[j].getLinkedBalls().contains(balls[i])) {
+					this.alphas[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
+					this.alphas[j].setLinkedBalls(alphas[j].getLinkedBalls());
+					this.alphas[j].unlinkFrom(balls[i]);
+					this.alphas[j].linkTo(this.balls[i]);
+					this.balls[i].unlinkFrom(alphas[j]);
+					this.balls[i].linkTo(this.alphas[j]);
+				}
+			}
 			this.balls[i].EChargeCheckAll();
+			
 		}
 		this.blocks = blocks.clone();
 		this.paddle = paddle;

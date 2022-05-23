@@ -44,7 +44,7 @@ public class Alpha extends AlphaBall {
 	 * Checks if the contents are equal for two arrays of Alphas
 	 * @pre | alpha != null
 	 * @inspects this
-	 * @post | result == false || (alpha.getLocation().equals(this.getLocation()) && alpha.getECharge() == this.getECharge() && alpha.getColor().equals(this.getColor()) && alpha.getVelocity().equals(this.getVelocity()) && alpha.getClass().equals(this.getClass())) && Arrays.stream(alpha.getLinkedBalls().toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))
+	 * @post | result == false || (alpha.getLocation().equals(this.getLocation()) && alpha.getECharge() == this.getECharge() && alpha.getColor().equals(this.getColor()) && alpha.getVelocity().equals(this.getVelocity()) && alpha.getClass().equals(this.getClass()))
 	 */
 	public boolean equalContent(Alpha alpha) {
 		if(!alpha.getLocation().equals(this.getLocation())) return false;
@@ -52,7 +52,6 @@ public class Alpha extends AlphaBall {
 		if(!alpha.getColor().equals(this.getColor())) return false;
 		if(!alpha.getVelocity().equals(this.getVelocity())) return false;
 		if(!alpha.getClass().equals(this.getClass())) return false;
-		if(!Arrays.stream(alpha.getLinkedBalls().toArray()).allMatch(b -> ((Ball) b).getLinkedAlphas().contains(this))) return false;
 		return true;
 	}
 	
