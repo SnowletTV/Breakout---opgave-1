@@ -477,6 +477,6 @@ public class BreakoutState {
 	 * @inspects this
 	 */
 	public boolean isDead() {
-		return getBalls().length == 0;
+		return balls.length == 0;
 	}
 }
