@@ -25,7 +25,6 @@ import breakout.utils.Vector;
  * @invar | Arrays.stream(getBalls()).allMatch(b -> b.getLinkedAlphas().stream().allMatch(c -> c != null))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> b.getLinkedAlphas().stream().allMatch(c -> Arrays.stream(getAlphas()).anyMatch(d -> ((Alpha) d).equalContent(c))))
  * @invar | Arrays.stream(getAlphas()).allMatch(b -> b.getLinkedBalls().stream().allMatch(c -> c != null))
- * @invar | Arrays.stream(getAlphas()).allMatch(b -> b.getLinkedBalls().stream().allMatch(c -> Arrays.stream(getBalls()).anyMatch(d -> ((Ball) d).equalContent(c))))
  * @invar | Arrays.stream(getAlphas()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
