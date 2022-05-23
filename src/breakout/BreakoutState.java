@@ -22,11 +22,8 @@ import breakout.utils.Vector;
  * @invar | getPaddle() != null
  * @invar | getBottomRight() != null
  * @invar | Point.ORIGIN.isUpAndLeftFrom(getBottomRight())
- * @invar | Arrays.stream(getAlphas()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBlocks()).allMatch(b -> getField().contains(b.getLocation()))
- * @invar | Arrays.stream(getAlphas()).allMatch(b -> Arrays.stream(b.getLinkedBalls().toArray()).allMatch(c -> Arrays.stream(getBalls()).anyMatch(d -> ((Ball) c).equalContent(d))))
- * @invar | Arrays.stream(getAlphas()).allMatch(b -> Arrays.stream(b.getLinkedBalls().toArray()).allMatch(c -> c != null))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> Arrays.stream(b.getLinkedAlphas().toArray()).allMatch(c -> Arrays.stream(getAlphas()).anyMatch(d -> ((Alpha) c).equalContent(d))))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> Arrays.stream(b.getLinkedAlphas().toArray()).allMatch(c -> c != null))
  * @invar | getField().contains(getPaddle().getLocation())
@@ -46,14 +43,11 @@ public class BreakoutState {
 	
 	/**
 	 * @invar | alphas != null
-	 * @invar | Arrays.stream(alphas).allMatch(b -> getFieldInternal().contains(b.getCenter()))
-	 * @invar | Arrays.stream(alphas).allMatch(b -> Arrays.stream(b.getLinkedBalls().toArray()).allMatch(c -> Arrays.stream(balls).anyMatch(d -> ((Ball) c).equalContent(d))))
 	 * @representationObject
 	 */
 	private Alpha[] alphas;
 	/**
 	 * @invar | balls != null
-	 * @invar | Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getCenter()))
 	 * @invar | Arrays.stream(balls).allMatch(b -> Arrays.stream(b.getLinkedAlphas().toArray()).allMatch(c -> Arrays.stream(alphas).anyMatch(d -> ((Alpha) c).equalContent(d))))
 	 * @representationObject
 	 */
@@ -115,7 +109,7 @@ public class BreakoutState {
 			this.balls[i] = this.balls[i].checkLife();
 			this.balls[i].setLifetime(this.balls[i].getLifetime()+1);
 			for(int j = 0; j < alphas.length; j++) {
-				if(alphas[j].getLinkedBalls().contains(balls[i])) {
+				if(balls[i].getLinkedAlphas().contains(alphas[j])) {
 					this.alphas[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
 					this.alphas[j].linkTo(this.balls[i]);
 					this.balls[i].linkTo(this.alphas[j]);
@@ -141,10 +135,12 @@ public class BreakoutState {
 	public Alpha[] getAlphas() {
 		Alpha[] res = new Alpha[alphas.length];
 		for (int i = 0 ; i < alphas.length ; ++i) {
-			res[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
-			LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
-			a.addAll(alphas[i].getLinkedBalls());
-			res[i].setLinkedBalls(a);
+			if(alphas[i] != null) {
+				res[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
+				LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
+				a.addAll(alphas[i].getLinkedBalls());
+				res[i].setLinkedBalls(a);
+			}
 		}
 		return res;
 	}
