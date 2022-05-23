@@ -17,7 +17,7 @@ import breakout.utils.Vector;
  * @invar | getLocation() != null
  * @invar | getVelocity() != null
  * @invar | getECharge() == 1
- * @invar | Arrays.stream(getLinkedBalls().toArray()).allMatch(b -> b != null)
+ * @invar | getLinkedBalls().stream().allMatch(b -> b != null)
  */
 public class Alpha extends AlphaBall {	
     private static final Color color = new Color(170,170,170);
@@ -25,7 +25,7 @@ public class Alpha extends AlphaBall {
 	 /**
      * @peerObjects
      * @invar | linkedBalls != null
-     * @invar | Arrays.stream(linkedBalls.toArray()).allMatch(b -> b != null)
+     * @invar | linkedBalls.stream().allMatch(b -> b != null)
      */
     private Set<Ball> linkedBalls = new LinkedHashSet<Ball>();
     
