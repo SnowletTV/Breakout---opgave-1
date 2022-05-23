@@ -114,14 +114,10 @@ public class BreakoutState {
 			this.balls[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
 			this.balls[i] = this.balls[i].checkLife();
 			this.balls[i].setLifetime(this.balls[i].getLifetime()+1);
-			this.balls[i].setLinkedAlphas(balls[i].getLinkedAlphas());
 			for(int j = 0; j < alphas.length; j++) {
 				if(alphas[j].getLinkedBalls().contains(balls[i])) {
 					this.alphas[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
-					this.alphas[j].setLinkedBalls(alphas[j].getLinkedBalls());
-					this.alphas[j].unlinkFrom(balls[i]);
 					this.alphas[j].linkTo(this.balls[i]);
-					this.balls[i].unlinkFrom(alphas[j]);
 					this.balls[i].linkTo(this.alphas[j]);
 				}
 			}
@@ -144,11 +140,20 @@ public class BreakoutState {
 	 */
 	public Alpha[] getAlphas() {
 		Alpha[] res = new Alpha[alphas.length];
-		for (int i = 0 ; i < alphas.length ; ++i) {
-			res[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
-			LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
-			a.addAll(alphas[i].getLinkedBalls());
-			res[i].setLinkedBalls(a);
+		Ball[] resballs = new Ball[balls.length];
+		for(int i = 0; i < balls.length; ++i) {
+			resballs[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			resballs[i] = this.balls[i].checkLife();
+			resballs[i].setLifetime(this.balls[i].getLifetime()+1);
+			for(int j = 0; j < alphas.length; j++) {
+				if(alphas[j].getLinkedBalls().contains(balls[i])) {
+					res[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
+					res[j].linkTo(resballs[i]);
+					resballs[i].linkTo(res[j]);
+				}
+			}
+			resballs[i].EChargeCheckAll();
+			
 		}
 		return res;
 	}
@@ -159,17 +164,23 @@ public class BreakoutState {
 	 * TODO encapsulate peers
 	 */
 	public Ball[] getBalls() {
-		Ball[] res = new Ball[balls.length];
-		for (int i = 0 ; i < balls.length ; ++i) {
-			res[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
-			res[i] = this.balls[i].checkLife();
-			res[i].setLifetime(this.balls[i].getLifetime()+1);
-			LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
-			a.addAll(balls[i].getLinkedAlphas());
-			res[i].setLinkedAlphas(a);
-			res[i].EChargeCheckAll();
+		Alpha[] res = new Alpha[alphas.length];
+		Ball[] resballs = new Ball[balls.length];
+		for(int i = 0; i < balls.length; ++i) {
+			resballs[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			resballs[i] = this.balls[i].checkLife();
+			resballs[i].setLifetime(this.balls[i].getLifetime()+1);
+			for(int j = 0; j < alphas.length; j++) {
+				if(alphas[j].getLinkedBalls().contains(balls[i])) {
+					res[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
+					res[j].linkTo(resballs[i]);
+					resballs[i].linkTo(res[j]);
+				}
+			}
+			resballs[i].EChargeCheckAll();
+			
 		}
-		return res;
+		return resballs;
 	}
 
 	/**
@@ -364,7 +375,7 @@ public class BreakoutState {
 	private void removeDeadBalls() {
 		for(int i = 0; i < balls.length; ++i) {
 			if(checkRemoveDeadBall(balls[i])) {
-				for (Alpha alpha : getBalls()[i].getLinkedAlphas()) {
+				for (Alpha alpha : balls[i].getLinkedAlphas()) {
 					alpha.unlinkFrom(balls[i]);
 				}
 				balls[i].EChargeCheckAll();
@@ -383,7 +394,7 @@ public class BreakoutState {
 	private void removeDeadAlphas() {
 		for(int i = 0; i < alphas.length; ++i) {
 			if(checkRemoveDeadAlpha(alphas[i])) {
-				for (Ball ball : getAlphas()[i].getLinkedBalls()) {
+				for (Ball ball : alphas[i].getLinkedBalls()) {
 					ball.unlinkFrom(alphas[i]);
 					ball.EChargeCheckAll();
 				}
