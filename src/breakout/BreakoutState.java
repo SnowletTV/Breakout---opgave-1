@@ -46,13 +46,11 @@ public class BreakoutState {
 	
 	/**
 	 * @invar | alphas != null
-	 * @invar | Arrays.stream(alphas).allMatch(b -> b.getLinkedBalls().stream().allMatch(c -> Arrays.stream(balls).anyMatch(d -> ((Ball) c).equals(d))))
 	 * @representationObject
 	 */
 	private Alpha[] alphas;
 	/**
 	 * @invar | balls != null
-	 * @invar | Arrays.stream(balls).allMatch(b -> b.getLinkedAlphas().stream().allMatch(c -> Arrays.stream(alphas).anyMatch(d -> ((Alpha) c).equals(d))))
 	 * @representationObject
 	 */
 	private Ball[] balls;
