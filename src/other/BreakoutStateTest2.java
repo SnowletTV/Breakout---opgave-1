@@ -163,7 +163,7 @@ class BreakoutStateTest2 {
         assertEquals(1, stateBeforeBounceTop.getBalls().length);
         assertEquals(1, stateBeforeBounceTop.getBlocks().length);
         assertEquals(1, stateBeforeBounceTop.getAlphas().length);
-        assertEquals(new Vector(0, 6), stateBeforeBounceTop.getBalls()[0].getVelocity());
+        assertEquals(new Vector(0, -5), stateBeforeBounceTop.getBalls()[0].getVelocity());
     }
 
 
@@ -173,7 +173,7 @@ class BreakoutStateTest2 {
         assertEquals(1, stateBeforeBounceBottomAlpha.getBalls().length);
         assertEquals(1, stateBeforeBounceBottomAlpha.getBlocks().length);
         assertEquals(0, stateBeforeBounceBottomAlpha.getAlphas().length);
-        assertEquals(2, stateBeforeBounceBottomAlpha.getBalls()[0].getLinkedAlphas().size());
+        assertEquals(0, stateBeforeBounceBottomAlpha.getBalls()[0].getLinkedAlphas().size());
     }
 
     @Test
@@ -204,8 +204,8 @@ class BreakoutStateTest2 {
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1.getBlocks().length);
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1.getAlphas()[0].getLinkedBalls().size());
         assertEquals(0, stateBeforeBouncePaddleReplicatorHits1.getPaddle().getHits());
-        assertEquals(4, stateBeforeBouncePaddleReplicatorHits1.getBalls()[0].getLinkedAlphas().size());
-        assertEquals(2, stateBeforeBouncePaddleReplicatorHits1.getBalls()[0].getECharge());
+        assertEquals(1, stateBeforeBouncePaddleReplicatorHits1.getBalls()[0].getLinkedAlphas().size());
+        assertEquals(-1, stateBeforeBouncePaddleReplicatorHits1.getBalls()[0].getECharge());
         assertEquals(new Vector(0, -5), stateBeforeBouncePaddleReplicatorHits1.getBalls()[0].getVelocity());
         assertEquals(new Vector(-2, -7), stateBeforeBouncePaddleReplicatorHits1.getAlphas()[0].getVelocity());
     }
@@ -234,10 +234,10 @@ class BreakoutStateTest2 {
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Alpha.getAlphas().length);
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Alpha.getAlphas()[0].getECharge());
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Alpha.getBlocks().length);
-        assertEquals(2, stateBeforeBouncePaddleReplicatorHits1Alpha.getAlphas()[0].getLinkedBalls().size());
+        assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Alpha.getAlphas()[0].getLinkedBalls().size());
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Alpha.getPaddle().getHits());
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Alpha.getBalls()[0].getLinkedAlphas().size());
-        assertEquals(2, stateBeforeBouncePaddleReplicatorHits1Alpha.getBalls()[0].getECharge());
+        assertEquals(-1, stateBeforeBouncePaddleReplicatorHits1Alpha.getBalls()[0].getECharge());
         assertEquals(new Vector(-2, -7), stateBeforeBouncePaddleReplicatorHits1Alpha.getBalls()[0].getVelocity());
         assertEquals(new Vector(0, -5), stateBeforeBouncePaddleReplicatorHits1Alpha.getAlphas()[0].getVelocity());
     }
