@@ -90,6 +90,7 @@ public abstract class Ball extends AlphaBall {
 	 * @pre | getLinkedAlphas() != null
 	 * @pre | getECharge() != 0
 	 * @mutates | this
+	 * @inspects | getLinkedAlphas()
 	 * @post | getLinkedAlphas() != null
 	 * @post | getECharge() != 0
 	 */
@@ -136,7 +137,7 @@ public abstract class Ball extends AlphaBall {
 	
 	/**
 	 * Return this ball's lifetime.
-	 * @post | result > 0
+	 * @post | result >= 0
 	 */
 	public abstract int getLifetime();
 	
