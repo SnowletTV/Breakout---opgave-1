@@ -23,7 +23,6 @@ import breakout.utils.Vector;
  * @invar | getBottomRight() != null
  * @invar | Point.ORIGIN.isUpAndLeftFrom(getBottomRight())
  * @invar | Arrays.stream(getBalls()).allMatch(b -> b.getLinkedAlphas().stream().allMatch(c -> c != null))
- * @invar | Arrays.stream(getBalls()).allMatch(b -> b.getLinkedAlphas().stream().allMatch(c -> Arrays.stream(getAlphas()).anyMatch(d -> ((Alpha) d).equalContent(c))))
  * @invar | Arrays.stream(getAlphas()).allMatch(b -> b.getLinkedBalls().stream().allMatch(c -> c != null))
  * @invar | Arrays.stream(getAlphas()).allMatch(b -> getField().contains(b.getCenter()))
  * @invar | Arrays.stream(getBalls()).allMatch(b -> getField().contains(b.getCenter()))
@@ -85,7 +84,6 @@ public class BreakoutState {
 	 * @throws IllegalArgumentException | !Arrays.stream(blocks).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @throws IllegalArgumentException | !Arrays.stream(balls).allMatch(b -> (new Rect(Point.ORIGIN,bottomRight)).contains(b.getLocation()))
 	 * @post | Arrays.stream(getAlphas()).allMatch(b -> Arrays.stream(alphas).anyMatch(a -> a.equalContent(b)))
-	 * @post | Arrays.stream(getBalls()).allMatch(b -> Arrays.stream(balls).anyMatch(a -> a.equalContent(b)))
 	 * @post | Arrays.equals(getBlocks(),blocks)
 	 * @post | getBottomRight().equals(bottomRight)
 	 * @post | getPaddle().equals(paddle)
@@ -103,8 +101,33 @@ public class BreakoutState {
 		if(!Arrays.stream(alphas).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(blocks).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();
 		if(!Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getLocation()))) throw new IllegalArgumentException();		
-		this.alphas = alphas;
-		this.balls = balls;
+		this.alphas = new Alpha[alphas.length];
+		this.balls = new Ball[balls.length];
+		for(int i = 0; i < balls.length; ++i) {
+			this.balls[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			this.balls[i] = this.balls[i].checkLife();
+			this.balls[i].setLifetime(this.balls[i].getLifetime()+1);
+			for(int j = 0; j < alphas.length; j++) {
+				if(balls[i].getLinkedAlphas().contains(alphas[j])) {
+					this.alphas[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
+					this.alphas[j].linkTo(this.balls[i]);
+					this.balls[i].linkTo(this.alphas[j]);
+				}
+			}
+			this.balls[i].EChargeCheckAll();
+			
+		}
+		for(int j = 0; j < alphas.length; j++) {
+			boolean isPresent = false;
+			for(int i = 0; i < balls.length; ++i) {
+				if(balls[i].getLinkedAlphas().contains(alphas[j])) {
+					isPresent = true;
+				}	
+			}
+			if(!isPresent) {
+				this.alphas[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
+			}
+		}
 		this.blocks = blocks.clone();
 		this.paddle = paddle;
 
@@ -304,6 +327,7 @@ public class BreakoutState {
 			bounceAlphasOnPaddle(paddleDir);
 			clampObjects();
 			balls = Arrays.stream(balls).filter(x -> x != null).toArray(Ball[]::new);
+			alphas = Arrays.stream(alphas).filter(x -> x != null).toArray(Alpha[]::new);
 		}
 	}
 
