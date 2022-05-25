@@ -17,6 +17,7 @@ import breakout.utils.Vector;
  * @invar | getLocation() != null
  * @invar | getVelocity() != null
  * @invar | getECharge() == 1
+ * @invar | getLinkedBalls() != null
  * @invar | getLinkedBalls().stream().allMatch(b -> b != null)
  */
 public class Alpha extends AlphaBall {	

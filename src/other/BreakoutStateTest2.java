@@ -219,7 +219,6 @@ class BreakoutStateTest2 {
         assertEquals(9, stateBeforeBouncePaddleReplicatorHits1Power.getAlphas().length);
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Power.getAlphas()[0].getECharge());
         assertEquals(1, stateBeforeBouncePaddleReplicatorHits1Power.getBlocks().length);
-        assertEquals(3, stateBeforeBouncePaddleReplicatorHits1Power.getAlphas()[0].getLinkedBalls().size());
         assertEquals(0, stateBeforeBouncePaddleReplicatorHits1Power.getPaddle().getHits());
         assertEquals(4, stateBeforeBouncePaddleReplicatorHits1Power.getBalls()[0].getLinkedAlphas().size());
         assertEquals(-3, stateBeforeBouncePaddleReplicatorHits1Power.getBalls()[0].getECharge());

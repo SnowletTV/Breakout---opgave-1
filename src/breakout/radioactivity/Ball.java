@@ -19,8 +19,10 @@ import breakout.utils.Vector;
  * @invar | getLocation() != null
  * @invar | getVelocity() != null
  * @invar | getECharge() != 0
+ * @invar | (getLinkedAlphas().stream().anyMatch(b -> ((Alpha) b).getLinkedBalls().size() == Math.abs(this.getECharge())) || getECharge() ==  -1 || (getECharge() ==  1 && getLinkedAlphas().size() == 0))
  * @invar | getLifetime() >= 0
  * @invar | getLifetime() <= 10000
+ * @invar | getLinkedAlphas() != null
  * @invar | getLinkedAlphas().stream().allMatch(b -> b != null)
  */
 public abstract class Ball extends AlphaBall {
@@ -47,6 +49,12 @@ public abstract class Ball extends AlphaBall {
 	}
 	
 	/**
+	 * Return this ball's colour.
+	 * @post | result != null
+	 */
+	public abstract Color getColor();
+	
+	/**
 	 * Checks if the contents are equal for two arrays of Balls
 	 * @pre | ball != null
 	 * @inspects this
@@ -63,14 +71,7 @@ public abstract class Ball extends AlphaBall {
 	
 	/**
 	 * Return this ball's colour.
-	 * @post | result != null
-	 */
-	public abstract Color getColor();
-	
-	/**
-	 * Return this ball's colour.
 	 * @post | getECharge() != 0
-	 * Redundant (Arrays.stream(getLinkedAlphas().toArray()).anyMatch(b -> ((Alpha) b).getLinkedBalls().toArray().length == this.getECharge()) || getECharge() == -1)
 	 */
 	private void EChargeCheck() {
 		int largestSize = 1;
@@ -93,6 +94,7 @@ public abstract class Ball extends AlphaBall {
 	 * @inspects | getLinkedAlphas()
 	 * @post | getLinkedAlphas() != null
 	 * @post | getECharge() != 0
+	 * @post | (getLinkedAlphas().stream().anyMatch(b -> ((Alpha) b).getLinkedBalls().size() == Math.abs(this.getECharge())) || getECharge() ==  -1 || (getECharge() ==  1 && getLinkedAlphas().size() == 0))
 	 */
 	public void EChargeCheckAll() {
 		for(Alpha a: this.getLinkedAlphas()) {

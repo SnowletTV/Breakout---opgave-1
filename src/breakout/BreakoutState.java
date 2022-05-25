@@ -44,11 +44,19 @@ public class BreakoutState {
 	
 	/**
 	 * @invar | alphas != null
+	 * @invar | Arrays.stream(alphas).allMatch(b -> b.getLinkedBalls().stream().allMatch(c -> c != null))
+	 * @invar | Arrays.stream(alphas).allMatch(b -> getFieldInternal().contains(b.getCenter()))
+	 * @invar | !Arrays.stream(alphas).anyMatch(b -> Arrays.stream(alphas).anyMatch(a -> a.equalContent(b) && !a.equals(b)))
+	 * @invar | Arrays.stream(alphas).allMatch(b -> b.getLinkedBalls().stream().allMatch(c -> Arrays.stream(balls).anyMatch(d -> ((Ball) c).equals(d))))
 	 * @representationObject
 	 */
 	private Alpha[] alphas;
 	/**
 	 * @invar | balls != null
+	 * @invar | Arrays.stream(balls).allMatch(b -> b.getLinkedAlphas().stream().allMatch(c -> c != null))
+	 * @invar | Arrays.stream(balls).allMatch(b -> getFieldInternal().contains(b.getCenter()))
+	 * @invar | !Arrays.stream(balls).anyMatch(b -> Arrays.stream(balls).anyMatch(a -> a.equalContent(b) && !a.equals(b)))
+	 * @invar | Arrays.stream(balls).allMatch(b -> b.getLinkedAlphas().stream().allMatch(c -> Arrays.stream(alphas).anyMatch(d -> ((Alpha) c).equals(d))))
 	 * @representationObject
 	 */
 	private Ball[] balls;
@@ -143,12 +151,29 @@ public class BreakoutState {
 	 */
 	public Alpha[] getAlphas() {
 		Alpha[] res = new Alpha[alphas.length];
-		for (int i = 0 ; i < alphas.length ; ++i) {
-			if(alphas[i] != null) {
-				res[i] = new Alpha(alphas[i].getLocation(), alphas[i].getVelocity());
-				LinkedHashSet<Ball> a = new LinkedHashSet<Ball>();
-				a.addAll(alphas[i].getLinkedBalls());
-				res[i].setLinkedBalls(a);
+		Ball[] resBalls = new Ball[balls.length];
+		for(int i = 0; i < balls.length; ++i) {
+			resBalls[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			resBalls[i] = this.balls[i].checkLife();
+			resBalls[i].setLifetime(this.balls[i].getLifetime()+1);
+			for(int j = 0; j < alphas.length; j++) {
+				if(balls[i].getLinkedAlphas().contains(alphas[j])) {
+					res[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
+					res[j].linkTo(this.balls[i]);
+					resBalls[i].linkTo(this.alphas[j]);
+				}
+			}
+			resBalls[i].EChargeCheckAll();	
+		}
+		for(int j = 0; j < alphas.length; j++) {
+			boolean isPresent = false;
+			for(int i = 0; i < balls.length; ++i) {
+				if(balls[i].getLinkedAlphas().contains(alphas[j])) {
+					isPresent = true;
+				}	
+			}
+			if(!isPresent) {
+				res[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
 			}
 		}
 		return res;
@@ -159,17 +184,23 @@ public class BreakoutState {
 	 * @creates result
 	 */
 	public Ball[] getBalls() {
-		Ball[] res = new Ball[balls.length];
-		for (int i = 0 ; i < balls.length ; ++i) {
-			res[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
-			res[i] = this.balls[i].checkLife();
-			res[i].setLifetime(this.balls[i].getLifetime()+1);
-			LinkedHashSet<Alpha> a = new LinkedHashSet<Alpha>();
-			a.addAll(balls[i].getLinkedAlphas());
-			res[i].setLinkedAlphas(a);
-			res[i].EChargeCheckAll();		
+		Alpha[] res = new Alpha[alphas.length];
+		Ball[] resBalls = new Ball[balls.length];
+		for(int i = 0; i < balls.length; ++i) {
+			resBalls[i] = new SuperchargedBall(balls[i].getLocation(), balls[i].getVelocity(), balls[i].getLifetime());
+			resBalls[i] = this.balls[i].checkLife();
+			resBalls[i].setLifetime(this.balls[i].getLifetime()+1);
+			for(int j = 0; j < alphas.length; j++) {
+				if(balls[i].getLinkedAlphas().contains(alphas[j])) {
+					res[j] = new Alpha(alphas[j].getLocation(), alphas[j].getVelocity());
+					res[j].linkTo(this.balls[i]);
+					resBalls[i].linkTo(this.alphas[j]);
+				}
+			}
+			resBalls[i].EChargeCheckAll();
+			
 		}
-		return res;
+		return resBalls;
 	}
 
 	/**
