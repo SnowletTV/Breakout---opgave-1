@@ -1,4 +1,4 @@
-package other;
+package breakout.other;
 
 import static org.junit.jupiter.api.Assertions.*;
 
